@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.0.1"
+version = "0.0.2"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -34,9 +34,18 @@ build_command = "poetry build"
 # build_command = "pip install poetry && poetry build"
 major_on_zero = true
 
+# Do not create tag so far !
+tag_commit = false
+commit_version_number = true
+commit_subject = "bump: version {version}"
+commit_message = "semantic-release new version: version {version}"
+#commit_author = 
+
 # pipeline hooks
 # pre_commit_command = 
 # include_additional_files = 
+
+
 
 
 [tool.poetry.dependencies]
