@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.2-beta.8 (2022-11-13)
+
+
 ## v0.2.2-beta.7 (2022-11-13)
 ### Feature
 * Change 2 ([`9032e29`](https://github.com/mrjk/python-project-poetry-template/commit/9032e2907b495bd543cd85d538d48f5f9cf33172))
