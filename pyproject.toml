@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.0.2"
+version = "0.0.3"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -36,6 +36,7 @@ build_command = "poetry build"
 major_on_zero = true
 
 # Do not create tag so far !
+# -----
 commit_version_number = true
 # PAttern that will be looked up in all commit that bumped things
 commit_subject = "bump: version v{version}"
@@ -46,7 +47,7 @@ commit_message = "semantic-release new version: version {version}"
 # pre_commit_command = 
 # include_additional_files = 
 
-tag_commit = false
+tag_commit = true
 tag_format = "v{version}"
 
 
