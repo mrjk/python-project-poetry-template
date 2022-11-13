@@ -44,8 +44,11 @@ commit_message = "semantic-release new version: version {version}"
 #commit_author = 
 
 # pipeline hooks
+pre_commit_command = "poetry build"
 # pre_commit_command = 
-# include_additional_files = 
+include_additional_files = [
+  'RELEASE.md'
+]
 
 tag_commit = true
 tag_format = "v{version}"
