@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.0.18"
+version = "0.1.0"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -55,7 +55,7 @@ changelog_file = "CHANGELOG.md"
 upload_to_release = true
 build_command = 'poetry build'
 dist_path = 'dist/'
-remove_dist = false # We manually handle this
+# remove_dist = false # We manually handle this
 
 # Publish to github
 # Require: export GH_TOKEN=
