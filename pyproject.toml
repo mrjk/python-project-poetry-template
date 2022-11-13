@@ -20,6 +20,7 @@ myprj = "myprj.cli:cli"
 
 
 [tool.semantic_release]
+version_source = commit
 version_variable = [
     "myprj/__version__.py:__version__",
 #    "pyproject.toml:version"
@@ -36,7 +37,8 @@ major_on_zero = true
 
 # Do not create tag so far !
 commit_version_number = true
-commit_subject = "bump: version {version}"
+# PAttern that will be looked up in all commit that bumped things
+commit_subject = "bump: version v{version}"
 commit_message = "semantic-release new version: version {version}"
 #commit_author = 
 
