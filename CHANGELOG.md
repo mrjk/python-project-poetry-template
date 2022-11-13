@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0-beta.1 (2022-11-13)
+### Fix
+* Bad version reporting for CLI ([`79258b2`](https://github.com/mrjk/python-project-poetry-template/commit/79258b240dd59adb2ffed80180097dc8cfd6fcc0))
+* New patched version for python-semantic-release ([`03ec3a1`](https://github.com/mrjk/python-project-poetry-template/commit/03ec3a1c6101829f2ca68f13f05ae76854f98d70))
+
 ## v0.2.2-beta.23 (2022-11-13)
 ### Fix
 * **ci:** Add things ([`3e277cc`](https://github.com/mrjk/python-project-poetry-template/commit/3e277cc5d6c45bee3814d0c90c0563fc9e4bf268))
