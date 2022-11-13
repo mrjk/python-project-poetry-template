@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.0.3"
+version = "0.0.4"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -49,6 +49,8 @@ commit_message = "semantic-release new version: version {version}"
 
 tag_commit = true
 tag_format = "v{version}"
+
+changelog_file = "CHANGELOG.md"
 
 
 
