@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.0.9"
+version = "0.0.10"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
