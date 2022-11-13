@@ -49,15 +49,18 @@ tag_format = "v{version}"
 
 # Build
 changelog_file = "CHANGELOG.md"
-dist_path = 'dist/'
-build_command = 'poetry build'
 # build_command = "pip install poetry && poetry build"
+
+# Run build ?
+upload_to_release = true
+build_command = 'poetry build'
+dist_path = 'dist/'
 
 # Publish to github
 # Require: export GH_TOKEN=
-upload_to_release = false
 upload_to_repository = true
 
+# Publish to Pypi
 # Require: PYPI_TOKEN REPOSITORY_USERNAME PYPI_USERNAME PYPI_PASSWORD
 upload_to_pypi = false
 
