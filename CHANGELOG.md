@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.1.0-beta.1 (2022-11-13)
+
+
 ## v0.0.18 (2022-11-13)
 ### Feature
 * Change 1 ([`4bac515`](https://github.com/mrjk/python-project-poetry-template/commit/4bac5155f0b5e7d953ddf8e3fd9d47bfbc6fee0b))
