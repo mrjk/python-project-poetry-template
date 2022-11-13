@@ -30,9 +30,9 @@ make_new_release ()
 {
   local args=${@-}
 
-  echo "INFO: Running command: semantic-release publish -D remove_dist=false $args"
-  semantic-release publish -D remove_dist=false $args
-  #semantic-release publish -v DEBUG -D remove_dist=false $args
+  echo "INFO: Running command: semantic-release publish -D remove_dist=False $args"
+  semantic-release publish -D remove_dist=False $args
+  #semantic-release publish -v DEBUG -D remove_dist=False $args
 }
 
 
