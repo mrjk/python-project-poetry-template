@@ -173,6 +173,13 @@ print_confirm ()
 
 }
 
+check_clean ()
+{
+  if ! git status --porcelain | grep -q '^.M'; then
+    echo "ERROR: Please commit your changes before!"
+    exit 1
+  fi
+}
 
 main ()
 {

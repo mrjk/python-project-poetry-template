@@ -2,7 +2,6 @@
 
 This is a template of a python project with all CI/CD tools implemented.
 
-
 ## Features
 
 * `direnv` support
@@ -12,8 +11,7 @@ This is a template of a python project with all CI/CD tools implemented.
 * Version bumping support
 
 External requirements:
+
 * direnv
 * task
 * git-flow
-
-
