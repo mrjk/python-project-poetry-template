@@ -152,3 +152,4 @@ BUG: change 2
 
 new thing
 new string
+new string
