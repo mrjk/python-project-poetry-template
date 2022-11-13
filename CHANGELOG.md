@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.2-beta.22 (2022-11-13)
+### Fix
+* **ci:** Add things ([`42ec4b6`](https://github.com/mrjk/python-project-poetry-template/commit/42ec4b64e305371b8ef1f426757d65891ac28df1))
+* Missing .pre-commit-config.yaml file ([`329c044`](https://github.com/mrjk/python-project-poetry-template/commit/329c044b9e68cc81f96244aa758abc8d0744cb56))
+* **ci:** Add things ([`e041038`](https://github.com/mrjk/python-project-poetry-template/commit/e041038fb3987ed1d03da46e8b167da6db0b95fb))
+
 ## v0.2.2-beta.21 (2022-11-13)
 ### Fix
 * **ci:** Add things ([`fdc507b`](https://github.com/mrjk/python-project-poetry-template/commit/fdc507b210b8a74a2c433cee5f3eb70b367b0f2e))
