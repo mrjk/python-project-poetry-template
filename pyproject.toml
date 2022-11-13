@@ -10,9 +10,10 @@ packages = [
 ]
 [tool.poetry.group.dev.dependencies]
 python-semantic-release = "^7.32.2"
+poetry = "^1.2.2"
 
 
-[tool.poetry_bumpversion.file."myprj/__version__.py"]
+# [tool.poetry_bumpversion.file."myprj/__version__.py"]
 
 
 [tool.poetry.scripts]
@@ -74,7 +75,7 @@ python = "^3.9"
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.20.0"
 commitizen = "^2.37.0"
-poetry-bumpversion = "0.0.1"
+#poetry-bumpversion = "0.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
