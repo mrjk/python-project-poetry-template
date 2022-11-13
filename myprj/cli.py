@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# from myprj.__version__ import __version__
-from myprj import __version__
+from myprj.__version__ import __version__
 
 
 def cli():
