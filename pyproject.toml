@@ -9,6 +9,7 @@ packages = [
     { include = "myprj"}
 ]
 [tool.poetry.group.dev.dependencies]
+# Need to use: https://github.com/mrjk/python-semantic-release for <=7.32.2
 python-semantic-release = "^7.32.2"
 poetry = "^1.2.2"
 
