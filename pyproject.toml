@@ -22,12 +22,20 @@ myprj = "myprj.cli:cli"
 [tool.semantic_release]
 version_variable = [
     "myprj/__version__.py:__version__",
-    "pyproject.toml:version"
+    # "pyproject.toml:version"
 ]
+version_toml = [
+    'pyproject.toml:tool.poetry.version',
+  ]
 branch = "main"
 upload_to_pypi = false
 upload_to_release = false
 build_command = "poetry build"
+major_on_zero = true
+
+# pipeline hooks
+# pre_commit_command = 
+# include_additional_files = 
 
 
 [tool.poetry.dependencies]
