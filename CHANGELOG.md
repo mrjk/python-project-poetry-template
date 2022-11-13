@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v0.0.18 (2022-11-13)
+### Feature
+* Change 1 ([`4bac515`](https://github.com/mrjk/python-project-poetry-template/commit/4bac5155f0b5e7d953ddf8e3fd9d47bfbc6fee0b))
+* Change 0 ([`3fc8540`](https://github.com/mrjk/python-project-poetry-template/commit/3fc8540b1999b7671e28179496bec3083c0b4400))
+* Change 1 ([`2badc94`](https://github.com/mrjk/python-project-poetry-template/commit/2badc94c4a658ab58659e44e194330d1205043bd))
+* Change 0 ([`ea8d9b7`](https://github.com/mrjk/python-project-poetry-template/commit/ea8d9b7d29d8198a80e105c271d147bdb21becc9))
+
+### Fix
+* Change 2 ([`42f776c`](https://github.com/mrjk/python-project-poetry-template/commit/42f776c5ca4f22662d3b573f2b7cde7100c11584))
+* Project ([`93d7d05`](https://github.com/mrjk/python-project-poetry-template/commit/93d7d0515c2ba1c5578577939ff1d3b18ef7e8c7))
+* Change 2 ([`27d24fd`](https://github.com/mrjk/python-project-poetry-template/commit/27d24fdc0b3edcb09be0ebc44317199d2946a78c))
+
 ## v0.0.17 (2022-11-13)
 ### Feature
 * Change 1 ([`a8dabdc`](https://github.com/mrjk/python-project-poetry-template/commit/a8dabdc826682aa4e854967690d91c1886360235))
