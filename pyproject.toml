@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.0.6"
+version = "0.0.7"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -29,10 +29,6 @@ version_toml = [
     'pyproject.toml:tool.poetry.version',
   ]
 branch = "main"
-upload_to_pypi = false
-upload_to_release = false
-build_command = "poetry build"
-# build_command = "pip install poetry && poetry build"
 major_on_zero = true
 
 # Do not create tag so far !
@@ -46,13 +42,25 @@ commit_message = "semantic-release new version: version {version}"
 # pipeline hooks
 # pre_commit_command = "poetry build"
 # pre_commit_command = 
-# include_additional_files = 'RELEASE.md'
+include_additional_files = 'dist/RELEASE.md'
 
 tag_commit = true
 tag_format = "v{version}"
 
+# Build
 changelog_file = "CHANGELOG.md"
+dist_path = 'dist/'
+build_command = 'poetry build'
+# build_command = "pip install poetry && poetry build"
 
+# Publish to github
+# Require: export GH_TOKEN=
+upload_to_release = false
+
+# Require: PYPI_TOKEN REPOSITORY_USERNAME PYPI_USERNAME PYPI_PASSWORD
+upload_to_pypi = false
+
+# See: https://python-semantic-release.readthedocs.io/en/latest/automatic-releases/github-actions.html
 
 
 [tool.poetry.dependencies]
