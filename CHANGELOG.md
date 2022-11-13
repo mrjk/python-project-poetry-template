@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.1-beta.1 (2022-11-13)
+### Fix
+* Change 2 ([`b9ee2fd`](https://github.com/mrjk/python-project-poetry-template/commit/b9ee2fdedbc7b628aa42ca8929a6c3ecd9397ab5))
+* Change 1 ([`21739d0`](https://github.com/mrjk/python-project-poetry-template/commit/21739d0635dcaa2709628f1589d4756f1bf47c25))
+* Change 0 ([`835953a`](https://github.com/mrjk/python-project-poetry-template/commit/835953a68d0c80f9042c8f6ac08b93241e0473be))
+
 ## v0.2.0 (2022-11-13)
 ### Fix
 * Change 2 ([`85ab846`](https://github.com/mrjk/python-project-poetry-template/commit/85ab846e13f369f1ee66a49a1e74a0136ef08dff))
