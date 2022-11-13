@@ -3,10 +3,6 @@
 set -eu
 #set -x
 
-# LAST_TAG=$(git describe --tags --abbrev=0)
-# CURRENT_TAG=$(git describe --tags --abbrev=0 --exact-match 2>/dev/null || true)
-
-
 # Release functions
 # ======================
 
@@ -35,8 +31,8 @@ make_new_release ()
   local args=${@-}
 
   echo "INFO: Running command: semantic-release publish -D remove_dist=false $args"
-  semantic-release -D remove_dist=false $args publish
-  #semantic-release -v DEBUG -D remove_dist=false $args publish
+  semantic-release publish -D remove_dist=false $args
+  #semantic-release publish -v DEBUG -D remove_dist=false $args
 }
 
 
@@ -67,14 +63,44 @@ env_defaults ()
   esac
 
   # Parse args
-  while getopts i:nf option
+  while getopts i:nhf option
   do
   	case "${option}" in
   		i) INCREMENT="$OPTARG";;
   		n) NOOP=true ;;
   		f) NO_CONFIRM=true ;;
+  		h)
+        usage
+        exit
+        ;;
   	esac
   done
+
+  if [[ "$INCREMENT" == 'auto' ]]; then
+    INCREMENT=''
+  fi
+}
+
+usage ()
+{
+  cat <<EOF
+Script to change the current realease of the code, depending the current branch
+
+usage: ${0} [-n] [-f] [-i <INCREMENT>]
+       ${0} -h
+
+options:
+  -i  <INCREMENT>   Increment code version, leave empty for auto
+  -n                Dry run, do not make changes
+  -f                Do not prompt user
+
+INCREMENT:
+  auto              Increment according commit message content (default)
+  patch             Increment patch
+  minor             Increment minor
+  major             Increment major
+
+EOF
 }
 
 env_prepare ()
@@ -124,6 +150,8 @@ print_confirm ()
     return 0
   fi
 
+  echo "WARN: Do you want to continue release? $CURR_VERS -> $NEXT_VERS"
+
   # Allow user to input into stdin
   exec < /dev/tty
 
@@ -151,10 +179,10 @@ main ()
   env_defaults ${@-}
   env_prepare
 
-  echo "Question: Do you want to continue release? $CURR_VERS -> $NEXT_VERS"
   print_confirm
 
   gen_changelog
+  ls -ahl dist/
   make_new_release ${CLI_ARGS[@]}
 }
 
