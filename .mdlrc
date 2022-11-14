@@ -1,4 +1,4 @@
 # See: https://github.com/markdownlint/markdownlint
 # See: https://github.com/markdownlint/markdownlint/blob/main/docs/RULES.md
 
-rules "~MD010", "~MD013", "~MD034", "~MD007"
+rules "~MD010", "~MD013", "~MD034", "~MD007", "~MD005"
