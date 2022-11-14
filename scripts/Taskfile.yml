@@ -1,0 +1,62 @@
+version: '3'
+
+vars:
+  SRC_DIR: myprj
+  TEST_DIR: tests/
+
+tasks:
+
+  bootstrap:
+    desc: Install dev dependencies
+  setup:
+    desc: Install project dependencies
+  update:
+    desc: Synchronize git
+
+  release:
+    doc: Bump code devel version, generate changelog, create a tag
+
+
+
+
+  # Project CI
+  # ---------------
+
+  lint_black:
+    desc: Autolint codes
+    run: once
+    sources: &PAASIFY_MODULE
+      - "{{.SRC_DIR}}/*.py"
+    cmds:
+      - >2
+        git status --porcelain | grep '^.M {{.SRC_DIR}}/' && {
+          echo "ERROR: Uncommited files !";
+          exit 1;
+        } || exit 0
+      - black {{.SRC_DIR}}
+
+  test:
+    desc: Run tests
+    run: once
+    sources: &PAASIFY_CODE
+      - "{{.SRC_DIR}}/*.py"
+      - tests/*.py
+    cmds:
+      - pytest -vv tests {{.CLI_ARGS}}
+
+  # Reporting tools
+  # ---------------
+
+  report_cov:
+    desc: Test coverage status
+    run: once
+    sources: *PAASIFY_MODULE
+    cmds:
+      - pytest --cov={{.SRC_DIR}} tests {{.CLI_ARGS}}
+
+  report_lint:
+    desc: Report linting status
+    run: once
+    sources: *PAASIFY_CODE
+    cmds:
+      - pylint --output-format=colorized {{.SRC_DIR}}
