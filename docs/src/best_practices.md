@@ -138,6 +138,12 @@ Then you can test your changes:
 pre-commit run  --hook-stage commit
 ```
 
+You can skip some tests, for debug purpose only:
+
+```
+SKIP=mdformat git push
+```
+
 When you want to update your repos, simply run:
 
 ```

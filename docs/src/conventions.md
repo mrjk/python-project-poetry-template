@@ -51,10 +51,28 @@ Other words:
 - debug
   - Doc:
   - Usage:
+- debug
+  - Doc:
+  - Usage:
+- clean
+  - Doc: Remove or delete artifacts
+  - Usage: `rm dists/*.whl`
+- bump
+  - Doc: Change application version
+  - Usage: poetry version major
+  - depends: tests, lint
+- lint
+  - Doc: Lint the code
+  - Usage: black, pylint
+  - depends:
 - release
   - Doc: Release a new version
   - Usage: poetry version
-  - depends: tests
+  - depends: tests, lint
+- report
+  - Doc: Show corevarge report, performance output, benchmarks
+  - Usage: pytest --cov=...
+  - depends: tests, lint
 - publish (gh_publish, git_publish, gl_publish)
   - Doc: Publish on repository
   - Usage: semantic-release publish, publish build & publish
