@@ -23,6 +23,12 @@ tasks:
       - for c in $(task -l | grep -Eo '[^ ]+_build'); do task $c ; done
 
 
+  # via git on branch gh_page
+  publish_gh:
+    desc: 'Publish documentation on: https://mrjk.github.io/python-project-poetry-template/index.html'
+    cmds:
+      - mkdocs gh-deploy
+
   # MkDocs (Local Python)
   # -----------------
 
