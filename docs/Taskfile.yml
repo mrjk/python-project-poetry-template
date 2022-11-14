@@ -8,7 +8,7 @@ vars:
   GIT_BRANCH:
     sh: git rev-parse --abbrev-ref HEAD
   APP_VERSION:
-    sh: poetry version -s
+    sh: poetry version -s 2>/dev/null || true
 
 
 
