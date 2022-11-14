@@ -58,6 +58,7 @@ jobs:
           TASK_URL="${GITHUB_RELEASE_URL}/$TASK_VERSION/task_linux_${TASK_ARCH}.tar.gz"
           curl -L --output /tmp/go-task.tar.gz "$TASK_URL"
           tar xzvf /tmp/go-task.tar.gz  -C  ~/.local/bin/ task
+          echo  ~/.local/bin/ >> $GITHUB_PATH
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
