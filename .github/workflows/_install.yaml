@@ -76,11 +76,6 @@ jobs:
       #    echo "${LOCAL_BIN}" >> $GITHUB_PATH
       #    echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
 
-      - name: Environment Info
-        #if: steps.cached-env-install.outputs.cache-hit != 'true'
-        run: |
-          poetry config --list
-          poetry env info --path >> $GITHUB_PATH
 
 
 
@@ -91,6 +86,11 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: true
+
+      - name: Environment Info
+        run: |
+          poetry config --list
+          poetry env info --path >> $GITHUB_PATH
 
       - name: Install project dependencies (cached)
         run: |
