@@ -56,33 +56,40 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: true
 
-      - name: Load cached venv
-        id: cached-project-deps
-        uses: actions/cache@v3
-        with:
-          path: ~/.venv
-          key: venv--${{ runner.os }}--${{matrix.python_version}}--${{matrix.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
-
-
+#      - name: Load cached venv
+#        id: cached-project-deps
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/.venv
+#          key: venv--${{ runner.os }}--${{matrix.python_version}}--${{matrix.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
+#
+#
       # Run tests
       # ---------------------
       - name: Run black
         run: |
-          source ~/.venv/bin/activate
-          black --check --verbose paasify
+          poetry run myprj
+          prj
 
-      - name: Run unit tests
-        run: |
-          set -x
-          source ~/.venv/bin/activate
-          env | sort
-          cd $GITHUB_WORKSPACE
-          ls -ahl ~/.venv/bin/
-          python -m site
-          python -m pytest
-
-          pytest tests
-
+#      # Run tests
+#      # ---------------------
+#      - name: Run black
+#        run: |
+#          source ~/.venv/bin/activate
+#          black --check --verbose paasify
+#
+#      - name: Run unit tests
+#        run: |
+#          set -x
+#          source ~/.venv/bin/activate
+#          env | sort
+#          cd $GITHUB_WORKSPACE
+#          ls -ahl ~/.venv/bin/
+#          python -m site
+#          python -m pytest
+#
+#          pytest tests
+#
       # echo "PWD = ${PWD//\//#}"
       # ls -ahl "$HOME"
       # ls -ahl /home/runner/work/paasify/paasify || true
