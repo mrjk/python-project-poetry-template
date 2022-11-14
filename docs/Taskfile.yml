@@ -1,0 +1,85 @@
+version: '3'
+
+# See guidelines: https://github.com/dxw/scripts-to-rule-them-all
+
+tasks:
+
+  # Geneeric helpers
+  # -----------------
+
+  default:
+    desc: Show all commands
+    cmds:
+      - task --list-all
+
+  bootstrap:
+    desc: Bootstrap all
+    cmds:
+      - for c in $(task -l | grep -Eo '[^ ]+_bootstrap'); do task $c ; done
+
+  build:
+    desc: Bootstrap all
+    cmds:
+      - for c in $(task -l | grep -Eo '[^ ]+_build'); do task $c ; done
+
+
+  # MkDocs (Local Python)
+  # -----------------
+
+  doc_build:
+    desc: Generate API doc
+    deps: [install]
+    run: once
+    cmds:
+      - ./gen_apidoc.sh
+    sources:
+      - ../paasify/*.py
+
+  doc_serve:
+    aliases:
+      - serve
+    desc: Run mkdocs website
+    deps: [build_doc]
+    interactive: true
+    cmds:
+      - >
+        echo "Documentation: http://127.0.0.1:8000"
+      - mkdocs serve
+
+
+  # Jupyter (Local Python)
+  # -----------------
+  jupyter_bootstrap:
+    desc: Install jupyter dependencies
+    cmds:
+      - python -m bash_kernel.install
+
+  jupyter_serve:
+    desc: Run jupyter playbook editor website
+    interactive: true
+    cmds:
+      - >
+        echo "Jupyter: http://127.0.0.1:8888"
+      - jupyter-notebook --autoreload --notebook-dir src/jupyter/
+
+
+  # Online VS-Code (docker)
+  # -----------------
+  docker_serve:
+    alias:
+      - vscode
+      - edit
+    desc: Run documentation IDE
+    deps: [build_doc]
+    cmds:
+      - docker-compose up -d
+      - |
+        sleep 3
+        echo "Documentation: http://127.0.0.1:8042"
+        echo "Jupyter:       $( docker-compose logs | grep -m 1 ' or http:' | sed 's/.* or //' )"
+
+  docker_serve_stop:
+    desc: Stop documentation IDE
+    cmds:
+      - docker-compose rm -f
+      #- docker-compose stop
