@@ -41,3 +41,5 @@ repos:
   - id: mdformat
   repo: https://github.com/executablebooks/mdformat
   rev: '0.7.16'
+  # Dirty ...
+  exclude: docs/src/api_doc.md'
