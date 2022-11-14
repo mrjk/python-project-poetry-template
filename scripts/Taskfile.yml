@@ -14,7 +14,9 @@ tasks:
     desc: Synchronize git
 
   release:
-    doc: Bump code devel version, generate changelog, create a tag
+    desc: Bump code devel version, generate changelog, create a tag
+    cmds:
+      - bash scripts/release.sh {{.CLI_ARGS}}
 
 
 
