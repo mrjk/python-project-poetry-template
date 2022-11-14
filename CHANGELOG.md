@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0-beta.2 (2022-11-14)
+### Documentation
+* Update docs ([`aa829de`](https://github.com/mrjk/python-project-poetry-template/commit/aa829de48dca81baaf082a0dc590940b10bc9846))
+* Append mainteners and contrib guidelines ([`01f18df`](https://github.com/mrjk/python-project-poetry-template/commit/01f18dfe5e214f0979f31be5367a30393591b6f3))
+* Update doc ([`6fa37c1`](https://github.com/mrjk/python-project-poetry-template/commit/6fa37c1f93810a071ef2d7dbe19672e33a9fdd6e))
+* **docker:** Add docker-compose support ([`b629afb`](https://github.com/mrjk/python-project-poetry-template/commit/b629afb43fdbcf0924cc65c332c93c988474f326))
+* **scripts:** Taskdev.yml support ([`8701138`](https://github.com/mrjk/python-project-poetry-template/commit/87011383aec34fc4525e47cde28af69fa8c64b33))
+* **user_doc:** Add support for html documentation ([`33686dc`](https://github.com/mrjk/python-project-poetry-template/commit/33686dc1c7b0468865348722a406299e76d346b8))
+
 ## v0.3.0-beta.1 (2022-11-13)
 ### Fix
 * Bad version reporting for CLI ([`79258b2`](https://github.com/mrjk/python-project-poetry-template/commit/79258b240dd59adb2ffed80180097dc8cfd6fcc0))
