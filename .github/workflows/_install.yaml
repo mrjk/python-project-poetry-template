@@ -37,22 +37,6 @@ jobs:
         with:
           python-version: ${{inputs.python_version}}
 
-      - name: Install Task
-        uses: arduino/setup-task@v1
-        with:
-          version: 3.12.1
-
-      - name: Install and configure Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.2.2
-          virtualenvs-create: true
-          virtualenvs-in-project: false
-          virtualenvs-path: ~/my-custom-path
-          installer-parallel: true
-
-
-
       - name: Load cached python environment
         id: cached-env-install
         uses: actions/cache@v3
@@ -60,12 +44,29 @@ jobs:
           path: ~/.local
           key: python_env--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}
 
+      - name: Install Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.12.1
+
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        if: steps.cached-env-install.outputs.cache-hit != 'true'
+        with:
+          version: 1.2.2
+          virtualenvs-create: true
+          virtualenvs-in-project: false
+          virtualenvs-path: ~/.local
+          installer-parallel: true
+
+
+
       #- name: Configure PATHs dfsdf
       #  run: |
       #    echo "${LOCAL_BIN}" >> $GITHUB_PATH
       #    echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
 
-      - name: Install virtualenv and poetry (cached)
+      - name: Debug Info
         #if: steps.cached-env-install.outputs.cache-hit != 'true'
         run: |
           poetry config --list
@@ -99,22 +100,10 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: true
 
-      - name: Load cached venv
-        id: cached-project-deps
-        uses: actions/cache@v3
-        with:
-          path: ~/.venv
-          key: venv--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
-
       - name: Install project dependencies (cached)
-        if: steps.cached-project-deps.outputs.cache-hit != 'true'
         run: |
           task -v dev:bootstrap
-          #source ~/.venv/bin/activate
-          #poetry install -vv --no-interaction --no-root
 
       - name: Install project
         run: |
           task -v dev:setup
-          #source ~/.venv/bin/activate
-          #poetry install -vv --no-interaction --only-root
