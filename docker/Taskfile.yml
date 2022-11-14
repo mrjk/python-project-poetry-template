@@ -1,0 +1,72 @@
+version: '3'
+
+vars:
+  SRC_DIR: myprj
+  TEST_DIR: tests/
+
+tasks:
+
+
+  # Docker Workflow
+  # ---------------
+  docker_build_prepare:
+    desc: Generate requirements.txt
+    cmds:
+      - >
+        poetry export --without-hashes
+        --format=requirements.txt --output=dist/requirements.txt
+    status:
+      - test -f dist/requirements.txt
+
+  docker_build_prepare_doc:
+    desc: Generate requirements.txt for docs
+    cmds:
+      - >
+        poetry export
+        --without-hashes
+        --without main --with doc
+        --format=requirements.txt --output=dist/requirements-doc.txt
+    status:
+      - test -f dist/requirements-doc.txt
+
+
+  docker_build_image_doc:
+    desc: Build docker image
+    deps:
+      - docker_build_prepare_doc
+      - docker_build_image
+    cmds:
+    - >
+      docker build
+      -f docker/Dockerfile.doc
+      -t {{.SRC_DIR}}-doc:{{.DOCKER_VERSION}}
+      -t {{.SRC_DIR}}-doc:latest
+      .
+
+  docker_build_image:
+    desc: Build docker image
+    deps:
+      - pkg_build
+      - docker_build_prepare
+    cmds:
+    - >
+      docker build
+      -f docker/Dockerfile.build
+      -t {{.SRC_DIR}}:{{.DOCKER_VERSION}}
+      -t {{.SRC_DIR}}:latest
+      --build-arg PAASIFY_VERSION={{.PKG_VERSION}}
+      .
+
+  docker_run:
+    desc: Run {{.SRC_DIR}} binary
+    deps:
+      - docker_build_image
+    cmds:
+      - docker run -ti --rm {{.SRC_DIR}}:{{.DOCKER_VERSION}} {{.SRC_DIR}} {{.CLI_ARGS}}
+
+  docker_clean:
+    desc: Clean generated images
+    cmds:
+      - docker images {{.SRC_DIR}} -q | xargs -n 1 docker image rm
+    status:
+      - test -z "$(docker images {{.SRC_DIR}} -q)"
