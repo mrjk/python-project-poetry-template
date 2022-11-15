@@ -10,10 +10,10 @@ vars:
   # Environment vars
   LOCAL_BIN:
     sh: echo "${LOCAL_BIN:-$PWD/.bin}"
-  VIRTUALENV:
-    sh: echo "${VIRTUALENV:-$PWD/.venv}"
-  PYTHON_BIN:
-    sh: echo "${VIRTUALENV:-$PWD/.venv}/bin"
+  #VIRTUALENV:
+  #  sh: echo "${VIRTUALENV:-$PWD/.venv}"
+  #PYTHON_BIN:
+  #  sh: echo "${VIRTUALENV:-$PWD/.venv}/bin"
 
 tasks:
   #none:
