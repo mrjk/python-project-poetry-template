@@ -12,6 +12,9 @@ on:
   #     - main
   #     - develop
 
+env:
+  VIRTUALENV: ./venv
+
 jobs:
 
   install:
@@ -64,9 +67,15 @@ jobs:
 #          key: venv--${{ runner.os }}--${{matrix.python_version}}--${{matrix.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
 #
 #
+
+      - name: Add to PATH
+        run: |
+          path="$(poetry env info --path)/bin"
+          echo "$path" >> $GITHUB_PATH
+
       # Run tests
       # ---------------------
-      - name: Run black
+      - name: Run tests
         run: |
           poetry run myprj
           myprj

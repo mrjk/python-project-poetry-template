@@ -22,7 +22,7 @@ on:
 
 env:
   LOCAL_BIN: ~/.local/bin
-  VIRTUAL_ENV: ~/.local/venv
+  VIRTUAL_ENV: ./venv
 
 jobs:
 
@@ -54,6 +54,7 @@ jobs:
         if: steps.cached-env-install.outputs.cache-hit != 'true'
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
+          poetry config virtualenvs.in-project = true
           echo  ~/.local/bin/ >> $GITHUB_PATH
 
       - name: Install task (cached)
@@ -87,7 +88,6 @@ jobs:
 
 
 
-
       # Install project dependencies
       # ---------------------
       - name: Fetch source code
@@ -104,7 +104,15 @@ jobs:
           poetry env info --path
           echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
 
-      - name: Install project dependencies (cached)
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies (cached)
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
           task -v dev:bootstrap
 
