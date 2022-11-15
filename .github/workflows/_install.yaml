@@ -50,13 +50,13 @@ jobs:
       #    version: 3.12.1
 
 
-      - name: Install poetry
+      - name: Install poetry (cached)
         if: steps.cached-env-install.outputs.cache-hit != 'true'
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo  ~/.local/bin/ >> $GITHUB_PATH
 
-      - name: Install task
+      - name: Install task (cached)
         if: steps.cached-env-install.outputs.cache-hit != 'true'
         run: |
           GITHUB_RELEASE_URL="https://github.com/go-task/task/releases/download"
@@ -102,7 +102,7 @@ jobs:
           task --version
           poetry config --list
           poetry env info --path
-          poetry env info --path >> $GITHUB_PATH
+          echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       - name: Install project dependencies (cached)
         run: |
