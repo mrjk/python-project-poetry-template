@@ -70,8 +70,10 @@ jobs:
 
       - name: Add to PATH
         run: |
-          path="$(poetry env info --path)/bin"
-          echo "$path" >> $GITHUB_PATH
+          path1=~/.local/bin
+          path2="$($path1/poetry env info --path)/bin"
+          echo "$path1" >> $GITHUB_PATH
+          echo "$path2" >> $GITHUB_PATH
 
       # Run tests
       # ---------------------
