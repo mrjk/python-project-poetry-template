@@ -76,7 +76,7 @@ tasks:
   bump_minor:
     desc: when you want to work on new features
     cmds:
-      - semantic-release -D tag_commit=false version --patch
+      - semantic-release -D tag_commit=false version
 
   # Should go in DEV
   release:
