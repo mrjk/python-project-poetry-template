@@ -145,7 +145,6 @@ tasks:
 
   build_changelog:
     cmds:
-      - mkdir -p dist
       - semantic-release changelog --unreleased > LAST_CHANGES.md
 
   build:
@@ -154,7 +153,7 @@ tasks:
       - clean
     cmds:
       - poetry build
-#      - cp LAST_CHANGES.md dist/LAST_CHANGES.md
+      - cp LAST_CHANGES.md dist/LAST_CHANGES.md
 #
 #      - semantic-release changelog --unreleased > dist/RELEASE.md
 #      - semantic-release changelog --unreleased
