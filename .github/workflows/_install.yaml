@@ -22,7 +22,7 @@ on:
 
 env:
   LOCAL_BIN: ~/.local/bin
-  VIRTUAL_ENV: $HOME/venv
+  VIRTUAL_ENV: ./venv
 
 jobs:
 
@@ -50,12 +50,24 @@ jobs:
       #    version: 3.12.1
 
 
-      - name: Install poetry (cached)
+      #- name: Install poetry (cached)
+      #  if: steps.cached-env-install.outputs.cache-hit != 'true'
+      #  run: |
+      #    curl -sSL https://install.python-poetry.org | python3 -
+      #    #poetry config virtualenvs.in-project true
+      #    echo ~/.local/bin/ >> $GITHUB_PATH
+
+      - name: Install Poetry (cached)
+        #if: steps.cached-env-install.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
         if: steps.cached-env-install.outputs.cache-hit != 'true'
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          #poetry config virtualenvs.in-project true
-          echo ~/.local/bin/ >> $GITHUB_PATH
+        with:
+          version: 1.2.2
+          virtualenvs-create: true
+          virtualenvs-in-project: false
+          # virtualenvs-path: ~/.local
+          installer-parallel: true
+
 
       - name: Install task (cached)
         if: steps.cached-env-install.outputs.cache-hit != 'true'
@@ -68,16 +80,6 @@ jobs:
           mkdir -p  ~/.local/bin/
           tar xzvf /tmp/go-task.tar.gz  -C  ~/.local/bin/ task
           echo  ~/.local/bin/ >> $GITHUB_PATH
-
-      #- name: Install Poetry
-      #  uses: snok/install-poetry@v1
-      #  if: steps.cached-env-install.outputs.cache-hit != 'true'
-      #  with:
-      #    version: 1.2.2
-      #    virtualenvs-create: true
-      #    virtualenvs-in-project: false
-      #    virtualenvs-path: ~/.local
-      #    installer-parallel: true
 
 
 
