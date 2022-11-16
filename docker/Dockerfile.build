@@ -1,0 +1,96 @@
+FROM python:3.9-slim
+# as builder
+
+# See: https://testdriven.io/blog/docker-best-practices/
+# See: https://towardsdatascience.com/how-to-build-slim-docker-images-fast-ecc246d7f4a7
+# See: https://testdriven.io/blog/docker-best-practices/#lint-and-scan-your-dockerfiles-and-images
+# See: https://sysdig.com/blog/dockerfile-best-practices/
+
+# Builder image
+# ==================
+
+ARG UID=1000
+ARG GID=1000
+
+ARG TASK_ARCH=amd64
+ARG TASK_VERSION=v3.18.0
+ARG DOCKER_COMPOSE_VERSION=v2.10.2
+ARG DOCKER_COMPOSE_ARCH=x86_64
+
+ARG POETRY_VERSION=1.2.1
+
+USER root
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NOWARNINGS="yes"
+ENV PIP_ROOT_USER_ACTION=ignore
+
+# For Alpine
+# RUN apk update && \
+#     apk add python3-dev \
+#     gcc \
+#     make \
+#     libc-dev \
+#     jsonnet-dev \
+#     jsonnet
+# Missing libffi-dev ???
+
+# For Debian
+# Build dependencies
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update \
+    && apt-get install gcc g++ curl make jsonnet libjsonnet-dev git tree vim -y \
+    && apt-get clean
+
+# Install docker-compose standalone (not as docker plugin)
+RUN curl -sSL https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-${DOCKER_COMPOSE_ARCH} \
+    -o /usr/local/bin/docker-compose ;\
+    chmod +x /usr/local/bin/docker-compose
+
+# Install Task
+RUN curl -sSL --output /tmp/go-task.tar.gz \
+  "https://github.com/go-task/task/releases/download/$TASK_VERSION/task_linux_${TASK_ARCH}.tar.gz" ;\
+  tar -xvf /tmp/go-task.tar.gz  -C "/usr/local/bin" task
+
+# Install Python and Poetry
+RUN pip3 install --upgrade pip poetry==$POETRY_VERSION
+
+# Create limited user
+RUN groupadd -g "${GID}" app && \
+    useradd \
+    --create-home \
+    --uid $UID --gid $GID \
+    --home-dir /home/app \
+    --shell=/bin/bash \
+    app ;\
+    ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts ;\
+    ssh-keyscan -H gitlab.com >> /etc/ssh/ssh_known_hosts
+
+# Copy code base (could be git clone as well)
+COPY . /work
+
+# Prepare limited environment
+RUN --mount=type=cache,target=/home/app/.cache/pypoetry \
+    chown -R $UID:$GID /work  /home/app/
+
+# Create limited environment
+USER app
+WORKDIR /work
+
+
+# App bootstrap
+# ==================
+
+# Create virtualenv
+ENV VIRTUAL_ENV=/home/app/venv
+ENV PATH="/home/app/venv/bin:$PATH"
+RUN virtualenv $VIRTUAL_ENV
+
+# Install project
+RUN --mount=type=cache,uid=1000,target=/home/app/.cache/pypoetry \
+    task bootstrap ;\
+    task setup
+
+# Finalize image
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["bash"]

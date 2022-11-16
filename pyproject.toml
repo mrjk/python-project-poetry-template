@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.1.2"
+version = "0.3.3"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -9,11 +9,13 @@ packages = [
     { include = "myprj"}
 ]
 [tool.poetry.group.dev.dependencies]
+# Need to use: https://github.com/mrjk/python-semantic-release for <=7.32.2
 python-semantic-release = "^7.32.2"
 poetry = "^1.2.2"
 
 
 # [tool.poetry_bumpversion.file."myprj/__version__.py"]
+pytest = "^7.2.0"
 
 
 [tool.poetry.scripts]
@@ -22,9 +24,10 @@ myprj = "myprj.cli:cli"
 
 [tool.semantic_release]
 version_source = "commit"
+#version_source = "tag"
 version_variable = [
-    "myprj/__version__.py:__version__",
-#    "pyproject.toml:version"
+    "myprj/__version__.py:^__version__",
+#    "pyproject.toml:^version ?= ?"
 ]
 version_toml = [
     'pyproject.toml:tool.poetry.version',
@@ -38,35 +41,50 @@ commit_version_number = true
 # PAttern that will be looked up in all commit that bumped things
 commit_subject = "bump: version v{version}"
 commit_message = "semantic-release new version: version {version}"
-#commit_author = 
+#commit_author =
 
 # pipeline hooks
 # pre_commit_command = "poetry build"
-# pre_commit_command = 
+# pre_commit_command =
 include_additional_files = 'dist/RELEASE.md'
 
-tag_commit = true
+tag_commit = false
 tag_format = "v{version}"
 
 # Build
+commit_parser = 'semantic_release.history.angular_parser'
+#commit_parser = 'semantic_release.history.scipy_parser'
 changelog_file = "CHANGELOG.md"
 # build_command = "pip install poetry && poetry build"
 
 # Run build ?
-upload_to_release = true
 build_command = 'poetry build'
 dist_path = 'dist/'
-# remove_dist = false # We manually handle this
+upload_to_release = false
 
 # Publish to github
 # Require: export GH_TOKEN=
-upload_to_repository = true
+upload_to_repository = false
 
 # Publish to Pypi
 # Require: PYPI_TOKEN REPOSITORY_USERNAME PYPI_USERNAME PYPI_PASSWORD
 upload_to_pypi = false
 
 # See: https://python-semantic-release.readthedocs.io/en/latest/automatic-releases/github-actions.html
+
+
+[tool.poetry.group.doc.dependencies]
+mkdocs = "^1.4.0"
+mkdocs-material = "^8.5.6"
+mkdocs-schema-reader = "^0.11.1"
+mkdocs-jupyter = "^0.22.0"
+mkdocstrings = {extras = ["python"], version = "^0.19.0"}
+mkdocs-literate-nav = "^0.5.0"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
 
 
 [tool.poetry.dependencies]

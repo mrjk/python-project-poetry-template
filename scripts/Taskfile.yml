@@ -1,0 +1,125 @@
+version: '3'
+
+vars:
+  SRC_DIR: myprj
+  TEST_DIR: tests/
+  POETRY_VERSION: '1.2.1'
+  DIRENV_VERSION: 'latest'
+  TASK_VERSION: 'v3.18.0'
+
+  # Environment vars
+  #LOCAL_BIN:
+  #  sh: echo "${LOCAL_BIN:-$PWD/.bin}"
+  #VIRTUALENV:
+  #  sh: echo "${VIRTUALENV:-$PWD/.venv}"
+  #PYTHON_BIN:
+  #  sh: echo "${VIRTUALENV:-$PWD/.venv}/bin"
+
+tasks:
+  #none:
+  #  desc: Install project dependencies
+  #cmds:
+  #  - "echo Result: {{.VIRTUALENV}}"
+
+  #bootstrap_task:
+  #  desc: Install project dependencies
+  #  cmds:
+  #    - |2
+  #      if ! task --version | grep -q "{{.TASK_VERSION}}"; then
+  #        mkdir -p "{{.LOCAL_BIN}}"
+  #        GITHUB_RELEASE_URL="https://github.com/go-task/task/releases/download"
+  #        TASK_ARCH=amd64
+  #        TASK_URL="${GITHUB_RELEASE_URL}/{{.TASK_VERSION}}/task_linux_${TASK_ARCH}.tar.gz"
+  #        curl -L --output /tmp/go-task.tar.gz "$TASK_URL"
+  #        tar xzvf /tmp/go-task.tar.gz  -C "{{.LOCAL_BIN}}" task
+  #        >&2 echo "INFO: Task has been installed ({{.TASK_VERSION}})"
+  #      else
+  #        >&2 echo "INFO: Task is already installed ({{.TASK_VERSION}})"
+  #      fi
+
+  #bootstrap_poetry:
+  #  desc: Install Poetry
+  #  #sources:
+  #  #  - poetry.lock
+  #  #generates:
+  #  #  - "$VIRTUAL_ENV/bin/python"
+  #  cmds:
+  #    #- python -m pip install --upgrade pip virtualenv
+  #    #- '[[ -f "{{.PYTHON_BIN}}/python" ]] || virtualenv {{.VIRTUALENV}}'
+
+  #    #- "{{.PYTHON_BIN}}/pip install --upgrade poetry=={{.POETRY_VERSION}}"
+  #    #- "{{.PYTHON_BIN}}/poetry config virtualenvs.path {{.VIRTUALENV}}"
+  #    #- "{{.PYTHON_BIN}}/poetry config virtualenvs.create true"
+  #    #- "{{.PYTHON_BIN}}/poetry install -vv --no-interaction --no-root"
+
+#  bootstrap:
+#    desc: Install project dependencies
+#    #deps:
+#    #  - bootstrap_poetry
+#    #  - bootstrap_task
+#    sources:
+#      - poetry.lock
+#    cmds:
+#      - poetry install -vv --no-interaction --no-root
+#
+#
+#  setup:
+#    desc: Install project dependencies
+#    deps:
+#      - bootstrap
+#    cmds:
+#      - poetry install -vv --no-interaction --only-root
+#
+#  update:
+#    desc: Synchronize git
+#    cmd:
+#      - git fetch -a && git pull
+#
+#  release:
+#    desc: Bump code devel version, generate changelog, create a tag
+#    cmds:
+#      - bash scripts/release.sh {{.CLI_ARGS}}
+
+
+
+  # Project CI
+  # ---------------
+
+  lint_black:
+    desc: Autolint codes
+    run: once
+    sources: &PAASIFY_MODULE
+      - "{{.SRC_DIR}}/*.py"
+    cmds:
+      - >2
+        git status --porcelain | grep '^.M {{.SRC_DIR}}/' && {
+          echo "ERROR: Uncommited files !";
+          exit 1;
+        } || exit 0
+      - black {{.SRC_DIR}}
+
+  test:
+    desc: Run tests
+    run: once
+    sources: &PAASIFY_CODE
+      - "{{.SRC_DIR}}/*.py"
+      - tests/*.py
+    cmds:
+      - pytest -sx {{.CLI_ARGS}}
+
+  # Reporting tools
+  # ---------------
+
+  report_cov:
+    desc: Test coverage status
+    run: once
+    sources: *PAASIFY_MODULE
+    cmds:
+      - pytest --cov={{.SRC_DIR}} tests {{.CLI_ARGS}}
+
+  report_lint:
+    desc: Report linting status
+    run: once
+    sources: *PAASIFY_CODE
+    cmds:
+      - pylint --output-format=colorized {{.SRC_DIR}}
