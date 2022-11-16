@@ -2,6 +2,123 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0-beta.20 (2022-11-16)
+### Fix
+* Extra VERSION_NOTES.md.md file ([`39e9330`](https://github.com/mrjk/python-project-poetry-template/commit/39e93304740f6e3a908a505f6dfbb15e361bc377))
+
+## v0.9.0-beta.19 (2022-11-16)
+### Fix
+* Simple bug ([`211f0b8`](https://github.com/mrjk/python-project-poetry-template/commit/211f0b82cdc01b3ad5e9c59a5d0ee0b1a62bd34e))
+* Simple bug ([`f742d6d`](https://github.com/mrjk/python-project-poetry-template/commit/f742d6d529ef663f0b2f784dc02d0adda4c0a7eb))
+* Simple bug ([`4304b89`](https://github.com/mrjk/python-project-poetry-template/commit/4304b89dd19b5639adf1a2efb2e76e2b2a0129df))
+* Little errors ([`df3a4e2`](https://github.com/mrjk/python-project-poetry-template/commit/df3a4e28d309f063d19e4fd303fd411dc437c7dd))
+
+## v0.9.0-beta.18 (2022-11-16)
+### Fix
+* Remove old LAST_CHANGES.md ([`498600a`](https://github.com/mrjk/python-project-poetry-template/commit/498600ae142324b7bd2684ab322929fbab9a2915))
+
+## v0.9.0-beta.17 (2022-11-16)
+### Fix
+* Little errors ([`4aa4ccc`](https://github.com/mrjk/python-project-poetry-template/commit/4aa4ccc9b55b90591a1c2f4587a42e8fc32d5285))
+
+## v0.9.0-beta.16 (2022-11-16)
+### Fix
+* Little errors ([`f2b0511`](https://github.com/mrjk/python-project-poetry-template/commit/f2b0511ce37c0ba8783de2627a6d76ba37a55273))
+
+## v0.9.0-beta.15 (2022-11-16)
+### Fix
+* Little errors ([`8893dc2`](https://github.com/mrjk/python-project-poetry-template/commit/8893dc2fc8e89fc12df9620c3d9d3d316f802fee))
+* Missing RELEASE.md ([`8efd20e`](https://github.com/mrjk/python-project-poetry-template/commit/8efd20ebfa603068c457d42e0de7f1f769c61da5))
+
+## v0.9.0-beta.14 (2022-11-16)
+### Fix
+* Missing RELEASE.md ([`2d4079c`](https://github.com/mrjk/python-project-poetry-template/commit/2d4079cf989bcb1611c96ae6e9ce9b8a2417098f))
+
+## v0.9.0-beta.13 (2022-11-16)
+### Fix
+* Ci ([`5662bb0`](https://github.com/mrjk/python-project-poetry-template/commit/5662bb0d161b9a34abc30d14025b280800cb7309))
+
+## v0.9.0-beta.12 (2022-11-16)
+### Fix
+* Ci ([`069facf`](https://github.com/mrjk/python-project-poetry-template/commit/069facfdb05f894e4552cd23dc12ef1b91a70725))
+
+## v0.9.0-beta.11 (2022-11-16)
+### Fix
+* Ci ([`dea286a`](https://github.com/mrjk/python-project-poetry-template/commit/dea286a65ec6eeca0cf9a373f09b2de8acc65162))
+
+## v0.9.0-beta.10 (2022-11-16)
+### Fix
+* Ci ([`50015ae`](https://github.com/mrjk/python-project-poetry-template/commit/50015aebd641b1dc1d618cc7f94b90a70fd3ab15))
+
+## v0.9.0-beta.9 (2022-11-16)
+### Fix
+* Simple bug ([`299395c`](https://github.com/mrjk/python-project-poetry-template/commit/299395c6cb7b2a7a393b8923a1f087894b12eeb1))
+* Simple bug ([`8ea91fc`](https://github.com/mrjk/python-project-poetry-template/commit/8ea91fc7bc67b704efc7ee683ced8f9a23118d47))
+
+## v0.9.0-beta.8 (2022-11-16)
+### Fix
+* Ci ([`6fe1690`](https://github.com/mrjk/python-project-poetry-template/commit/6fe169096ffc635312d81672284ee2ef64721968))
+
+## v0.9.0-beta.7 (2022-11-16)
+### Fix
+* Ci ([`65a86d6`](https://github.com/mrjk/python-project-poetry-template/commit/65a86d6ba4339e74beb8d7c764cbaeb98eeae168))
+
+## v0.9.0-beta.6 (2022-11-16)
+### Fix
+* Ci ([`2c70f60`](https://github.com/mrjk/python-project-poetry-template/commit/2c70f607617bab5b735d0bf7b61b62da5aa19f66))
+
+## v0.9.0-beta.5 (2022-11-16)
+### Fix
+* Ci ([`c48b089`](https://github.com/mrjk/python-project-poetry-template/commit/c48b089fb7bf492d628ed98aeeda9a98abb4eb0b))
+
+## v0.9.0-beta.4 (2022-11-16)
+### Fix
+* Ci ([`60eeb18`](https://github.com/mrjk/python-project-poetry-template/commit/60eeb184a6e18e9297951e7d83f8866cba7eaf16))
+
+## v0.9.0-beta.3 (2022-11-16)
+### Fix
+* RELEASES files ([`3aacc7f`](https://github.com/mrjk/python-project-poetry-template/commit/3aacc7f12ee43830e4254ffeb47ef252be3c462e))
+
+## v0.9.0-beta.2 (2022-11-16)
+### Fix
+* RELEASE.md location ([`4909fe5`](https://github.com/mrjk/python-project-poetry-template/commit/4909fe5a09f1a1fd24ba04418a1ab245cf0966dc))
+
+## v0.9.0-beta.1 (2022-11-16)
+### Feature
+* Update code ([`b327f73`](https://github.com/mrjk/python-project-poetry-template/commit/b327f739e347a1f49ac5c15039a796b5fa43052f))
+
+### Fix
+* Ci ([`c2f4264`](https://github.com/mrjk/python-project-poetry-template/commit/c2f4264172b6b5ba4aa07f077720f4f2c33a3d06))
+* Simple bug ([`8db12c5`](https://github.com/mrjk/python-project-poetry-template/commit/8db12c59ca4aa280501e47ddf6be2709e02874ba))
+* Simple bug ([`635195b`](https://github.com/mrjk/python-project-poetry-template/commit/635195beed0d842c6ac7472fabc0a9188231471b))
+* Simple bug ([`4ce61c2`](https://github.com/mrjk/python-project-poetry-template/commit/4ce61c274d10e9e751f5cbb72c43457bcf48b8b3))
+
+## v0.8.1-beta.5 (2022-11-16)
+### Fix
+* Missing REALEASE.md ([`f76cd3a`](https://github.com/mrjk/python-project-poetry-template/commit/f76cd3ae070dfe4c214940fa5944073a75c394fa))
+
+## v0.8.1-beta.4 (2022-11-16)
+### Fix
+* Simple bug ([`1394e62`](https://github.com/mrjk/python-project-poetry-template/commit/1394e62e2163ee1c14864e9139a3c0a9cf75890f))
+* Simple bug ([`6c575ee`](https://github.com/mrjk/python-project-poetry-template/commit/6c575eeabba36ca82b235cf0e873c18efdeccce1))
+* Simple bug ([`b3b8e09`](https://github.com/mrjk/python-project-poetry-template/commit/b3b8e0941f0052fc0c1b573b63fc1c8b02ee658a))
+
+## v0.8.1-beta.3 (2022-11-16)
+### Fix
+* Simple bug ([`5f37952`](https://github.com/mrjk/python-project-poetry-template/commit/5f37952c5570babf33b8f62fe33ac919cac1b658))
+* Simple bug ([`f809a87`](https://github.com/mrjk/python-project-poetry-template/commit/f809a873e90acdc8cdc19664467564cb074adde6))
+* Simple bug ([`2fae86c`](https://github.com/mrjk/python-project-poetry-template/commit/2fae86c1fc3c30a2a3d18072b48cecc8f8662f69))
+
+## v0.8.1-beta.2 (2022-11-16)
+### Fix
+* Simple bug ([`13f20ed`](https://github.com/mrjk/python-project-poetry-template/commit/13f20ede4725a980c41de6623664a70567f5bf8e))
+* Simple bug ([`c02164d`](https://github.com/mrjk/python-project-poetry-template/commit/c02164d0eec4b1bf1766cacee65db7dc33141241))
+* Simple bug ([`284272b`](https://github.com/mrjk/python-project-poetry-template/commit/284272b202ffc746531bb6f9b12e94bcde0c8354))
+
+## v0.8.1-beta.1 (2022-11-16)
+### Fix
+* Dist cleaning ([`eaf0dec`](https://github.com/mrjk/python-project-poetry-template/commit/eaf0dec0929119980c151b96f607ed3ef87a96aa))
+
 ## v0.8.0 (2022-11-16)
 ### Fix
 * Simple bug ([`9de7690`](https://github.com/mrjk/python-project-poetry-template/commit/9de7690c03b351e59c807902beff576fd1fea710))

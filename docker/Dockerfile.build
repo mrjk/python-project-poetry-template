@@ -87,8 +87,14 @@ ENV PATH="/home/app/venv/bin:$PATH"
 RUN virtualenv $VIRTUAL_ENV
 
 # Install project
-RUN --mount=type=cache,uid=1000,target=/home/app/.cache/pypoetry \
-    task bootstrap ;\
+COPY pyproject.toml poetry.lock /work
+RUN --mount=type=cache,target=/home/app/.cache/pypoetry \
+    ls -ahl /home/app/.cache/pypoetry ;\
+    task bootstrap
+
+COPY --chown=$UID:$GID . /work
+RUN --mount=type=cache,target=/home/app/.cache/pypoetry \
+    ls -ahl /home/app/.cache/pypoetry ;\
     task setup
 
 # Finalize image
