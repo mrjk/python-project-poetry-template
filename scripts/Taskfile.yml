@@ -8,8 +8,8 @@ vars:
   TASK_VERSION: 'v3.18.0'
 
   # Environment vars
-  LOCAL_BIN:
-    sh: echo "${LOCAL_BIN:-$PWD/.bin}"
+  #LOCAL_BIN:
+  #  sh: echo "${LOCAL_BIN:-$PWD/.bin}"
   #VIRTUALENV:
   #  sh: echo "${VIRTUALENV:-$PWD/.venv}"
   #PYTHON_BIN:
@@ -52,33 +52,33 @@ tasks:
   #    #- "{{.PYTHON_BIN}}/poetry config virtualenvs.create true"
   #    #- "{{.PYTHON_BIN}}/poetry install -vv --no-interaction --no-root"
 
-  bootstrap:
-    desc: Install project dependencies
-    #deps:
-    #  - bootstrap_poetry
-    #  - bootstrap_task
-    sources:
-      - poetry.lock
-    cmds:
-      - poetry install -vv --no-interaction --no-root
-
-
-  setup:
-    desc: Install project dependencies
-    deps:
-      - bootstrap
-    cmds:
-      - poetry install -vv --no-interaction --only-root
-
-  update:
-    desc: Synchronize git
-    cmd:
-      - git fetch -a && git pull
-
-  release:
-    desc: Bump code devel version, generate changelog, create a tag
-    cmds:
-      - bash scripts/release.sh {{.CLI_ARGS}}
+#  bootstrap:
+#    desc: Install project dependencies
+#    #deps:
+#    #  - bootstrap_poetry
+#    #  - bootstrap_task
+#    sources:
+#      - poetry.lock
+#    cmds:
+#      - poetry install -vv --no-interaction --no-root
+#
+#
+#  setup:
+#    desc: Install project dependencies
+#    deps:
+#      - bootstrap
+#    cmds:
+#      - poetry install -vv --no-interaction --only-root
+#
+#  update:
+#    desc: Synchronize git
+#    cmd:
+#      - git fetch -a && git pull
+#
+#  release:
+#    desc: Bump code devel version, generate changelog, create a tag
+#    cmds:
+#      - bash scripts/release.sh {{.CLI_ARGS}}
 
 
 
@@ -105,7 +105,7 @@ tasks:
       - "{{.SRC_DIR}}/*.py"
       - tests/*.py
     cmds:
-      - pytest -vv tests {{.CLI_ARGS}}
+      - pytest -sx {{.CLI_ARGS}}
 
   # Reporting tools
   # ---------------

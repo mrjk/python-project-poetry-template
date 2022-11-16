@@ -1,16 +1,28 @@
+FROM python:3.9-slim
+# as builder
+
+# See: https://testdriven.io/blog/docker-best-practices/
+# See: https://towardsdatascience.com/how-to-build-slim-docker-images-fast-ecc246d7f4a7
+# See: https://testdriven.io/blog/docker-best-practices/#lint-and-scan-your-dockerfiles-and-images
+# See: https://sysdig.com/blog/dockerfile-best-practices/
 
 # Builder image
 # ==================
 
-FROM python:3.9-slim  as builder
+ARG UID=1000
+ARG GID=1000
+
+ARG TASK_ARCH=amd64
+ARG TASK_VERSION=v3.18.0
+ARG DOCKER_COMPOSE_VERSION=v2.10.2
+ARG DOCKER_COMPOSE_ARCH=x86_64
+
+ARG POETRY_VERSION=1.2.1
 
 USER root
-
-# For Debian
-# Build dependencies
-RUN apt-get update \
-    && apt-get install gcc g++ make jsonnet libjsonnet-dev -y \
-    && apt-get clean
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NOWARNINGS="yes"
+ENV PIP_ROOT_USER_ACTION=ignore
 
 # For Alpine
 # RUN apk update && \
@@ -22,61 +34,63 @@ RUN apt-get update \
 #     jsonnet
 # Missing libffi-dev ???
 
-
-# Install python dependencies as user
-RUN pip3 install --upgrade pip
-COPY dist/requirements.txt /requirements.txt
-#RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r /requirements.txt
-RUN pip3 install -r /requirements.txt
-# See: https://towardsdatascience.com/how-to-build-slim-docker-images-fast-ecc246d7f4a7
-# See: https://testdriven.io/blog/docker-best-practices/#lint-and-scan-your-dockerfiles-and-images
-# See: https://sysdig.com/blog/dockerfile-best-practices/
-
-
-# App image
-# ==================
-
-FROM python:3.9-slim  as app
-
-# Install helpers (optional)
-RUN apt-get update \
-    && apt-get install tree -y \
-    && apt-get clean
-
-# Install jsonnet
-RUN apt-get update \
-    && apt-get install curl jsonnet -y \
+# For Debian
+# Build dependencies
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update \
+    && apt-get install gcc g++ curl make jsonnet libjsonnet-dev git tree vim -y \
     && apt-get clean
 
 # Install docker-compose standalone (not as docker plugin)
-ARG DOCKER_COMPOSE_VERSION=v2.10.2
-RUN curl -SL https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-RUN chmod +x /usr/local/bin/docker-compose && ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+RUN curl -sSL https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-${DOCKER_COMPOSE_ARCH} \
+    -o /usr/local/bin/docker-compose ;\
+    chmod +x /usr/local/bin/docker-compose
 
-# TODO: Support DIND setup !
-# Add docker client and expose socket ?
-# Add full dockerd
+# Install Task
+RUN curl -sSL --output /tmp/go-task.tar.gz \
+  "https://github.com/go-task/task/releases/download/$TASK_VERSION/task_linux_${TASK_ARCH}.tar.gz" ;\
+  tar -xvf /tmp/go-task.tar.gz  -C "/usr/local/bin" task
 
-# Import installed python libs
-COPY --from=builder /usr/local/lib/python3.9/ /usr/local/lib/python3.9/
-COPY --from=builder /usr/local/share/ /usr/local/share/
-COPY --from=builder /usr/local/bin/ /usr/local/bin/
-
+# Install Python and Poetry
+RUN pip3 install --upgrade pip poetry==$POETRY_VERSION
 
 # Create limited user
-RUN mkdir -p /app /work
+RUN groupadd -g "${GID}" app && \
+    useradd \
+    --create-home \
+    --uid $UID --gid $GID \
+    --home-dir /home/app \
+    --shell=/bin/bash \
+    app ;\
+    ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts ;\
+    ssh-keyscan -H gitlab.com >> /etc/ssh/ssh_known_hosts
 
-# Deploy pasify
-ARG PAASIFY_VERSION
-COPY dist/paasify-${PAASIFY_VERSION}.tar.gz /app
-RUN pip3 install /app/paasify-${PAASIFY_VERSION}.tar.gz
+# Copy code base (could be git clone as well)
+COPY . /work
 
+# Prepare limited environment
+RUN --mount=type=cache,target=/home/app/.cache/pypoetry \
+    chown -R $UID:$GID /work  /home/app/
 
-# Create limited user
-RUN useradd \
-    --home-dir /work \
-    --shell=/bin/bash work \
-    && chown -R work /work
-ENV PATH="/work/.local/bin:${PATH}"
-USER work
+# Create limited environment
+USER app
 WORKDIR /work
+
+
+# App bootstrap
+# ==================
+
+# Create virtualenv
+ENV VIRTUAL_ENV=/home/app/venv
+ENV PATH="/home/app/venv/bin:$PATH"
+RUN virtualenv $VIRTUAL_ENV
+
+# Install project
+RUN --mount=type=cache,uid=1000,target=/home/app/.cache/pypoetry \
+    task bootstrap ;\
+    task setup
+
+# Finalize image
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["bash"]
