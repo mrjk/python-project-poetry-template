@@ -22,7 +22,7 @@ on:
 
 env:
   LOCAL_BIN: ~/.local/bin
-  VIRTUAL_ENV: ./venv
+  #VIRTUAL_ENV: ./venv
 
 jobs:
 
@@ -125,11 +125,11 @@ jobs:
         #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
           set -x
-          echo "VIRTUAL_ENV=$VIRTUAL_ENV"
-          echo "PATH=$PATH"
-          . "$VIRTUAL_ENV"/bin/activate
-          echo "VIRTUAL_ENV=$VIRTUAL_ENV"
-          echo "PATH=$PATH"
+          #echo "VIRTUAL_ENV=$VIRTUAL_ENV"
+          #echo "PATH=$PATH"
+          #. "$VIRTUAL_ENV"/bin/activate
+          #echo "VIRTUAL_ENV=$VIRTUAL_ENV"
+          #echo "PATH=$PATH"
           task -v bootstrap
 
       - name: Install project
