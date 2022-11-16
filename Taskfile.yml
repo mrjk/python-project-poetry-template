@@ -116,7 +116,12 @@ tasks:
       - build
     cmds:
       - git checkout develop
-      - semantic-release -D tag_commit=true -D branch=develop -D remove_dist=False publish  -v DEBUG --prerelease
+      - >
+        semantic-release
+        -D tag_commit=true
+        -D branch=develop
+        -D remove_dist=False
+        publish  --prerelease
       - git push origin || true
 
       # V1 WORKING
