@@ -50,14 +50,6 @@ jobs:
       #    version: 3.12.1
 
 
-      - name: Create virtualenv
-        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: |
-          pip install virtualenv
-          virtualenv "$VIRTUAL_ENV"
-          ls -ahl "$VIRTUAL_ENV" || true
-          ls -ahl "$VIRTUAL_ENV/bin" || true
-
       - name: Install poetry (cached)
         if: steps.cached-env-install.outputs.cache-hit != 'true'
         run: |
@@ -119,6 +111,14 @@ jobs:
         with:
           path: ~/venv
           key: venv--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
+
+      - name: Create virtualenv
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: |
+          pip install virtualenv
+          virtualenv "$VIRTUAL_ENV"
+          ls -ahl "$VIRTUAL_ENV" || true
+          ls -ahl "$VIRTUAL_ENV/bin" || true
 
       - name: Install dependencies (cached)
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
