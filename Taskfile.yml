@@ -89,7 +89,17 @@ tasks:
     deps:
       - build
     cmds:
-      - ./scripts/release.sh {{.CLI_ARGS}}
+      - git checkout main
+      - git merge --no-ff -m "chore: merge develop into main" develop
+      - semantic-release --noop publish -D remove_dist=False  -v DEBUG --retry
+      - git checkout develop
+      - git merge --no-ff -m "chore: update develop from main" main
+      - semantic-release -D tag_commit=false version --prerelease
+
+      # V1 WORKING
+      #- ./scripts/release.sh {{.CLI_ARGS}}
+
+
 #      - echo -e "# What's new ?\n\n## List of changes\n" > dist/RELEASE.md
 #      - semantic-release changelog --unreleased >> dist/RELEASE.md
 #      - semantic-release publish -D remove_dist=False
