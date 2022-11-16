@@ -189,7 +189,6 @@ main ()
   print_confirm
 
   gen_changelog
-  ls -ahl dist/
   make_new_release ${CLI_ARGS[@]}
 }
 
