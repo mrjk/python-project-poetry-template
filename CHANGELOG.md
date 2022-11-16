@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.0 (2022-11-16)
+
+
 ## v0.7.0-beta.3 (2022-11-16)
 ### Fix
 * Taskfile.yml ([`f098ddf`](https://github.com/mrjk/python-project-poetry-template/commit/f098ddf3e8b035a72d212fc774555e1c4354e3df))
