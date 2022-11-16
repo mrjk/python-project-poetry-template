@@ -71,9 +71,10 @@ jobs:
       - name: Add to PATH
         run: |
           set -x
+          echo "INIT: $PATH"
           path1=~/.local/bin
           $path1/poetry env info --path
-          path2="$($path1/poetry env info --path)/bin"
+          path2="$PWD/$($path1/poetry env info --path)/bin"
           echo "$path1" >> $GITHUB_PATH
           echo "$path2" >> $GITHUB_PATH
 
@@ -85,6 +86,7 @@ jobs:
           echo "$PATH"
           echo "$VIRTUAL_ENV"
           poetry run myprj
+
           myprj || true
 
 #      # Run tests

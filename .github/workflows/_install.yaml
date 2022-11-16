@@ -19,10 +19,8 @@ on:
       access_token:
         description: 'Github Secret Token to check out the repo'
 
-
 env:
   LOCAL_BIN: ~/.local/bin
-  #VIRTUAL_ENV: ./venv
 
 jobs:
 
@@ -48,19 +46,18 @@ jobs:
       #  if: steps.cached-env-install.outputs.cache-hit != 'true'
       #  run: |
       #    curl -sSL https://install.python-poetry.org | python3 -
-      #    #poetry config virtualenvs.in-project true
+      #    poetry config virtualenvs.create true
+      #    poetry config virtualenvs.in-project true
       #    echo ~/.local/bin/ >> $GITHUB_PATH
 
       - name: Install Poetry (cached)
-        #if: steps.cached-env-install.outputs.cache-hit != 'true'
+        if: steps.cached-env-install.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
           version: "${{inputs.poetry_version}}"
           virtualenvs-create: true
           virtualenvs-in-project: true
-          # virtualenvs-path: ~/.local
           installer-parallel: true
-
 
       - name: Install task (cached)
         if: steps.cached-env-install.outputs.cache-hit != 'true'
@@ -80,15 +77,6 @@ jobs:
       #    version: 3.12.1
 
 
-
-
-      #- name: Configure PATHs dfsdf
-      #  run: |
-      #    echo "${LOCAL_BIN}" >> $GITHUB_PATH
-      #    echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
-
-
-
       # Install project dependencies
       # ---------------------
       - name: Fetch source code
@@ -103,9 +91,6 @@ jobs:
           poetry --version
           task --version
           poetry config --list
-          #poetry env info --path
-          #echo "$VIRTUAL_ENV"
-          #echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -114,27 +99,11 @@ jobs:
           path: .venv
           key: venv--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
 
-      #- name: Create virtualenv
-      #  #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      #  run: |
-      #    pip install virtualenv
-      #    virtualenv "$VIRTUAL_ENV"
-      #    ls -ahl "$VIRTUAL_ENV" || true
-      #    ls -ahl "$VIRTUAL_ENV/bin" || true
-
       - name: Install dependencies (cached)
-        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
-          set -x
-          #echo "VIRTUAL_ENV=$VIRTUAL_ENV"
-          #echo "PATH=$PATH"
-          #. "$VIRTUAL_ENV"/bin/activate
-          #echo "VIRTUAL_ENV=$VIRTUAL_ENV"
-          #echo "PATH=$PATH"
           task -v bootstrap
 
       - name: Install project
         run: |
-          set -x
-          echo "VIRTUAL_ENV=$VIRTUAL_ENV"
           task -v setup
