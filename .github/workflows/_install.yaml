@@ -19,9 +19,6 @@ on:
       access_token:
         description: 'Github Secret Token to check out the repo'
 
-env:
-  LOCAL_BIN: ~/.local/bin
-
 jobs:
 
   install:
