@@ -145,7 +145,7 @@ tasks:
 
   build_changelog:
     cmds:
-      - semantic-release changelog --unreleased > LAST_CHANGES.md
+      - semantic-release changelog --unreleased > VERSION_NOTES.md.md
 
   build:
     desc: Create a python package
@@ -153,13 +153,7 @@ tasks:
       - clean
     cmds:
       - poetry build
-      - cp LAST_CHANGES.md dist/LAST_CHANGES.md
-#
-#      - semantic-release changelog --unreleased > dist/RELEASE.md
-#      - semantic-release changelog --unreleased
-#      - semantic-release changelog --released
-#      - ls -ahl dist/
-#      - cat dist/RELEASE.md
+      - cp VERSION_NOTES.md.md dist/VERSION_NOTES.md.md
 
   #publish:
   #  desc: Create a python package
