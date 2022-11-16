@@ -81,6 +81,9 @@ jobs:
       # ---------------------
       - name: Run tests
         run: |
+          set -x
+          echo "$PATH"
+          echo "$VIRTUAL_ENV"
           poetry run myprj
           myprj || true
 
