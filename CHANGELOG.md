@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.4 (2022-11-16)
+### Fix
+* Ci ([`badaa60`](https://github.com/mrjk/python-project-poetry-template/commit/badaa60635ea9d8d44941c79902b8410339fc6f3))
+
 ## v0.10.3 (2022-11-16)
 ### Fix
 * GH workflow ([`e7ce38d`](https://github.com/mrjk/python-project-poetry-template/commit/e7ce38d36abd65d5646fb01574c52b20de96c5d0))
