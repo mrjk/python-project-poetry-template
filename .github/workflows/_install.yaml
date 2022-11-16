@@ -115,8 +115,11 @@ jobs:
       - name: Install dependencies (cached)
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
+          echo "VIRTUAL_ENV=$VIRTUAL_ENV"
+          echo "PATH=$PATH"
           task -v bootstrap
 
       - name: Install project
         run: |
+          echo "VIRTUAL_ENV=$VIRTUAL_ENV"
           task -v setup
