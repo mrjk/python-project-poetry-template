@@ -107,13 +107,13 @@ tasks:
       - semantic-release -D tag_commit=true -D remove_dist=False publish
       - git checkout develop
       - 'git merge --no-ff -m "chore: update develop from main" main'
-      - semantic-release -D tag_commit=false version --prerelease
+      #- semantic-release -D tag_commit=false version --prerelease
 
   # Should go in DEV
-  release_dev:
+  release_beta:
     desc: Bump code stable version, generate changelog, create a tag
-    #deps:
-    #  - build
+    deps:
+      - build
     cmds:
       - git checkout develop
 #      - 'git merge --no-ff -m "chore: merge develop into main" develop'
@@ -145,6 +145,7 @@ tasks:
       - clean
     cmds:
       - poetry build
+      - semantic-release changelog --unreleased > dist/RELEASE.md
 
   #publish:
   #  desc: Create a python package
