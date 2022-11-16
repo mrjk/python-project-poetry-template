@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.1-beta.1 (2022-11-16)
+### Fix
+* Dist cleaning ([`eaf0dec`](https://github.com/mrjk/python-project-poetry-template/commit/eaf0dec0929119980c151b96f607ed3ef87a96aa))
+
 ## v0.8.0 (2022-11-16)
 ### Fix
 * Simple bug ([`9de7690`](https://github.com/mrjk/python-project-poetry-template/commit/9de7690c03b351e59c807902beff576fd1fea710))
