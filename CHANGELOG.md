@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.1-beta.5 (2022-11-16)
+### Fix
+* Missing REALEASE.md ([`f76cd3a`](https://github.com/mrjk/python-project-poetry-template/commit/f76cd3ae070dfe4c214940fa5944073a75c394fa))
+
 ## v0.8.1-beta.4 (2022-11-16)
 ### Fix
 * Simple bug ([`1394e62`](https://github.com/mrjk/python-project-poetry-template/commit/1394e62e2163ee1c14864e9139a3c0a9cf75890f))
