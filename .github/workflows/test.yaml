@@ -66,22 +66,17 @@ jobs:
           path: .venv
           key: venv--${{ runner.os }}--${{matrix.python_version}}--${{matrix.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
 
+      # This step is only needed if you don't want to use `poetry run <cmd>`
       - name: Add venv to PATH
         run: |
-          set -x
-          echo "INIT: $PATH"
-          path="$PWD/$(poetry env info --path)/bin"
-          echo "$path" >> $GITHUB_PATH
+          echo "$PWD/$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       # Run tests
       # ---------------------
       - name: Run tests
         run: |
-          set -x
-          echo "$PATH"
-          echo "$VIRTUAL_ENV"
           poetry run myprj
-          myprj || true
+          myprj
 
 #      # Run tests
 #      # ---------------------
