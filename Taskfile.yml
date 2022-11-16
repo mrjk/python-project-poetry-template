@@ -145,6 +145,7 @@ tasks:
       - clean
     cmds:
       - poetry build
+      - semantic-release changelog --unreleased > dist/RELEASE.md
 
   #publish:
   #  desc: Create a python package
