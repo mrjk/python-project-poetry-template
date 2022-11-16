@@ -112,6 +112,11 @@ jobs:
           path: ~/venv
           key: venv--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
 
+      - name: Create virtualenv
+        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: |
+          virtualenv "$VIRTUAL_ENV"
+
       - name: Install dependencies (cached)
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
