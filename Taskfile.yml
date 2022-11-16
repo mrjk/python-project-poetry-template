@@ -101,14 +101,22 @@ tasks:
     desc: Bump code stable version, generate changelog, create a tag
     cmds:
       - CURR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-      - git fetch origin || true
-      - git checkout main
+      - '[[ "$CURR_BRANCH" == main ]]'
+
+
+      #- git fetch origin || true
+      #- git checkout main
       - git pull origin || true
+
+      - git fetch origin develop:develop
       - 'git merge --no-ff -m "chore: merge develop into main" develop'
+
       - semantic-release -D tag_commit=true publish
+
       - git checkout develop
       - 'git merge --no-ff -m "chore: update develop from main" main'
       - git push origin || true
+
       - git checkout $CURR_BRANCH || true
 
   # Should go in DEV
