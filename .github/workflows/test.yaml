@@ -13,7 +13,7 @@ on:
   #     - develop
 
 env:
-  VIRTUAL_ENV: ~/venv
+  VIRTUAL_ENV: .venv
 
 jobs:
 
@@ -63,7 +63,7 @@ jobs:
         id: cached-project-deps
         uses: actions/cache@v3
         with:
-          path: ~/.venv
+          path: .venv
           key: venv--${{ runner.os }}--${{matrix.python_version}}--${{matrix.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
 
 

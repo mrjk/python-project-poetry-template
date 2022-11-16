@@ -44,12 +44,6 @@ jobs:
           path: ~/.local
           key: python_env--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}
 
-      #- name: Install Task
-      #  uses: arduino/setup-task@v1
-      #  with:
-      #    version: 3.12.1
-
-
       #- name: Install poetry (cached)
       #  if: steps.cached-env-install.outputs.cache-hit != 'true'
       #  run: |
@@ -80,6 +74,12 @@ jobs:
           tar xzvf /tmp/go-task.tar.gz  -C  ~/.local/bin/ task
           echo  ~/.local/bin/ >> $GITHUB_PATH
 
+      #- name: Install Task
+      #  uses: arduino/setup-task@v1
+      #  with:
+      #    version: 3.12.1
+
+
 
 
       #- name: Configure PATHs dfsdf
@@ -99,18 +99,19 @@ jobs:
 
       - name: Environment Info
         run: |
+          set -x
           poetry --version
           task --version
           poetry config --list
-          poetry env info --path
-          echo "$VIRTUAL_ENV"
-          echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
+          #poetry env info --path
+          #echo "$VIRTUAL_ENV"
+          #echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       - name: Load cached venv
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
-          path: ~/venv
+          path: .venv
           key: venv--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
 
       #- name: Create virtualenv
