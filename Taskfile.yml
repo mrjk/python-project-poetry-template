@@ -147,16 +147,15 @@ tasks:
   build_changelog:
     cmds:
       - mkdir -p dist
-      - semantic-release changelog --unreleased > dist/RELEASE.md
+      - semantic-release changelog --unreleased > LAST_CHANGES.md
 
   build:
     desc: Create a python package
     deps:
       - clean
     cmds:
-      - git checkout dist/RELEASE.md
-      - ls -ahl dist/
       - poetry build
+#      - cp LAST_CHANGES.md dist/LAST_CHANGES.md
 #
 #      - semantic-release changelog --unreleased > dist/RELEASE.md
 #      - semantic-release changelog --unreleased
