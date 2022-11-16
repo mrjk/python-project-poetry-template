@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0-beta.13 (2022-11-16)
+### Fix
+* Ci ([`5662bb0`](https://github.com/mrjk/python-project-poetry-template/commit/5662bb0d161b9a34abc30d14025b280800cb7309))
+
 ## v0.9.0-beta.12 (2022-11-16)
 ### Fix
 * Ci ([`069facf`](https://github.com/mrjk/python-project-poetry-template/commit/069facfdb05f894e4552cd23dc12ef1b91a70725))
