@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.3.1"
+version = "0.3.2"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -23,8 +23,8 @@ myprj = "myprj.cli:cli"
 
 
 [tool.semantic_release]
-#version_source = "commit"
-version_source = "tag"
+version_source = "commit"
+#version_source = "tag"
 version_variable = [
     "myprj/__version__.py:^__version__",
 #    "pyproject.toml:^version ?= ?"
