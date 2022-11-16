@@ -22,7 +22,7 @@ on:
 
 env:
   LOCAL_BIN: ~/.local/bin
-  VIRTUAL_ENV: ~/venv
+  VIRTUAL_ENV: $HOME/venv
 
 jobs:
 
