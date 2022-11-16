@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-__version__ = "0.6.3-beta.2"
+__version__ = "0.7.0-beta.1"
