@@ -103,24 +103,25 @@ tasks:
       CURRENT_BRANCH:
         sh: git rev-parse --abbrev-ref HEAD
     cmds:
-      - '[[ "{{.CURRENT_BRANCH}}" == main ]]'
-
 
       #- git fetch origin || true
-      #- git checkout main
-      - git pull origin || true
+      - git checkout main
+      - git pull origin
 
       - git fetch origin develop:develop
       - 'git merge --no-ff -m "chore: merge develop into main" develop'
 
       - semantic-release -D tag_commit=true publish
-      - git push origin || true
+      - git push origin
 
       - git checkout develop
       - 'git merge --no-ff -m "chore: update develop from main" main'
-      - git push --set-upstream origin develop || true
+      - git push --set-upstream origin develop
 
-      - git checkout $CURR_BRANCH || true
+      - |2
+        if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
+          git checkout $CURR_BRANCH
+        fi
 
   # Should go in DEV
   release_beta:
