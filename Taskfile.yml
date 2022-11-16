@@ -97,18 +97,30 @@ tasks:
       - 'git c --allow-empty  -m "feat: new feat"'
       - 'git c --allow-empty  -m "feat: new feat"'
 
-  # Should go in DEV
-  release:
+  release_prod:
     desc: Bump code stable version, generate changelog, create a tag
     deps:
       - build
     cmds:
       - git checkout main
       - 'git merge --no-ff -m "chore: merge develop into main" develop'
-      - semantic-release --noop publish -D remove_dist=False  -v DEBUG --retry
+      - semantic-release --noop  -D tag_commit=true -D remove_dist=False publish -v DEBUG --retry
       - git checkout develop
       - 'git merge --no-ff -m "chore: update develop from main" main'
       - semantic-release -D tag_commit=false version --prerelease
+
+  # Should go in DEV
+  release_dev:
+    desc: Bump code stable version, generate changelog, create a tag
+    deps:
+      - build
+    cmds:
+      - git checkout develop
+#      - 'git merge --no-ff -m "chore: merge develop into main" develop'
+      - semantic-release --noop -D tag_commit=true  -D branch=develop -D remove_dist=False publish  -v DEBUG --retry --prerelease
+      - git checkout develop
+#      - 'git merge --no-ff -m "chore: update develop from main" main'
+#      - semantic-release -D tag_commit=false version --prerelease
 
       # V1 WORKING
       #- ./scripts/release.sh {{.CLI_ARGS}}
