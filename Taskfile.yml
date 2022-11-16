@@ -153,9 +153,9 @@ tasks:
     desc: Create a python package
     deps:
       - clean
-      - build_changelog
     cmds:
       - ls -ahl dist/
+      - git checkout dist/RELEASE.md
       - poetry build
       - ls -ahl dist/
 #
