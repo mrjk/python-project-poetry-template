@@ -44,7 +44,7 @@ commit_message = "semantic-release new version: version {version}"
 #commit_author =
 
 # pipeline hooks
-pre_commit_command = "task build"
+pre_commit_command = "task build_changelog"
 # pre_commit_command =
 include_additional_files = 'dist/RELEASE.md'
 
@@ -59,7 +59,7 @@ changelog_file = "CHANGELOG.md"
 
 # Run build ?
 #build_command = 'poetry build'
-#build_command = 'task build'
+build_command = 'poetry build'
 dist_path = 'dist/'
 remove_dist = false
 upload_to_release = true

@@ -145,17 +145,23 @@ tasks:
       # Docker
       #   - upload docker image
 
+  build_changelog:
+    cmds:
+      - semantic-release changelog --unreleased > dist/RELEASE.md
+
   build:
     desc: Create a python package
     deps:
       - clean
+      - build_changelog
     cmds:
       - poetry build
-      - semantic-release changelog --unreleased > dist/RELEASE.md
-      - semantic-release changelog --unreleased
-      - semantic-release changelog --released
-      - ls -ahl dist/
-      - cat dist/RELEASE.md
+#
+#      - semantic-release changelog --unreleased > dist/RELEASE.md
+#      - semantic-release changelog --unreleased
+#      - semantic-release changelog --released
+#      - ls -ahl dist/
+#      - cat dist/RELEASE.md
 
   #publish:
   #  desc: Create a python package
