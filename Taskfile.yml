@@ -154,10 +154,9 @@ tasks:
     deps:
       - clean
     cmds:
-      - ls -ahl dist/
       - git checkout dist/RELEASE.md
-      - poetry build
       - ls -ahl dist/
+      - poetry build
 #
 #      - semantic-release changelog --unreleased > dist/RELEASE.md
 #      - semantic-release changelog --unreleased
