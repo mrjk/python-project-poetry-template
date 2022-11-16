@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0-beta.2 (2022-11-16)
+### Fix
+* RELEASE.md location ([`4909fe5`](https://github.com/mrjk/python-project-poetry-template/commit/4909fe5a09f1a1fd24ba04418a1ab245cf0966dc))
+
 ## v0.9.0-beta.1 (2022-11-16)
 ### Feature
 * Update code ([`b327f73`](https://github.com/mrjk/python-project-poetry-template/commit/b327f739e347a1f49ac5c15039a796b5fa43052f))
