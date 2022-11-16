@@ -107,7 +107,7 @@ tasks:
       - semantic-release -D tag_commit=true -D remove_dist=False publish
       - git checkout develop
       - 'git merge --no-ff -m "chore: update develop from main" main'
-      #- semantic-release -D tag_commit=false version --prerelease
+      - git push origin || true
 
   # Should go in DEV
   release_beta:
@@ -116,11 +116,8 @@ tasks:
       - build
     cmds:
       - git checkout develop
-#      - 'git merge --no-ff -m "chore: merge develop into main" develop'
-      - semantic-release -D tag_commit=true  -D branch=develop -D remove_dist=False publish  -v DEBUG --prerelease
-      - git checkout develop
-#      - 'git merge --no-ff -m "chore: update develop from main" main'
-#      - semantic-release -D tag_commit=false version --prerelease
+      - semantic-release -D tag_commit=true -D branch=develop publish  -v DEBUG --prerelease
+      - git push origin || true
 
       # V1 WORKING
       #- ./scripts/release.sh {{.CLI_ARGS}}
@@ -146,6 +143,7 @@ tasks:
     cmds:
       - poetry build
       - semantic-release changelog --unreleased > dist/RELEASE.md
+      - semantic-release changelog --released > dist/RELEASE_new.md
 
   #publish:
   #  desc: Create a python package
