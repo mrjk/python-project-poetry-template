@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.3-beta.1 (2022-11-16)
+
+
 ## v0.6.2 (2022-11-16)
 ### Fix
 * Simple bug ([`e827970`](https://github.com/mrjk/python-project-poetry-template/commit/e8279707127443fb3a7422e58fbc4e5bf55c6091))
