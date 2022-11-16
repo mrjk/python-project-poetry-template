@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.0-beta.2 (2022-11-16)
+### Feature
+* Script to schow version ([`1380a82`](https://github.com/mrjk/python-project-poetry-template/commit/1380a82ab3ffdf12cae1fd41a119aa411090c028))
+
+### Fix
+* Tests ([`fd2cbe9`](https://github.com/mrjk/python-project-poetry-template/commit/fd2cbe97d57d178d0ee983fd30f550dbc81746b8))
+
 ## v0.7.0-beta.1 (2022-11-16)
 ### Feature
 * New feat ([`bcd3cf5`](https://github.com/mrjk/python-project-poetry-template/commit/bcd3cf592b119145dd18516aeeb967a1c6f028e3))
