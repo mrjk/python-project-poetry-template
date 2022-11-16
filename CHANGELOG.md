@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.0 (2022-11-16)
+### Feature
+* Complete the CI scripts ([`94eb0cf`](https://github.com/mrjk/python-project-poetry-template/commit/94eb0cfe485f775cd63bbe595b37cd88545d4941))
+
+### Fix
+* Missing .gitignore ([`59de782`](https://github.com/mrjk/python-project-poetry-template/commit/59de7829c18986bfdc783b2b3446d7d817270b4d))
+
+### Documentation
+* Update README ([`5e51784`](https://github.com/mrjk/python-project-poetry-template/commit/5e517849379d5983970391c23428d86918c852a9))
+
 ## v0.9.0 (2022-11-16)
 ### Fix
 * Little errors ([`2eaead9`](https://github.com/mrjk/python-project-poetry-template/commit/2eaead9ee35b77ca182f30867bb3ed26e37fe25f))
