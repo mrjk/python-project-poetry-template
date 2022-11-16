@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.3.0-beta.2"
+version = "0.3.0"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -23,10 +23,11 @@ myprj = "myprj.cli:cli"
 
 
 [tool.semantic_release]
-version_source = "commit"
+#version_source = "commit"
+version_source = "tag"
 version_variable = [
-    "myprj/__version__.py:__version__",
-#    "pyproject.toml:version"
+    "myprj/__version__.py:^__version__",
+#    "pyproject.toml:^version ?= ?"
 ]
 version_toml = [
     'pyproject.toml:tool.poetry.version',
@@ -57,14 +58,13 @@ changelog_file = "CHANGELOG.md"
 # build_command = "pip install poetry && poetry build"
 
 # Run build ?
-upload_to_release = true
 build_command = 'poetry build'
 dist_path = 'dist/'
-# remove_dist = false # We manually handle this
+upload_to_release = false
 
 # Publish to github
 # Require: export GH_TOKEN=
-upload_to_repository = true
+upload_to_repository = false
 
 # Publish to Pypi
 # Require: PYPI_TOKEN REPOSITORY_USERNAME PYPI_USERNAME PYPI_PASSWORD
