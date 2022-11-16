@@ -86,23 +86,25 @@ tasks:
   fake_fix:
     desc: Generate fake patch commits
     cmds:
-      - 'git c --allow-empty  -m "fix: simple bug"'
-      - 'git c --allow-empty  -m "fix: simple bug"'
-      - 'git c --allow-empty  -m "fix: simple bug"'
+      - 'git commit --allow-empty  -m "fix: simple bug"'
+      - 'git commit --allow-empty  -m "fix: simple bug"'
+      - 'git commit --allow-empty  -m "fix: simple bug"'
 
   fake_feat:
     desc: Generate fake feature commits
     cmds:
-      - 'git c --allow-empty  -m "feat: new feat"'
-      - 'git c --allow-empty  -m "feat: new feat"'
-      - 'git c --allow-empty  -m "feat: new feat"'
+      - 'git commit --allow-empty  -m "feat: new feat"'
+      - 'git commit --allow-empty  -m "feat: new feat"'
+      - 'git commit --allow-empty  -m "feat: new feat"'
 
   release_prod:
     desc: Bump code stable version, generate changelog, create a tag
     deps:
       - build
     cmds:
+      - git fetch origin || true
       - git checkout main
+      - git pull origin || true
       - 'git merge --no-ff -m "chore: merge develop into main" develop'
       - semantic-release -D tag_commit=true -D remove_dist=False publish
       - git checkout develop
@@ -112,10 +114,12 @@ tasks:
   # Should go in DEV
   release_beta:
     desc: Bump code stable version, generate changelog, create a tag
-    deps:
-      - build
+    #deps:
+    #  - build
     cmds:
+      - git fetch origin || true
       - git checkout develop
+      - git pull origin || true
       - >
         semantic-release
         -D tag_commit=true
@@ -148,6 +152,10 @@ tasks:
     cmds:
       - poetry build
       - semantic-release changelog --unreleased > dist/RELEASE.md
+      - semantic-release changelog --unreleased
+      - semantic-release changelog --released
+      - ls -ahl dist/
+      - cat dist/RELEASE.md
 
   #publish:
   #  desc: Create a python package

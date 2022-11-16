@@ -3,6 +3,10 @@ version: '3'
 vars:
   PRJ_NAME: myprj
 
+env:
+  DOCKER_BUILDKIT: '1'
+
+
 tasks:
 
   # Build images
@@ -10,8 +14,6 @@ tasks:
 
   build_dev:
     desc: Build docker dev image
-    env:
-      DOCKER_BUILDKIT: '1'
     cmds:
     - >
       docker build
@@ -38,15 +40,24 @@ tasks:
   # ========================
 
   run_dev_shell:
-    desc: Build docker dev image
+    desc: Build docker dev image with your identity
     deps:
       - build_dev
     cmds:
     - cmd: >
         docker run --rm
         -e SSH_AUTH_SOCK=/ssh-agent
+        -e GIT_AUTHOR_EMAIL=$GIT_AUTHOR_EMAIL
+        -e GIT_AUTHOR_NAME=$GIT_AUTHOR_NAME
+        -e GIT_COMMITTER_EMAIL=$GIT_COMMITTER_EMAIL
+        -e GIT_COMMITTER_NAME=$GIT_COMMITTER_NAME
+        -e GH_TOKEN=$GH_TOKEN
+        -e GL_TOKEN=$GL_TOKEN
+        -e GITEA_TOKEN=$GITEA_TOKEN
+        -e PYPI_TOKEN=$PYPI_TOKEN
+        -e SSH_AUTH_SOCK=/ssh-agent
         -v ${SSH_AUTH_SOCK:-/dev/null}:/ssh-agent
-        -ti {{.PRJ_NAME}}-dev:latest bash {{.CLI_ARGS}}
+        -ti {{.PRJ_NAME}}-dev:latest {{.CLI_ARGS}}
       ignore_error: true
 
   run_dev_tests:
