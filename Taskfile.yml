@@ -104,7 +104,6 @@ tasks:
         sh: git rev-parse --abbrev-ref HEAD
     cmds:
 
-      #- git fetch origin || true
       - git checkout main
       - git pull origin
 
@@ -126,19 +125,18 @@ tasks:
   # Should go in DEV
   release_beta:
     desc: Bump code stable version, generate changelog, create a tag
-    #deps:
-    #  - build
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
     cmds:
-      - git fetch origin || true
       - git checkout develop
-      - git pull origin || true
+      - git pull origin
       - >
         semantic-release
         -D tag_commit=true
         -D branch=develop
-        publish  --prerelease
-        -v DEBUG
-      - git push origin || true
+        publish --prerelease
+      - git push origin
 
       # V1 WORKING
       #- ./scripts/release.sh {{.CLI_ARGS}}
