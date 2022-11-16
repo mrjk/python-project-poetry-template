@@ -73,15 +73,22 @@ tasks:
     cmds:
       - poetry install -vv --no-interaction --only-root
 
+  bump_minor:
+    desc: when you want to work on new features
+    cmds:
+      - semantic-release -D tag_commit=false version --patch
+
   # Should go in DEV
   release:
     desc: Bump code stable version, generate changelog, create a tag
     deps:
       - build
     cmds:
-      - echo -e "# What's new ?\n\n## List of changes\n" > dist/RELEASE.md
-      - semantic-release changelog --unreleased >> dist/RELEASE.md
-      - semantic-release publish -D remove_dist=False
+      - ./scripts/release.sh {{.CLI_ARGS}}
+#      - echo -e "# What's new ?\n\n## List of changes\n" > dist/RELEASE.md
+#      - semantic-release changelog --unreleased >> dist/RELEASE.md
+#      - semantic-release publish -D remove_dist=False
+
       #- bash scripts/release.sh {{.CLI_ARGS}}
       # GH
       #   - create release
