@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0 (2022-11-16)
+### Fix
+* Little errors ([`2eaead9`](https://github.com/mrjk/python-project-poetry-template/commit/2eaead9ee35b77ca182f30867bb3ed26e37fe25f))
+
 ## v0.9.0-beta.20 (2022-11-16)
 ### Fix
 * Extra VERSION_NOTES.md.md file ([`39e9330`](https://github.com/mrjk/python-project-poetry-template/commit/39e93304740f6e3a908a505f6dfbb15e361bc377))
