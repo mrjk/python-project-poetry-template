@@ -146,6 +146,7 @@ tasks:
 
   build_changelog:
     cmds:
+      - mkdir -p dist
       - semantic-release changelog --unreleased > dist/RELEASE.md
 
   build:
@@ -156,8 +157,6 @@ tasks:
     cmds:
       - ls -ahl dist/
       - poetry build
-      - ls -ahl dist/
-      - git checkout dist/RELEASE.md
       - ls -ahl dist/
 #
 #      - semantic-release changelog --unreleased > dist/RELEASE.md
