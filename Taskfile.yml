@@ -83,7 +83,7 @@ tasks:
     cmds:
       - semantic-release changelog --noop --unreleased
 
-  fake_patch:
+  fake_fix:
     desc: Generate fake patch commits
     cmds:
       - 'git c --allow-empty  -m "fix: simple bug"'
@@ -104,7 +104,7 @@ tasks:
     cmds:
       - git checkout main
       - 'git merge --no-ff -m "chore: merge develop into main" develop'
-      - semantic-release -D tag_commit=true -D remove_dist=False publish -v DEBUG --retry
+      - semantic-release -D tag_commit=true -D remove_dist=False publish --retry
       - git checkout develop
       - 'git merge --no-ff -m "chore: update develop from main" main'
       - semantic-release -D tag_commit=false version --prerelease
