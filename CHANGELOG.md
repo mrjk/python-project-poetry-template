@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.0-beta.3 (2022-11-16)
+### Fix
+* Taskfile.yml ([`f098ddf`](https://github.com/mrjk/python-project-poetry-template/commit/f098ddf3e8b035a72d212fc774555e1c4354e3df))
+
 ## v0.7.0-beta.2 (2022-11-16)
 ### Feature
 * Script to schow version ([`1380a82`](https://github.com/mrjk/python-project-poetry-template/commit/1380a82ab3ffdf12cae1fd41a119aa411090c028))
