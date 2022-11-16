@@ -19,8 +19,8 @@ jobs:
       id: version
       #shell: bash
       run: |
-        echo "python=$PYTHON_VERSION}" >> $GITHUB_OUTPUT
-        echo "poetry=$POETRY_VERSION}" >> $GITHUB_OUTPUT
+        echo "python=$PYTHON_VERSION" >> $GITHUB_OUTPUT
+        echo "poetry=$POETRY_VERSION" >> $GITHUB_OUTPUT
 
     outputs:
       poetry: "${{ steps.version.outputs.poetry }}"
@@ -40,7 +40,9 @@ jobs:
 
 
   release_prod:
-    needs: install
+    needs:
+      - context
+      - install
     runs-on: ubuntu-latest
 
     steps:
@@ -52,7 +54,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.local
-          key: python_env--${{ runner.os }}--3.9--1.2.1
+          key: python_env--${{ runner.os }}--${{ needs.context.outputs.python}}--${{ needs.context.outputs.poetry}}
 
       - name: Fetch source code
         uses: actions/checkout@v3
