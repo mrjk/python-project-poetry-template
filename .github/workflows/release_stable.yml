@@ -74,6 +74,12 @@ jobs:
       # Run tests
       # ---------------------
       - name: Release stable version
+        env:
+          GIT_COMMITTER_NAME: Github Actions
+          GIT_COMMITTER_EMAIL: mrjk.78@gmail.com
+          GIT_AUTHOR_NAME: mrjk
+          GIT_AUTHOR_EMAIL: mrjk.78@gmail.com
+          GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
         run: |
           task -v release_prod
 
