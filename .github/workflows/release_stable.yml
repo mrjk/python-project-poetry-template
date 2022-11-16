@@ -81,12 +81,12 @@ jobs:
           GIT_AUTHOR_EMAIL: mrjk.78@gmail.com
           GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
         run: |
-          set -x
-          echo "PATH=$PATH"
-          command -v semantic-release || true
-          ls -ahl .venv/bin || true
-
           task -v release_prod
+
+        # set -x
+        # echo "PATH=$PATH"
+        # command -v semantic-release || true
+        # ls -ahl .venv/bin || true
 
 
 #      # Run tests
