@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.0-beta.2 (2022-11-16)
+
+
 ## v0.8.0-beta.1 (2022-11-16)
 ### Feature
 * New feat ([`b4578e4`](https://github.com/mrjk/python-project-poetry-template/commit/b4578e4b170618e72534397da61e18f81790cb0d))
