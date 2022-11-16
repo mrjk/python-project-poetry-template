@@ -12,8 +12,8 @@ jobs:
   install:
     uses: ./.github/workflows/_install.yaml
     with:
-      python_version: ${{ env.python_version }}
-      poetry_version: ${{ env.poetry_version }}
+      python_version: "${{env.python_version}}"
+      poetry_version: "${{env.poetry_version}}"
     secrets:
       access_token: "${{ secrets.ACCESS_TOKEN }}"
 
