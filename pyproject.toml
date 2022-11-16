@@ -46,7 +46,7 @@ commit_message = "semantic-release new version: version {version}"
 # pipeline hooks
 pre_commit_command = "task build_changelog"
 # pre_commit_command =
-include_additional_files = 'dist/RELEASE.md'
+include_additional_files = 'RELEASE.md'
 
 tag_commit = false
 tag_format = "v{version}"
@@ -61,7 +61,7 @@ changelog_file = "CHANGELOG.md"
 #build_command = 'poetry build'
 build_command = 'poetry build'
 dist_path = 'dist/'
-remove_dist = false
+#remove_dist = false
 upload_to_release = true
 
 # Publish to github

@@ -99,14 +99,12 @@ tasks:
 
   release_prod:
     desc: Bump code stable version, generate changelog, create a tag
-    deps:
-      - build
     cmds:
       - git fetch origin || true
       - git checkout main
       - git pull origin || true
       - 'git merge --no-ff -m "chore: merge develop into main" develop'
-      - semantic-release -D tag_commit=true -D remove_dist=False publish
+      - semantic-release -D tag_commit=true publish
       - git checkout develop
       - 'git merge --no-ff -m "chore: update develop from main" main'
       - git push origin || true
@@ -124,7 +122,6 @@ tasks:
         semantic-release
         -D tag_commit=true
         -D branch=develop
-        -D remove_dist=False
         publish  --prerelease
       - git push origin || true
 
@@ -147,7 +144,7 @@ tasks:
 
   build_changelog:
     cmds:
-      - semantic-release changelog --unreleased > dist/RELEASE.md
+      - semantic-release changelog --unreleased > RELEASE.md
 
   build:
     desc: Create a python package
