@@ -116,7 +116,7 @@ tasks:
       - build
     cmds:
       - git checkout develop
-      - semantic-release -D tag_commit=true -D branch=develop publish  -v DEBUG --prerelease
+      - semantic-release -D tag_commit=true -D branch=develop -D remove_dist=False publish  -v DEBUG --prerelease
       - git push origin || true
 
       # V1 WORKING
@@ -143,7 +143,6 @@ tasks:
     cmds:
       - poetry build
       - semantic-release changelog --unreleased > dist/RELEASE.md
-      - semantic-release changelog --released > dist/RELEASE_new.md
 
   #publish:
   #  desc: Create a python package
