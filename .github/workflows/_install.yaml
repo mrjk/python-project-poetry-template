@@ -19,10 +19,8 @@ on:
       access_token:
         description: 'Github Secret Token to check out the repo'
 
-
 env:
   LOCAL_BIN: ~/.local/bin
-  VIRTUAL_ENV: ./venv
 
 jobs:
 
@@ -44,18 +42,22 @@ jobs:
           path: ~/.local
           key: python_env--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}
 
-      #- name: Install Task
-      #  uses: arduino/setup-task@v1
-      #  with:
-      #    version: 3.12.1
+      #- name: Install poetry (cached)
+      #  if: steps.cached-env-install.outputs.cache-hit != 'true'
+      #  run: |
+      #    curl -sSL https://install.python-poetry.org | python3 -
+      #    poetry config virtualenvs.create true
+      #    poetry config virtualenvs.in-project true
+      #    echo ~/.local/bin/ >> $GITHUB_PATH
 
-
-      - name: Install poetry (cached)
+      - name: Install Poetry (cached)
         if: steps.cached-env-install.outputs.cache-hit != 'true'
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry config virtualenvs.in-project true
-          echo ~/.local/bin/ >> $GITHUB_PATH
+        uses: snok/install-poetry@v1
+        with:
+          version: "${{inputs.poetry_version}}"
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
 
       - name: Install task (cached)
         if: steps.cached-env-install.outputs.cache-hit != 'true'
@@ -69,23 +71,10 @@ jobs:
           tar xzvf /tmp/go-task.tar.gz  -C  ~/.local/bin/ task
           echo  ~/.local/bin/ >> $GITHUB_PATH
 
-      #- name: Install Poetry
-      #  uses: snok/install-poetry@v1
-      #  if: steps.cached-env-install.outputs.cache-hit != 'true'
+      #- name: Install Task
+      #  uses: arduino/setup-task@v1
       #  with:
-      #    version: 1.2.2
-      #    virtualenvs-create: true
-      #    virtualenvs-in-project: false
-      #    virtualenvs-path: ~/.local
-      #    installer-parallel: true
-
-
-
-      #- name: Configure PATHs dfsdf
-      #  run: |
-      #    echo "${LOCAL_BIN}" >> $GITHUB_PATH
-      #    echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
-
+      #    version: 3.12.1
 
 
       # Install project dependencies
@@ -98,11 +87,10 @@ jobs:
 
       - name: Environment Info
         run: |
+          set -x
           poetry --version
           task --version
           poetry config --list
-          poetry env info --path
-          echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -114,8 +102,8 @@ jobs:
       - name: Install dependencies (cached)
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
-          task -v dev:bootstrap
+          task -v bootstrap
 
       - name: Install project
         run: |
-          task -v dev:setup
+          task -v setup
