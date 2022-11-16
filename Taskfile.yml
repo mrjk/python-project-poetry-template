@@ -99,9 +99,11 @@ tasks:
 
   release_prod:
     desc: Bump code stable version, generate changelog, create a tag
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
     cmds:
-      - CURR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-      - '[[ "$CURR_BRANCH" == main ]]'
+      - '[[ "{{.CURRENT_BRANCH}}" == main ]]'
 
 
       #- git fetch origin || true
