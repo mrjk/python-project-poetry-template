@@ -1,5 +1,5 @@
 ### Fix
-* Simple bugfix3 ([`c374ffe`](https://github.com/mrjk/python-project-poetry-template/commit/c374ffe7b79f5864568c6f2610137d2fe0c6a4e2))
-* Simple bugfix3 ([`76cae9b`](https://github.com/mrjk/python-project-poetry-template/commit/76cae9b85aa64b7a655e4cf87eee640783173840))
-* Simple bugfix3 ([`05a3741`](https://github.com/mrjk/python-project-poetry-template/commit/05a374165235515c42835bbad1a7afca6a16565b))
-* Simple bugfix3 ([`d34655f`](https://github.com/mrjk/python-project-poetry-template/commit/d34655f7f66513ef5297d9c97c9a9640f9c36644))
+* Simple bugfix 145sad ([`8f30070`](https://github.com/mrjk/python-project-poetry-template/commit/8f300706d824fb30da7e0c44d57f062a8758e44c))
+* Simple bugfix 145 ([`af0496a`](https://github.com/mrjk/python-project-poetry-template/commit/af0496ae17830f014caa09eedd38f65a169c253e))
+* Simple bugfix 11 ([`d716524`](https://github.com/mrjk/python-project-poetry-template/commit/d716524a8dfd8004ab1740814c1c3211ab8e9994))
+* Simple bugfix 10 ([`93c284e`](https://github.com/mrjk/python-project-poetry-template/commit/93c284e39e9da0c3e40a3f8a1c876f3ab3160732))
