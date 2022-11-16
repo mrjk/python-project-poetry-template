@@ -54,7 +54,7 @@ jobs:
         if: steps.cached-env-install.outputs.cache-hit != 'true'
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-          poetry config virtualenvs.in-project true
+          #poetry config virtualenvs.in-project true
           echo ~/.local/bin/ >> $GITHUB_PATH
 
       - name: Install task (cached)
@@ -102,6 +102,7 @@ jobs:
           task --version
           poetry config --list
           poetry env info --path
+          echo "$VIRTUAL_ENV"
           echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       - name: Load cached venv
