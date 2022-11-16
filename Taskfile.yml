@@ -124,6 +124,7 @@ tasks:
         -D branch=develop
         publish  --prerelease
         -v DEBUG
+      - git checkout dist/RELEASE.md || true
       - git push origin || true
 
       # V1 WORKING
