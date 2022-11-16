@@ -28,12 +28,11 @@ reset your git history to start from a fresh clean.
 
 Locally:
 
-* git clone REPO
-* cd REPO
-* git fetch --all
-* git checkout develop    ## <BRANCH_YOU_WANT_TO_KEEP>
+* # git clone REPO -b <BRANCH_YOU_WANT_TO_KEEP> RESET
+* git clone git@github.com:mrjk/python-project-poetry-template.git -b main RESET
+* cd RESET
 * rm -rf .git
-* git init
+* git init .
 * git add .
 * git commit -m "Initial commit"
 

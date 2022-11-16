@@ -39,17 +39,17 @@ major_on_zero = true
 # -----
 commit_version_number = true
 # PAttern that will be looked up in all commit that bumped things
-commit_subject = "bump: version v{version}"
-commit_message = "semantic-release new version: version {version}"
+commit_subject = "bump: version v{version}"   # NEVER CHANGE THIS ONCE SET
+commit_message = "semantic-release new version: version {version}" # NEVER CHANGE THIS ONCE SET
 #commit_author =
 
 # pipeline hooks
 pre_commit_command = "task build_changelog"
 # pre_commit_command =
-include_additional_files = 'VERSION_NOTES.md'
+include_additional_files = 'VERSION_NOTES.md,CHANGELOG.md'
 
-tag_commit = false
-tag_format = "v{version}"
+tag_commit = false # By default, we don not tag, unless explicitely set
+tag_format = "v{version}" # NEVER CHANGE THIS ONCE SET
 
 # Build
 commit_parser = 'semantic_release.history.angular_parser'

@@ -1,3 +1,10 @@
+# Project
 **__pycache__**
 docs/build/**
 dist/*
+tmp/*
+
+# Other tools
+.venv/*
+.task/*
+.direnv/*
