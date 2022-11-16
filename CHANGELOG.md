@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.0-beta.2 (2022-11-16)
+### Feature
+* New feat ([`d081df8`](https://github.com/mrjk/python-project-poetry-template/commit/d081df8af0307c57e209623c865ad2f2ee4e6d72))
+* New feat ([`b1e92d4`](https://github.com/mrjk/python-project-poetry-template/commit/b1e92d487d1f1106fde81eda947fb0ef258dfa99))
+* New feat ([`9d273d2`](https://github.com/mrjk/python-project-poetry-template/commit/9d273d22ccc85b2810d517c49fa057f4aa024919))
+
+### Fix
+* Simple bug ([`7a3a63b`](https://github.com/mrjk/python-project-poetry-template/commit/7a3a63bfb29f6f034a02fb29360a192c4b436171))
+* Simple bug ([`5a5bbfc`](https://github.com/mrjk/python-project-poetry-template/commit/5a5bbfc1d7eb206f4204dfa681b243eae84c9029))
+* Simple bug ([`a68988b`](https://github.com/mrjk/python-project-poetry-template/commit/a68988bc9738d5fb55bab28736fba12435f66f30))
+
 ## v0.6.0-beta.1 (2022-11-16)
 ### Feature
 * New feat ([`d10ffc7`](https://github.com/mrjk/python-project-poetry-template/commit/d10ffc760cf55c318b548b795be33d75e308f147))
