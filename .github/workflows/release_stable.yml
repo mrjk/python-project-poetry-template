@@ -4,16 +4,37 @@ on:
   workflow_dispatch:
 
 env:
-  python_version: "3.9"
-  poetry_version: "1.2.1"
+  PYTHON_VERSION: "3.9"
+  POETRY_VERSION: "1.2.1"
+  #PYTHON_VERSION: "3.||9"
+  #POETRY_VERSION: "1.||2.1"
+
 
 jobs:
 
+  context:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Extract context infos
+      id: version
+      #shell: bash
+      run: |
+        echo "python=$PYTHON_VERSION}" >> $GITHUB_OUTPUT
+        echo "poetry=$POETRY_VERSION}" >> $GITHUB_OUTPUT
+
+    outputs:
+      poetry: "${{ steps.version.outputs.poetry }}"
+      python: "${{ steps.version.outputs.python }}"
+
+
   install:
+    needs: context
     uses: ./.github/workflows/_install.yaml
     with:
-      python_version: "${{env.python_version}}"
-      poetry_version: "${{env.poetry_version}}"
+      python_version: "${{ needs.context.outputs.python}}"
+      poetry_version: "${{ needs.context.outputs.poetry}}"
+      #python_version: "3.9"
+      #poetry_version: "1.2.1"
     secrets:
       access_token: "${{ secrets.ACCESS_TOKEN }}"
 
@@ -31,7 +52,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.local
-          key: python_env--${{ runner.os }}--${python_version}--${poetry_version}
+          key: python_env--${{ runner.os }}--3.9--1.2.1
 
       - name: Fetch source code
         uses: actions/checkout@v3
@@ -44,7 +65,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .venv
-          key: venv--${{ runner.os }}--${python_version}--${poetry_version}--${{ hashFiles('**/poetry.lock') }}
+          key: venv--${{ runner.os }}--3.9.1--1.2.1--${{ hashFiles('**/poetry.lock') }}
 
       # This step is only needed if you don't want to use `poetry run <cmd>`
       - name: Add venv to PATH
