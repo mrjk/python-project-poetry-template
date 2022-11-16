@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.2 (2022-11-16)
+### Fix
+* Taskfile ([`a270e15`](https://github.com/mrjk/python-project-poetry-template/commit/a270e15ab2228f996c063418c74d42510d736123))
+* GH workflow ([`0f96138`](https://github.com/mrjk/python-project-poetry-template/commit/0f9613813a996958fb31480688ac130e1e3e2896))
+
 ## v0.10.1 (2022-11-16)
 ### Fix
 * GH workflow ([`d6b74ad`](https://github.com/mrjk/python-project-poetry-template/commit/d6b74ad00df4006035337919ed1eb8f19ed09198))
