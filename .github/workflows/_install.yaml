@@ -115,11 +115,16 @@ jobs:
       - name: Install dependencies (cached)
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
+          set -x
+          echo "VIRTUAL_ENV=$VIRTUAL_ENV"
+          echo "PATH=$PATH"
+          . "$VIRTUAL_ENV"/bin/acticate
           echo "VIRTUAL_ENV=$VIRTUAL_ENV"
           echo "PATH=$PATH"
           task -v bootstrap
 
       - name: Install project
         run: |
+          set -x
           echo "VIRTUAL_ENV=$VIRTUAL_ENV"
           task -v setup
