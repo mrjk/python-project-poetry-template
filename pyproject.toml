@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.5.0-beta.2"
+version = "0.5.0-beta.6"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -48,7 +48,7 @@ commit_message = "semantic-release new version: version {version}"
 # pre_commit_command =
 include_additional_files = 'dist/RELEASE.md'
 
-tag_commit = false
+tag_commit = true
 tag_format = "v{version}"
 
 # Build
