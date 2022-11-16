@@ -50,6 +50,14 @@ jobs:
       #    version: 3.12.1
 
 
+      - name: Create virtualenv
+        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: |
+          pip install virtualenv
+          virtualenv "$VIRTUAL_ENV"
+          ls -ahl "$VIRTUAL_ENV" || true
+          ls -ahl "$VIRTUAL_ENV/bin" || true
+
       - name: Install poetry (cached)
         if: steps.cached-env-install.outputs.cache-hit != 'true'
         run: |
@@ -86,12 +94,6 @@ jobs:
       #    echo "${LOCAL_BIN}" >> $GITHUB_PATH
       #    echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
 
-
-      - name: Create virtualenv
-        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: |
-          pip install virtualenv
-          virtualenv "$VIRTUAL_ENV"
 
 
       # Install project dependencies
