@@ -76,7 +76,12 @@ tasks:
   bump_minor:
     desc: when you want to work on new features
     cmds:
-      - semantic-release -D tag_commit=false version
+      - semantic-release -D tag_commit=false version --prerelease
+
+  dev_changlog:
+    desc: Show currently modified things
+    cmds:
+      - semantic-release changelog --noop --unreleased
 
   # Should go in DEV
   release:
