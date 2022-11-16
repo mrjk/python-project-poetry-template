@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0-beta.18 (2022-11-16)
+### Fix
+* Remove old LAST_CHANGES.md ([`498600a`](https://github.com/mrjk/python-project-poetry-template/commit/498600ae142324b7bd2684ab322929fbab9a2915))
+
 ## v0.9.0-beta.17 (2022-11-16)
 ### Fix
 * Little errors ([`4aa4ccc`](https://github.com/mrjk/python-project-poetry-template/commit/4aa4ccc9b55b90591a1c2f4587a42e8fc32d5285))
