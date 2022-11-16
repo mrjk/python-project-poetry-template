@@ -146,6 +146,8 @@ tasks:
   build_changelog:
     cmds:
       - semantic-release changelog --unreleased > VERSION_NOTES.md
+      - semantic-release changelog --unreleased
+      - semantic-release changelog --released
 
   build:
     desc: Create a python package
