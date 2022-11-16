@@ -13,7 +13,7 @@ on:
   #     - develop
 
 env:
-  VIRTUALENV: ./venv
+  VIRTUAL_ENV: ~/venv
 
 jobs:
 
@@ -59,17 +59,19 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: true
 
-#      - name: Load cached venv
-#        id: cached-project-deps
-#        uses: actions/cache@v3
-#        with:
-#          path: ~/.venv
-#          key: venv--${{ runner.os }}--${{matrix.python_version}}--${{matrix.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
-#
-#
+      - name: Load cached venv
+        id: cached-project-deps
+        uses: actions/cache@v3
+        with:
+          path: ~/.venv
+          key: venv--${{ runner.os }}--${{matrix.python_version}}--${{matrix.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
+
+
 
       - name: Add to PATH
         run: |
+          set -x
+          $path1/poetry env info --path
           path1=~/.local/bin
           path2="$($path1/poetry env info --path)/bin"
           echo "$path1" >> $GITHUB_PATH
