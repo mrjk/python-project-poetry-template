@@ -1,3 +1,2 @@
 ### Fix
-* Taskfile ([`a270e15`](https://github.com/mrjk/python-project-poetry-template/commit/a270e15ab2228f996c063418c74d42510d736123))
-* GH workflow ([`0f96138`](https://github.com/mrjk/python-project-poetry-template/commit/0f9613813a996958fb31480688ac130e1e3e2896))
+* Ci ([`badaa60`](https://github.com/mrjk/python-project-poetry-template/commit/badaa60635ea9d8d44941c79902b8410339fc6f3))

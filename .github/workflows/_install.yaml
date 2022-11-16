@@ -19,9 +19,6 @@ on:
       access_token:
         description: 'Github Secret Token to check out the repo'
 
-env:
-  LOCAL_BIN: ~/.local/bin
-
 jobs:
 
   install:
@@ -98,6 +95,10 @@ jobs:
         with:
           path: .venv
           key: venv--${{ runner.os }}--${{inputs.python_version}}--${{inputs.poetry_version}}--${{ hashFiles('**/poetry.lock') }}
+
+      - name: Add venv to PATH
+        run: |
+          echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       - name: Install dependencies (cached)
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
