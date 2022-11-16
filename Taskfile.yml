@@ -154,7 +154,9 @@ tasks:
       - clean
       - build_changelog
     cmds:
+      - ls -ahl dist/
       - poetry build
+      - ls -ahl dist/
       - git checkout dist/RELEASE.md
       - ls -ahl dist/
 #
