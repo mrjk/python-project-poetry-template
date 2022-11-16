@@ -83,13 +83,37 @@ tasks:
     cmds:
       - semantic-release changelog --noop --unreleased
 
+  fake_patch:
+    desc: Generate fake patch commits
+    cmds:
+      - 'git c --allow-empty  -m "fix: simple bug"'
+      - 'git c --allow-empty  -m "fix: simple bug"'
+      - 'git c --allow-empty  -m "fix: simple bug"'
+
+  fake_feat:
+    desc: Generate fake feature commits
+    cmds:
+      - 'git c --allow-empty  -m "feat: new feat"'
+      - 'git c --allow-empty  -m "feat: new feat"'
+      - 'git c --allow-empty  -m "feat: new feat"'
+
   # Should go in DEV
   release:
     desc: Bump code stable version, generate changelog, create a tag
     deps:
       - build
     cmds:
-      - ./scripts/release.sh {{.CLI_ARGS}}
+      - git checkout main
+      - 'git merge --no-ff -m "chore: merge develop into main" develop'
+      - semantic-release --noop publish -D remove_dist=False  -v DEBUG --retry
+      - git checkout develop
+      - 'git merge --no-ff -m "chore: update develop from main" main'
+      - semantic-release -D tag_commit=false version --prerelease
+
+      # V1 WORKING
+      #- ./scripts/release.sh {{.CLI_ARGS}}
+
+
 #      - echo -e "# What's new ?\n\n## List of changes\n" > dist/RELEASE.md
 #      - semantic-release changelog --unreleased >> dist/RELEASE.md
 #      - semantic-release publish -D remove_dist=False
