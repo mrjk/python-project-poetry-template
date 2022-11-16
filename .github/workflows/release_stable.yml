@@ -6,8 +6,6 @@ on:
 env:
   PYTHON_VERSION: "3.9"
   POETRY_VERSION: "1.2.1"
-  #PYTHON_VERSION: "3.||9"
-  #POETRY_VERSION: "1.||2.1"
 
 
 jobs:
@@ -33,13 +31,11 @@ jobs:
     with:
       python_version: "${{ needs.context.outputs.python}}"
       poetry_version: "${{ needs.context.outputs.poetry}}"
-      #python_version: "3.9"
-      #poetry_version: "1.2.1"
     secrets:
       access_token: "${{ secrets.ACCESS_TOKEN }}"
 
 
-  release_prod:
+  release_stable:
     needs:
       - context
       - install
@@ -61,13 +57,14 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: true
+          fetch-depth: '0'
 
       - name: Load cached venv
         id: cached-project-deps
         uses: actions/cache@v3
         with:
           path: .venv
-          key: venv--${{ runner.os }}--3.9.1--1.2.1--${{ hashFiles('**/poetry.lock') }}
+          key: venv--${{ runner.os }}--${{ needs.context.outputs.python}}--${{ needs.context.outputs.poetry}}--${{ hashFiles('**/poetry.lock') }}
 
       # This step is only needed if you don't want to use `poetry run <cmd>`
       - name: Add venv to PATH
@@ -76,7 +73,7 @@ jobs:
 
       # Run tests
       # ---------------------
-      - name: Run tests
+      - name: Release stable version
         run: |
           task -v release_prod
 
