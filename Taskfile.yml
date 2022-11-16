@@ -123,6 +123,7 @@ tasks:
         -D tag_commit=true
         -D branch=develop
         publish  --prerelease
+      - -v DEBUG
       - git push origin || true
 
       # V1 WORKING
