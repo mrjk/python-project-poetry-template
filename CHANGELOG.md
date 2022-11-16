@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.0-beta.5 (2022-11-16)
+### Fix
+* Simple bug ([`39ec953`](https://github.com/mrjk/python-project-poetry-template/commit/39ec953e2796b39c740b032d92910217452d190e))
+* Simple bug ([`493d6bf`](https://github.com/mrjk/python-project-poetry-template/commit/493d6bf1259ef0c1107fab5b22ab88fcce96f1b9))
+* Simple bug ([`50ba746`](https://github.com/mrjk/python-project-poetry-template/commit/50ba746a288c7c26675eec1cde7ec75e33848e90))
+
 ## v0.5.0-beta.4 (2022-11-16)
 
 
