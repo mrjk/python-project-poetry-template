@@ -118,7 +118,7 @@ jobs:
           set -x
           echo "VIRTUAL_ENV=$VIRTUAL_ENV"
           echo "PATH=$PATH"
-          . "$VIRTUAL_ENV"/bin/acticate
+          . "$VIRTUAL_ENV"/bin/activate
           echo "VIRTUAL_ENV=$VIRTUAL_ENV"
           echo "PATH=$PATH"
           task -v bootstrap
