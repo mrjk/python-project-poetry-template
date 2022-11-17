@@ -73,6 +73,7 @@ tasks:
 
   build:
     desc: Create a python package
+    run: once
     # Used by semantic-release during publish process, as pre-commit command
     #sources:
     #  - pyproject.toml
