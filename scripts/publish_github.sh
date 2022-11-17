@@ -88,10 +88,13 @@ set -x
 # https://docs.github.com/en/rest/releases/releases#create-a-release
 payload=$(
   jq --null-input \
-     --arg tag "$TAG" \
-     --arg name "$NAME - from new script" \
-     --arg body "$BODY" \
-     '{ tag_name: $tag, name: $name, body: $body, draft: true, make_latest: true }'
+     --arg tag "$TAG"  \
+     --arg name "$TAG NEW" \
+     --arg body "$NAME$BODY" \
+     --arg latest "true" \
+     --arg target "$TAG" \
+     '{ tag_name: $tag, name: $name, body: $body, draft: true, make_latest: $latest }'
+     #'{ tag_name: $tag, name: $name, body: $body, draft: true, make_latest: $latest, target_commitish: $target }'
 )
 
        #--silent \
@@ -99,7 +102,7 @@ payload=$(
 response=$(
   curl --fail \
        --netrc \
-       -X POST \
+       -X PATCH \
        -H "Accept: application/vnd.github+json" \
        -H "Authorization: Bearer $GH_TOKEN" \
        --data "$payload" \

@@ -157,10 +157,11 @@ tasks:
     desc: Create a python package
     interactive: true
     deps:
+      - build_changelog
       - build
     cmds:
       - ls -ahl dist/
-      - cat dist/RELEASE.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
+      - cat VERSION_NOTES.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
 
   update:
     desc: Synchronize git
