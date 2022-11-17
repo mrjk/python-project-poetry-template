@@ -114,7 +114,7 @@ tasks:
         ! git status -s | grep -E '^[AM]* '
         # FIXME: Currently semantic-release take care of the gh upload and pypi
         # publishing, but ultimately, we would have a better control on them.
-      - poetry run semantic-release -D tag_commit=true publish
+      - SKIP=end-of-file-fixer  poetry run semantic-release -D tag_commit=true publish -v DEBUG
 
   release_beta:
     aliases:
@@ -128,7 +128,7 @@ tasks:
         fi
         ! git status -s | grep -E '^[AM]* '
       - >
-        poetry run semantic-release
+        SKIP=end-of-file-fixer poetry run semantic-release
         -D tag_commit=true
         -D branch=develop
         publish --prerelease

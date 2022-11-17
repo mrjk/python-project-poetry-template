@@ -58,6 +58,15 @@ tasks:
 
   # Helpers
   # ---------------
+  tag_current_version:
+    desc: Tag current version
+    vars:
+      GIT_TAG:
+        sh: poetry version -s
+        #sh: git describe --tags --abbrev=0 2>/dev/null
+    cmds:
+      - git tag -a -m "tag {{.GIT_TAG}}" {{.GIT_TAG}}
+      - git push origin
 
   bump_minor:
     desc: When you want to work on new features (beta)

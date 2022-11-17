@@ -69,6 +69,7 @@ jobs:
       # This step is only needed if you don't want to use `poetry run <cmd>`
       - name: Add venv to PATH
         run: |
+          echo "$PWD/$(poetry env info --path)/bin"
           echo "$PWD/$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       # Run tests
@@ -76,7 +77,8 @@ jobs:
       - name: Run tests
         run: |
           poetry run myprj
-          myprj
+          echo PATH=$PATH
+          # myprj
 
 #      # Run tests
 #      # ---------------------
