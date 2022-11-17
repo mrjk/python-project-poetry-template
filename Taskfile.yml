@@ -11,29 +11,22 @@ version: '3'
 #     sh: poetry version -s
 
 
-vars:
-  SRC_DIR: myprj
-  TEST_DIR: tests/
-
 
 includes:
-  #doc:
-  #  taskfile: ./docs/Taskfile.yml
-  #  dir: ./docs
 
-  #gh:
-  #  taskfile: ./.github/Taskfile.yml
-  #  dir: .
-    #internal: true
-
-  ci:
-    taskfile: ./scripts/Taskfile-ci.yml
-    dir: .
   dev:
     taskfile: ./scripts/Taskfile.yml
     dir: .
+    optional: true
+
+  doc:
+    taskfile: ./docs/Taskfile.yml
+    dir: ./docs
+    optional: true
+
   docker:
     taskfile: ./docker/Taskfile.yml
+    optional: true
 
 
 tasks:
@@ -120,6 +113,7 @@ tasks:
       - SKIP=end-of-file-fixer poetry run semantic-release -D tag_commit=true publish --post=false -v DEBUG
       - task: publish_gh
       - task: publish_pypi
+      - task: doc:publish_gh
 
   release_beta:
     aliases:
@@ -138,6 +132,7 @@ tasks:
         publish --prerelease --post=false  -v DEBUG
       - task: publish_gh
       - task: publish_pypi
+      - task: doc:publish_gh
 
 
 
