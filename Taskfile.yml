@@ -19,6 +19,11 @@ includes:
   #  taskfile: ./docs/Taskfile.yml
   #  dir: ./docs
 
+  gh:
+    taskfile: ./.github/Taskfile.yml
+    dir: .
+    #internal: true
+
   dev:
     taskfile: ./scripts/Taskfile.yml
     #dir: .
@@ -84,9 +89,38 @@ tasks:
       - 'git commit --allow-empty  -m "feat: new feat"'
       - 'git commit --allow-empty  -m "feat: new feat"'
 
-
-
   release_prod:
+    desc: Bump code stable version, generate changelog, create a tag
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
+    cmds:
+      - |2
+        if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
+          echo "You must checkout main first"
+          exit 1
+        fi
+
+      #- git checkout main
+      #- git pull origin
+
+      #- git fetch origin develop:develop
+      #- 'git merge --no-ff -m "chore: merge develop into main" develop'
+
+      - semantic-release -D tag_commit=true publish
+      #- git push origin
+
+      #- git checkout develop
+      #- 'git merge --no-ff -m "chore: update develop from main" main'
+      #- git push --set-upstream origin develop
+
+      #- |2
+      #  if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
+      #    git checkout $CURR_BRANCH
+      #  fi
+
+
+  release_prod_OLD:
     desc: Bump code stable version, generate changelog, create a tag
     vars:
       CURRENT_BRANCH:

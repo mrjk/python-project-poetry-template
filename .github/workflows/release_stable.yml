@@ -82,7 +82,7 @@ jobs:
           GIT_AUTHOR_EMAIL: mrjk.78@gmail.com
           GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
         run: |
-          task -v release_prod
+          task -v gh:release_prod
 
         # set -x
         # echo "PATH=$PATH"
