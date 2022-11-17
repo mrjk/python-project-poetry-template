@@ -67,7 +67,7 @@ upload_to_release = false
 
 # Publish to github
 # Require: export GH_TOKEN=
-upload_to_repository = true
+upload_to_repository = false
 
 # Publish to Pypi
 # Require: PYPI_TOKEN REPOSITORY_USERNAME PYPI_USERNAME PYPI_PASSWORD
