@@ -1,6 +1,15 @@
 docs_dir: src/
 site_dir: build/site/
-site_name: "Myprj Documentation"
+
+# Project information
+site_name: Myprj Documentation
+#site_url: https://squidfunk.github.io/mkdocs-material-example-versioning/
+site_author: MrJK
+
+# Git repo
+repo_name: mrjk/python-project-poetry-template
+repo_url: https://github.com/mrjk/python-project-poetry-template
+edit_uri: ""
 
 watch:
   - src
