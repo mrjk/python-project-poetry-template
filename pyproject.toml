@@ -62,7 +62,8 @@ changelog_file = "CHANGELOG.md"
 build_command = 'task build'
 dist_path = 'dist/'
 #remove_dist = false
-upload_to_release = true
+#upload_to_release = true
+upload_to_release = false
 
 # Publish to github
 # Require: export GH_TOKEN=
