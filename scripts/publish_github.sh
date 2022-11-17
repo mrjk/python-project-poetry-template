@@ -1,144 +1,338 @@
-#!/usr/bin/env bash
+#!/bin/bash -le
 
-set -e
-[ -z "$DEBUG" ] || set -x;
+# Source: https://github.com/meeDamian/github-release/blob/master/entrypoint.sh
 
-usage() {
-  echo "$0 <repo> <tag> [<release name>] [-- <asset>...]" >&2;
+PKG="meeDamian/github-release@2.0"
+
+
+gh_release_api() {
+	url="$1"
+	method="${2:-GET}"
+	curl -sS  -H "Authorization: token $TOKEN"  -X "$method"  "$releases_url/$url"
 }
 
-if [ "$1" = "-h" -o "$1" = "--help" ]; then
-  usage
-  cat >&2 <<EOS
+guess_gh_id ()
+{
+  local url= re=
+  local protocol= separator= hostname= user= repo=
 
-Pass the following arguments:
+  url=$( git remote -v | awk '{print $2}' | sort -u )
+  re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+)*$"
 
-	* \`<repo>\`: ":user/:name" of the repository. For example, "foca/mpp".
-	* \`<tag>\`: Name of the tag for this release. For example, "v1.0.0".
-	* \`<release name>\`: Optional suffix for the release name.
+  if [[ $url =~ $re ]]; then
+      protocol=${BASH_REMATCH[1]}
+      separator=${BASH_REMATCH[2]}
+      hostname=${BASH_REMATCH[3]}
+      user=${BASH_REMATCH[4]}
+      repo=${BASH_REMATCH[5]%.git}
+  fi
 
-You can pass a list of files to upload as release assets by giving them after a
-\`--\` argument.
+  echo "$user/$repo"
+}
 
-If you supply text on \`STDIN\` it will be used as the release notes.
+guess_files ()
+{
+  local tag=$1
+  local assets_dir=dist
+  tag=${tag#v}
 
-EXAMPLES:
+  ls -1 "$assets_dir/"*"$tag"*
+  {
+    echo "CHANGELOG.md"
+    echo "RELEASE.md"
+  } | sed "s@^@$assets_dir/@" | xargs
 
-	$ $0 foca/mpp v1.0.0 -- pkg/*.tar.gz
+}
 
-	Creates a release named "mpp v1.0.0" and adds any tar.gz file in
-	\`./pkg\` as an asset.
+parse_args ()
+{
 
-	$ $0 foca/mpp v1.0.1 "Bugfixes" -- pkg/*.tar.gz < notes.md
 
-	Creates a release named "mpp v1.0.1: Bugfixes", adds any tar.gz
-	file in \`./pkg\` as an asset, and uses the contents of \`notes.md\`
-	as the release notes.
+  #
+  ## Input verification
+  #
+  TOKEN="$INPUT_TOKEN"
+  if [ -z "$TOKEN" ]; then
+  	>&2 echo "::error::missing: token (see log for details)"
+  	>&2 printf "\nERR: Invalid input: 'token' is required, and must be specified.\n"
+  	>&2 printf "\tNote: It's necessary to interact with Github's API.\n\n"
+  	>&2 printf "Try:\n"
+  	>&2 printf "\tuses: %s\n" "$PKG"
+  	>&2 printf "\twith:\n"
+  	>&2 printf "\t  token: \${{ secrets.GITHUB_TOKEN }}\n"
+  	>&2 printf "\t  ...\n\n"
+  	exit 1
+  fi
 
-NOTE:
+  # Try getting $G_tag from action input
+  G_tag="${INPUT_TAG:-$(git describe --tags 2>/dev/null)}"
 
-This uses your \`.netrc\` file to authenticate with GitHub. In order to run the
-script, make sure you have **both** \`api.github.com\` and \`upload.github.com\` in
-this file. For example:
+  # [fallback] Try getting $G_tag from Github context (only works on git-tag push action)
+  if [ -z "$G_tag" ]; then
+  	G_tag="$(echo "$GITHUB_REF" | grep 'refs/tags/' | awk -F/ '{ print $NF }')"
+  fi
 
-machine api.github.com
-  login foca
-  password <an access token>
-machine upload.github.com
-  login foca
-  password <an access token>
+  # If all ways of getting the $G_tag failed, exit with an error
+  if [ -z "$G_tag" ]; then
+  	>&2 echo "::error::missing: tag (see log for details)"
+  	>&2 printf "\nERR: Invalid input: 'tag' is required, and must be specified.\n"
+  	>&2 printf "Try:\n"
+  	>&2 printf "\tuses: %s\n" "$PKG"
+  	>&2 printf "\twith:\n"
+  	>&2 printf "\t  tag: v0.0.1\n"
+  	>&2 printf "\t  ...\n\n"
+  	>&2 printf "Note: To use \$tag from env variable set before, use:\n"
+  	>&2 printf '\twith:\n'
+  	>&2 printf "\t  tag: \${{ env.TAG }}\n"
+  	>&2 printf "\t  ...\n\n"
+  	exit 1
+  fi
 
-Generate this access token at https://github.com/settings/tokens and make sure
-it has access to the \`"repo"\` scope.
-EOS
-  exit 1;
-fi
+  # Verify that gzip: option is set to any of the allowed values
+  INPUT_GZIP=${INPUT_GZIP:-false}
+  if [ "$INPUT_GZIP" != "true" ] && [ "$INPUT_GZIP" != "false" ] && [ "$INPUT_GZIP" != "folders" ]; then
+  	>&2 echo "::error::invalid: gzip (see log for details)"
+  	>&2 printf "\nERR: Invalid input: 'gzip' can only be not set, or one of: true, false, folders\n"
+  	>&2 printf "\tNote: It defines what to do with assets before uploading them.\n\n"
+  	>&2 printf "Try:\n"
+  	>&2 printf "\tuses: %s\n" "$PKG"
+  	>&2 printf "\twith:\n"
+  	>&2 printf "\t  gzip: true\n"
+  	>&2 printf "\t  ...\n\n"
+  	exit 1
+  fi
 
-#[ -n "$2" ] || (usage; exit 1);
+  # Guess repo from remote
+  GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-$(guess_gh_id)}
 
-REPO="$1"
-shift
-#REPO="$(git config --get remote.origin.url)"
+  releases_url="https://api.github.com/repos/$GITHUB_REPOSITORY/releases"
 
-#TAG="$1"
-#shift
-TAG="$(git describe --tags --abbrev=0 --exact-match 2>/dev/null || true )"
+  #
+  ## Check for Github Release existence
+  #
+  # docs ref: https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name
+  G_release_id="$(gh_release_api "tags/$G_tag" | jq -r '.id | values')"
 
-if [[ -z "$TAG" ]]; then
-  echo "Not allowed to publish version from not a tag commit"
-  exit 1
-fi
+  if [ -n "$G_release_id" ] && [ "$INPUT_ALLOW_OVERRIDE" != "true" ]; then
+  	>&2 echo "::error::missing: allow_override (see log for details)"
+  	>&2 printf "\nERR: Release for tag='%s' already exists, and overriding is not allowed.\n" "$G_tag"
+  	>&2 printf "\tNote: Either use different 'tag:' name, or set 'allow_override:'\n\n"
+  	>&2 printf "Try:\n"
+  	>&2 printf "\tuses: %s\n" "$PKG"
+  	>&2 printf "\twith:\n"
+  	>&2 printf "\t  ...\n"
+  	>&2 printf "\t  allow_override: true\n\n"
+  	exit 1
+  fi
 
-NAME="$(basename "$REPO") ${TAG}"
-if [ -n "$1" -a "$1" != "--" ]; then
-  NAME="${NAME}: $1";
-  shift
-fi
+  # Ensure there are some input files
+  INPUT_FILES=${INPUT_FILES:-$(guess_files "$G_tag")}
+}
 
-BODY=""
-[ -t 0 ] || BODY=`cat`;
+create_release ()
+{
 
-if [ "$1" = "--" -a "$#" -ge "2" ]; then
-  shift
-  ASSETS="$@"
-fi
+  echo "::group::Create Release"
 
-set -x
+  TMP="$(mktemp -d)"
 
-# https://docs.github.com/en/rest/releases/releases#create-a-release
-payload=$(
-  jq --null-input \
-     --arg tag "$TAG"  \
-     --arg name "$TAG NEW" \
-     --arg body "$NAME$BODY" \
-     --arg latest "true" \
-     --arg target "$TAG" \
-     '{ tag_name: $tag, name: $name, body: $body, draft: true, make_latest: $latest }'
-     #'{ tag_name: $tag, name: $name, body: $body, draft: true, make_latest: $latest, target_commitish: $target }'
-)
+  method="POST"
+  full_url="$releases_url"
+  if [ -n "$G_release_id" ]; then
+    method="PATCH"
+    full_url="$full_url/$G_release_id"
+  fi
 
-       #--silent \
-       #--location \
-response=$(
-  curl --fail \
-       --netrc \
-       -H "Accept: application/vnd.github+json" \
-       -H "Authorization: Bearer $GH_TOKEN" \
-       --data "$payload" \
-       "https://api.github.com/repos/${REPO}/releases"
-)
+  # If `draft` is not set, while `files` are provided, then
+  #   1. Create Release as DRAFT
+  #   2. Upload all files as Release Assets
+  #   3. If all uploads succeed, publish the Release
+  draft="$INPUT_DRAFT"
+  if [ -z "$INPUT_DRAFT" ] && [ -n "$INPUT_FILES" ]; then
+    draft=true
+  fi
 
-# See: https://docs.github.com/en/rest/releases/assets#upload-a-release-asset
-upload_url="$(echo "$response" | jq -r .upload_url | sed -e "s/{?name,label}//")"
+  # Creating the object in a PATCH-friendly way
+  #   If POST:  https://developer.github.com/v3/repos/releases/#create-a-release,
+  #   If PATCH: https://developer.github.com/v3/repos/releases/#edit-a-release
+  status_code="$(jq -nc \
+    --arg tag_name         "$G_tag" \
+    --arg name             "$INPUT_NAME" \
+    --arg body             "$(printf '%s' "$INPUT_BODY" | sed 's|\\|\\\\|g')" \
+    --arg target_commitish "$INPUT_COMMITISH" \
+    --argjson draft        "${draft:-null}" \
+    --argjson prerelease   "${INPUT_PRERELEASE:-null}" \
+    '{$tag_name, $name, $body, $target_commitish, $draft, $prerelease} | del(.[] | select(. == null or . == ""))' | \
+    curl -sS -X "$method" -d @- \
+      --write-out "%{http_code}" -o "$TMP/$method.json" \
+      -H "Authorization: token $TOKEN" \
+      -H "Content-Type: application/json" \
+      "$full_url")"
 
-for file in $ASSETS; do
-  curl --netrc \
-       -X POST \
-       -H "Accept: application/vnd.github+json" \
-       -H "Authorization: Bearer $GH_TOKEN" \
-       --data-binary "@$file" \
-       "$upload_url?name=$(basename "$file")"
-done
+  if [ "$status_code" != "200" ] && [ "$status_code" != "201" ]; then
+    >&2 echo "::error::failed to create release (see log for details)"
+    >&2 printf "\n\tERR: %s to Github release has failed\n" "$method"
+    >&2 jq . < "$TMP/$method.json"
+    exit 1
+  fi
 
-# Copyright (c) 2016 Nicolas Sanguinetti <hi@nicolassanguinetti.info>
-#
-# Permission is hereby granted, free of charge, to any person
-# obtaining a copy of this software and associated documentation
-# files (the "Software"), to deal in the Software without
-# restriction, including without limitation the rights to use,
-# copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the
-# Software is furnished to do so, subject to the following
-# conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-# OTHER DEALINGS IN THE SOFTWARE.
+
+  G_release_id="$(jq '.id' < "$TMP/$method.json")"
+
+  # Make release ID available to other steps in user's workflow
+  echo "::set-output name=G_release_id::$G_release_id"
+  echo "::endgroup::"
+}
+
+upload_artifacts ()
+{
+
+  #
+  ## Handle, and prepare assets
+  #
+
+
+  if [ -z "$INPUT_FILES" ]; then
+  	>&2 echo "No assets to upload. All done."
+  	exit 0
+  fi
+
+  echo "::group::Upload Assets"
+
+  local assets=
+  assets=$(mktemp -d)
+
+
+  # This loop splits files on space
+  for entry in $INPUT_FILES; do
+  	# Well, that needs explaining…  If delimiter given in `-d` does not occur in string, `cut` always returns
+  	#   the original string, no matter what the field `-f` specifies.
+  	#
+  	# Prepend `:` to `$entry` to ensure match happens, because `-f` in `cut` is only respected when it does, and that way:
+  	#   * `-f 2` always contains the name of the asset
+  	#   * `-f 3` is either the custom name of the asset, or
+  	#            is empty, and needs to be set to value of `-f 2`
+  	asset_name="$(echo ":$entry" | cut -d: -f2)"
+  	asset_path="$(echo ":$entry" | cut -d: -f3)"
+
+  	if [ -z "$asset_path" ]; then
+  		asset_name="$(basename "$entry")"
+  		asset_path="$entry"
+  	fi
+
+    # this loop, expands possible globs
+  	for file in $asset_path; do
+  		# Error out on the only illegal combination:  compression disabled AND folder provided
+  		if [ "$INPUT_GZIP" = "false" ] && [ -d "$file" ]; then
+  			>&2 echo "::error::invalid: gzip and files combination (see log for details)"
+  			>&2 printf "\nERR: Invalid configuration: 'gzip' cannot be set to 'false' while there are 'folders/' provided.\n"
+  			>&2 printf "\tNote: Either set 'gzip: folders', or remove directories from the 'files:' list.\n\n"
+  			>&2 printf "Try:\n"
+  			>&2 printf "\tuses: %s\n" "$PKG"
+  			>&2 printf "\twith:\n"
+  			>&2 printf "\t  ...\n"
+  			>&2 printf "\t  gzip: folders\n"
+  			>&2 printf "\t  files: >\n"
+  			>&2 printf "\t    README.md\n"
+  			>&2 printf "\t    my-artifacts/\n"
+  			exit 1
+  		fi
+
+  		# Just copy files, if compression not enabled for all
+  		if [ "$INPUT_GZIP" != "true" ] && [ -f "$file" ]; then
+  			cp "$file" "$assets/$asset_name"
+  			continue
+  		fi
+
+  		# In any other case compress
+  		tar -czf "$assets/$asset_name.tgz"  "$file"
+  	done
+  done
+
+
+  # At this point all assets to-be-uploaded (if any), are in `$assets/` folder
+  echo "Files to be uploaded to Github:"
+  ls "$assets/"
+
+  local current_assets=
+
+  # If override is allowed, make sure there's no asset name collisions with ones already uploaded
+  if [ "$INPUT_ALLOW_OVERRIDE" = "true" ]; then
+  	# Get list of all assets as a JSON map of: name->id
+  	#   docs ref: https://developer.github.com/v3/repos/releases/#list-assets-for-a-release
+  	current_assets="$(gh_release_api "$G_release_id/assets" | jq -r 'map({ (.name): .id }) | add')"
+  fi
+
+
+  local upload_url="${releases_url//api/uploads}"
+  local status_code=
+  local asset_id=
+
+  for asset in "$assets"/*; do
+  	file_name="$(basename "$asset")"
+
+  	# If a list of previously uploaded assets is available, and contains
+  	#   item with the same name as currently uploaded, delete it first.
+  	if [ -n "$current_assets" ]; then
+  		asset_id="$(echo "$current_assets" | jq ".\"$file_name\"")"
+  		if [ -n "$asset_id" ]; then
+  			# docs ref: https://developer.github.com/v3/repos/releases/#delete-a-release-asset
+  			gh_release_api "assets/$asset_id" DELETE > /dev/null
+  		fi
+  	fi
+
+  	# docs ref: https://developer.github.com/v3/repos/releases/#upload-a-release-asset
+  	status_code="$(curl -sS  -X POST \
+  		--write-out "%{http_code}" -o "$TMP/$file_name.json" \
+  		-H "Authorization: token $TOKEN" \
+  		-H "Content-Length: $(stat -c %s "$asset")" \
+  		-H "Content-Type: $(file -b --mime-type "$asset")" \
+  		--upload-file "$asset" \
+  		"$upload_url/$G_release_id/assets?name=$file_name")"
+
+  	if [ "$status_code" -ne "201" ]; then
+  		>&2 echo "::error::failed to upload asset: $file_name (see log for details)"
+  		>&2 printf "\n\tERR: Failed asset upload: %s\n" "$file_name"
+  		>&2 jq . < "$TMP/$file_name.json"
+  		exit 1
+  	fi
+  done
+
+  echo "::endgroup::"
+}
+
+finish_release ()
+{
+  local status_code=
+
+  if [ -n "$INPUT_DRAFT" ]; then
+    >&2 echo "Draft status already correct. All done."
+    exit 0
+  fi
+
+  echo "::group::Complete Release"
+
+  # Publish Release
+  #   docs ref: https://developer.github.com/v3/repos/releases/#edit-a-release
+  status_code="$(curl -sS  -X PATCH  -d '{"draft": false}' \
+    --write-out "%{http_code}" -o "$TMP/publish.json" \
+    -H "Authorization: token $TOKEN" \
+    -H "Content-Type: application/json" \
+    "$releases_url/$G_release_id")"
+
+  if [ "$status_code" != "200" ]; then
+    >&2 echo "::error::failed to complete release (see log for details)"
+    >&2 printf "\n\tERR: Final publishing of the ready Github Release has failed\n"
+    >&2 jq . < "$TMP/publish.json"
+    exit 1
+  fi
+
+  echo "::endgroup::"
+}
+
+parse_args
+create_release
+upload_artifacts
+finish_release
+
+>&2 echo "All done."
