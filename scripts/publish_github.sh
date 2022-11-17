@@ -85,12 +85,13 @@ fi
 
 set -x
 
+# https://docs.github.com/en/rest/releases/releases#create-a-release
 payload=$(
   jq --null-input \
      --arg tag "$TAG" \
-     --arg name "$NAME" \
+     --arg name "$NAME - from new script" \
      --arg body "$BODY" \
-     '{ tag_name: $tag, name: $name, body: $body, draft: true }'
+     '{ tag_name: $tag, name: $name, body: $body, draft: true, make_latest: true }'
 )
 
        #--silent \
@@ -105,11 +106,13 @@ response=$(
        "https://api.github.com/repos/${REPO}/releases"
 )
 
+# See: https://docs.github.com/en/rest/releases/assets#upload-a-release-asset
 upload_url="$(echo "$response" | jq -r .upload_url | sed -e "s/{?name,label}//")"
 
 for file in $ASSETS; do
   curl --netrc \
-       --header "Content-Type:application/gzip" \
+       -H "Accept: application/vnd.github+json" \
+       -H "Authorization: Bearer $GH_TOKEN" \
        --data-binary "@$file" \
        "$upload_url?name=$(basename "$file")"
 done

@@ -160,7 +160,7 @@ tasks:
       - build
     cmds:
       - ls -ahl dist/
-      - echo ./scripts/publish_github.sh
+      - cat dist/RELEASE.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
 
   update:
     desc: Synchronize git
