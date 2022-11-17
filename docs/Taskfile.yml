@@ -34,6 +34,10 @@ tasks:
   #  cmds:
   #    - for c in $(task -l | grep -Eo '[^ ]+_build'); do task $c ; done
 
+  version_list:
+    desc: List documentation versions
+    cmds:
+      - mike list
 
   # via git on branch gh_page
   publish_gh:
