@@ -1,2 +1,5 @@
-### Feature
-* Support for mike ([`3125c8c`](https://github.com/mrjk/python-project-poetry-template/commit/3125c8c7584d098539c8afb17e529c80984227e2))
+### Fix
+* Simple bug ([`3d8b381`](https://github.com/mrjk/python-project-poetry-template/commit/3d8b3810074afbe0ffe11b792a7056d858aa03d3))
+
+### Documentation
+* Add documentation about tooling ([`cbf8cfa`](https://github.com/mrjk/python-project-poetry-template/commit/cbf8cfaf4f563641e688a8fbfb1d3dfdd2341a3f))
