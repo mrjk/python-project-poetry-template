@@ -28,3 +28,12 @@ Optional developper deps:
     * Used to validate commits respect some standards
 * commitizen (optional)
     * Used to create compliant git messages
+
+
+## Documentation
+
+Interesting plugins:
+
+* mkdocs-version-annotations
+* mkdocs-latest-release-plugin
+*

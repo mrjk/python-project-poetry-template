@@ -47,6 +47,8 @@ watch:
 plugins:
   - search
   - mkdocstrings
+  - mike
+
   #- schema_reader:
   #    include:
   #      - "build/paasify_yml_schema.json"
