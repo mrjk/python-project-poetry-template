@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.12.0 (2022-11-17)
+### Feature
+* Support for mike ([`3125c8c`](https://github.com/mrjk/python-project-poetry-template/commit/3125c8c7584d098539c8afb17e529c80984227e2))
+
 ## v0.11.11 (2022-11-17)
 ### Fix
 * Ci scripts ([`d78a0fe`](https://github.com/mrjk/python-project-poetry-template/commit/d78a0fe72d648be5066e4ee302335aa400ac4330))
