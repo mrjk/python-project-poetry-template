@@ -69,11 +69,11 @@ commit_parser = 'semantic_release.history.angular_parser'
 # Run build ?
 #build_command = 'task build' # aka poetry build
 build_command = false
+
 dist_path = 'dist/'
 #remove_dist = false # uneeded anymore as we dont build wi pre-commit anymore
 upload_to_release = false
 ignore_token_for_push = true
-#upload_to_release = false
 
 # Publish to github
 # Require: export GH_TOKEN=
