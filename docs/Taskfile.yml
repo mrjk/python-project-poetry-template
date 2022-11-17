@@ -45,8 +45,13 @@ tasks:
         sh: git rev-parse --abbrev-ref HEAD
       APP_VERSION:
         sh: poetry version -s 2>/dev/null || true
+      APP_MINOR:
+        sh: git describe --tags --abbrev=0 | sed -E  's/(v?[0-9]+\.([0-9]+)).*/\1/'
     cmds:
-      - mkdocs gh-deploy --message 'Deployed {{.APP_VERSION}} - {{.GIT_REF}} from {{.GIT_BRANCH}}'
+      - mike deploy --update-aliases {{.APP_MINOR}} latest
+      - git push origin gh-pages:gh-pages
+#      - mkdocs gh-deploy --message 'Deployed {{.APP_VERSION}} - {{.GIT_REF}} from {{.GIT_BRANCH}}'
+
 
   # MkDocs (Local Python)
   # -----------------
