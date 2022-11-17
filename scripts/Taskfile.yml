@@ -7,79 +7,82 @@ vars:
   DIRENV_VERSION: 'latest'
   TASK_VERSION: 'v3.18.0'
 
-  # Environment vars
-  #LOCAL_BIN:
-  #  sh: echo "${LOCAL_BIN:-$PWD/.bin}"
-  #VIRTUALENV:
-  #  sh: echo "${VIRTUALENV:-$PWD/.venv}"
-  #PYTHON_BIN:
-  #  sh: echo "${VIRTUALENV:-$PWD/.venv}/bin"
-
 tasks:
-  #none:
-  #  desc: Install project dependencies
-  #cmds:
-  #  - "echo Result: {{.VIRTUALENV}}"
 
-  #bootstrap_task:
-  #  desc: Install project dependencies
-  #  cmds:
-  #    - |2
-  #      if ! task --version | grep -q "{{.TASK_VERSION}}"; then
-  #        mkdir -p "{{.LOCAL_BIN}}"
-  #        GITHUB_RELEASE_URL="https://github.com/go-task/task/releases/download"
-  #        TASK_ARCH=amd64
-  #        TASK_URL="${GITHUB_RELEASE_URL}/{{.TASK_VERSION}}/task_linux_${TASK_ARCH}.tar.gz"
-  #        curl -L --output /tmp/go-task.tar.gz "$TASK_URL"
-  #        tar xzvf /tmp/go-task.tar.gz  -C "{{.LOCAL_BIN}}" task
-  #        >&2 echo "INFO: Task has been installed ({{.TASK_VERSION}})"
-  #      else
-  #        >&2 echo "INFO: Task is already installed ({{.TASK_VERSION}})"
-  #      fi
 
-  #bootstrap_poetry:
-  #  desc: Install Poetry
-  #  #sources:
-  #  #  - poetry.lock
-  #  #generates:
-  #  #  - "$VIRTUAL_ENV/bin/python"
-  #  cmds:
-  #    #- python -m pip install --upgrade pip virtualenv
-  #    #- '[[ -f "{{.PYTHON_BIN}}/python" ]] || virtualenv {{.VIRTUALENV}}'
+  # Git Workflow
+  # ---------------
+  git_merge_develop_into_main:
+    desc: Merge git develop branch into main
+    cmds:
+      - git checkout main
+      - git pull origin
+      - git fetch origin develop:develop
+      - 'git merge --no-ff -m "chore: merge develop into main" develop'
+      - git push --set-upstream origin main
 
-  #    #- "{{.PYTHON_BIN}}/pip install --upgrade poetry=={{.POETRY_VERSION}}"
-  #    #- "{{.PYTHON_BIN}}/poetry config virtualenvs.path {{.VIRTUALENV}}"
-  #    #- "{{.PYTHON_BIN}}/poetry config virtualenvs.create true"
-  #    #- "{{.PYTHON_BIN}}/poetry install -vv --no-interaction --no-root"
+  git_merge_master_into_develop:
+    desc: Merge git main branch into develop
+    cmds:
+      - git checkout develop
+      - git pull origin
+      - git fetch origin main:main
+      - 'git merge --no-ff -m "chore: update develop from main" main'
+      - git push --set-upstream origin develop
 
-#  bootstrap:
-#    desc: Install project dependencies
-#    #deps:
-#    #  - bootstrap_poetry
-#    #  - bootstrap_task
-#    sources:
-#      - poetry.lock
-#    cmds:
-#      - poetry install -vv --no-interaction --no-root
-#
-#
-#  setup:
-#    desc: Install project dependencies
-#    deps:
-#      - bootstrap
-#    cmds:
-#      - poetry install -vv --no-interaction --only-root
-#
-#  update:
-#    desc: Synchronize git
-#    cmd:
-#      - git fetch -a && git pull
-#
-#  release:
-#    desc: Bump code devel version, generate changelog, create a tag
-#    cmds:
-#      - bash scripts/release.sh {{.CLI_ARGS}}
 
+  # Release
+  # ---------------
+
+  release_stable:
+    desc: Pipeline to publish stable release
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
+    cmds:
+      - task: git_merge_develop_into_main
+      - task release_stable
+      - task: git_merge_master_into_develop
+
+  release_beta:
+    desc: Pipeline to publish beta release
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
+    cmds:
+      - task release_beta
+
+
+
+
+
+  # Helpers
+  # ---------------
+
+  bump_minor:
+    desc: When you want to work on new features (beta)
+    cmds:
+      - poetry run semantic-release version --prerelease
+
+  dev_changlog:
+    desc: Show currently modified things
+    cmds:
+      - poetry run semantic-release changelog --noop --unreleased
+
+
+  fake_fix:
+    desc: Generate fake patch commits
+    cmds:
+      - 'git commit --allow-empty  -m "fix: simple bugfix1"'
+      - 'git commit --allow-empty  -m "fix: simple bugfix2"'
+      - 'git commit --allow-empty  -m "fix: simple bugfix3"'
+
+  fake_feat:
+    desc: Generate fake feature commits
+    cmds:
+      - 'git commit --allow-empty  -m "feat: new feature1"'
+      - 'git commit --allow-empty  -m "feat: new feature2"'
+      - 'git commit --allow-empty  -m "feat: new feature3"'
 
 
   # Project CI
@@ -123,3 +126,38 @@ tasks:
     sources: *PAASIFY_CODE
     cmds:
       - pylint --output-format=colorized {{.SRC_DIR}}
+
+
+  # External tools bootstrap
+  # ---------------
+
+  #bootstrap_task:
+  #  desc: Install project dependencies
+  #  cmds:
+  #    - |2
+  #      if ! task --version | grep -q "{{.TASK_VERSION}}"; then
+  #        mkdir -p "{{.LOCAL_BIN}}"
+  #        GITHUB_RELEASE_URL="https://github.com/go-task/task/releases/download"
+  #        TASK_ARCH=amd64
+  #        TASK_URL="${GITHUB_RELEASE_URL}/{{.TASK_VERSION}}/task_linux_${TASK_ARCH}.tar.gz"
+  #        curl -L --output /tmp/go-task.tar.gz "$TASK_URL"
+  #        tar xzvf /tmp/go-task.tar.gz  -C "{{.LOCAL_BIN}}" task
+  #        >&2 echo "INFO: Task has been installed ({{.TASK_VERSION}})"
+  #      else
+  #        >&2 echo "INFO: Task is already installed ({{.TASK_VERSION}})"
+  #      fi
+
+  #bootstrap_poetry:
+  #  desc: Install Poetry
+  #  #sources:
+  #  #  - poetry.lock
+  #  #generates:
+  #  #  - "$VIRTUAL_ENV/bin/python"
+  #  cmds:
+  #    #- python -m pip install --upgrade pip virtualenv
+  #    #- '[[ -f "{{.PYTHON_BIN}}/python" ]] || virtualenv {{.VIRTUALENV}}'
+
+  #    #- "{{.PYTHON_BIN}}/pip install --upgrade poetry=={{.POETRY_VERSION}}"
+  #    #- "{{.PYTHON_BIN}}/poetry config virtualenvs.path {{.VIRTUALENV}}"
+  #    #- "{{.PYTHON_BIN}}/poetry config virtualenvs.create true"
+  #    #- "{{.PYTHON_BIN}}/poetry install -vv --no-interaction --no-root"

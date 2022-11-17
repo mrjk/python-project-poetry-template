@@ -1,7 +1,16 @@
-name: Release Stable
+name: Release Version
 
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: 'Prerelease type: develop or stable'
+        default: "develop"
+        type: choice
+        options:
+          - develop
+          - stable
+
 
 env:
   PYTHON_VERSION: "3.9"
@@ -82,37 +91,5 @@ jobs:
           GIT_AUTHOR_EMAIL: mrjk.78@gmail.com
           GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
         run: |
-          task -v gh:release_stable
-
-        # set -x
-        # echo "PATH=$PATH"
-        # command -v semantic-release || true
-        # ls -ahl .venv/bin || true
-
-
-#      # Run tests
-#      # ---------------------
-#      - name: Run black
-#        run: |
-#          source ~/.venv/bin/activate
-#          black --check --verbose paasify
-#
-#      - name: Run unit tests
-#        run: |
-#          set -x
-#          source ~/.venv/bin/activate
-#          env | sort
-#          cd $GITHUB_WORKSPACE
-#          ls -ahl ~/.venv/bin/
-#          python -m site
-#          python -m pytest
-#
-#          pytest tests
-#
-      # echo "PWD = ${PWD//\//#}"
-      # ls -ahl "$HOME"
-      # ls -ahl /home/runner/work/paasify/paasify || true
-      # env | sort
-
-      # echo ===============
-      # cd /home/runner/work/paasify/paasify
+          task -v release_version || true
+          task -v gh:release_${{github.event.inputs.target}}
