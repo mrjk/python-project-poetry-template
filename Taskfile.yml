@@ -147,7 +147,7 @@ tasks:
       - clean
     cmds:
       - poetry build
-      - cp CHANGELOG.md.md dist/CHANGELOG.md.md
+      - cp CHANGELOG.md dist/CHANGELOG.md
       - cp VERSION_NOTES.md dist/VERSION_NOTES.md
 
   #publish:
