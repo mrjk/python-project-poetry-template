@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.4 (2022-11-17)
+### Fix
+* Simple bugfix 145sad ([`407bf91`](https://github.com/mrjk/python-project-poetry-template/commit/407bf918bc6bf4f67803a9e2270689bd0f4dd3e8))
+* Simple bugfix 145sad ([`1a5b7ea`](https://github.com/mrjk/python-project-poetry-template/commit/1a5b7ea7723517fcf4f0ef56b3730660835654af))
+* Simple bugfix 145sad ([`b961d4b`](https://github.com/mrjk/python-project-poetry-template/commit/b961d4b0a21b65d03450f8fe79a61bdc2df24a6b))
+
 ## v0.11.3 (2022-11-17)
 ### Fix
 * Simple bugfix 145sad ([`202a3e3`](https://github.com/mrjk/python-project-poetry-template/commit/202a3e3dd9b2cd5f0fc72823ec7d4bd19e3a1c1e))
