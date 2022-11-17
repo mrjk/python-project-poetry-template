@@ -92,7 +92,7 @@ tasks:
     cmds:
       - poetry run semantic-release changelog --unreleased > VERSION_NOTES.md
 
-  release_version:
+  release_status:
     desc: Show release status
     cmds:
       - poetry run ./scripts/versions.sh
