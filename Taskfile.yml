@@ -147,7 +147,6 @@ tasks:
     desc: Publish python package on pypi.org
     deps:
       - build
-      - build_changelog
     cmds:
       - poetry publish
 
@@ -160,7 +159,6 @@ tasks:
     vars:
 
     deps:
-      - build_changelog
       - build
     cmds:
       - ls -ahl dist/
