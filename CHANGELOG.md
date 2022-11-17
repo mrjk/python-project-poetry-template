@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.9-beta.14 (2022-11-16)
+### Fix
+* Wip ([`f541703`](https://github.com/mrjk/python-project-poetry-template/commit/f54170331b2b9b7a6b0d5d43283d62aebfbb3f70))
+
 ## v0.10.9-beta.13 (2022-11-16)
 ### Fix
 * Simple bugfix 92 ([`a6fd8bc`](https://github.com/mrjk/python-project-poetry-template/commit/a6fd8bcb218abe40398d0440c7bca9f41e000ac0))
