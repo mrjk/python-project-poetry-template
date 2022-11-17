@@ -148,7 +148,7 @@ tasks:
     cmds:
       - poetry build
       - cp CHANGELOG.md dist/CHANGELOG.md
-      - cp VERSION_NOTES.md dist/VERSION_NOTES.md
+      - cp VERSION_NOTES.md dist/RELEASE.md
 
   #publish:
   #  desc: Create a python package
