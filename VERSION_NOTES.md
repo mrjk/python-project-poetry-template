@@ -1,3 +1,5 @@
 ### Fix
-* Mike bugs ([`7b7df65`](https://github.com/mrjk/python-project-poetry-template/commit/7b7df657b4a0db51b887ec5dae70a242fbe83b42))
-* Mike bugs ([`1fe26cd`](https://github.com/mrjk/python-project-poetry-template/commit/1fe26cd94702de5c492313206814b56667ff2dce))
+* Mike bugs ([`b3658b4`](https://github.com/mrjk/python-project-poetry-template/commit/b3658b42a20dc5ee9ef957f5c102a6fd92464512))
+
+### Documentation
+* Update docs ([`890a002`](https://github.com/mrjk/python-project-poetry-template/commit/890a002cd9354cce1b3ef7fa58b53ae251feb8e4))
