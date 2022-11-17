@@ -113,8 +113,8 @@ upload_url="$(echo "$response" | jq -r .upload_url | sed -e "s/{?name,label}//")
 
 for file in $ASSETS; do
   curl --netrc \
-       -X PATCH \
-       -H "Accept: $(file -b --mime-type $file)" \
+       -X POST \
+       -H "Accept: application/vnd.github+json" \
        -H "Authorization: Bearer $GH_TOKEN" \
        --data-binary "@$file" \
        "$upload_url?name=$(basename "$file")"
