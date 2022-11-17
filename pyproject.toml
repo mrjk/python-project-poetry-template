@@ -61,7 +61,7 @@ changelog_file = "CHANGELOG.md"
 #build_command = 'poetry build'
 build_command = 'task build'
 dist_path = 'dist/'
-#remove_dist = false
+remove_dist = false
 #upload_to_release = true
 upload_to_release = false
 
