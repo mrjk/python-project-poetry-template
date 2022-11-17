@@ -6,31 +6,23 @@ vars:
   SRC_DIR: myprj
   TEST_DIR: tests/
 
-#  RELEASE:
-#    sh: ./build_target.sh release
-#  GIT_VERSION:
-#    sh: ./build_target.sh git
-#  DOCKER_VERSION:
-#    sh: ./build_target.sh docker
-#  PKG_VERSION:
-#    sh: ./build_target.sh pkg
-#    #sh: python -m {{.SRC_DIR}}.version
-#
-
   # GIT_TAG:
   #   sh: git describe --tags 2>/dev/null || echo devel
   # GIT_BRANCH:
   #   sh: git rev-parse --abbrev-ref HEAD
-  # PAASIFY_VERSION:
+  # PRJ_VERSION:
   #   sh: poetry version -s
 
-  # #PAASIFY_RELEASE=$(poetry version -s)
-  # PAASIFY_RELEASE: latest
 
 includes:
   #doc:
   #  taskfile: ./docs/Taskfile.yml
   #  dir: ./docs
+
+  gh:
+    taskfile: ./.github/Taskfile.yml
+    dir: .
+    #internal: true
 
   dev:
     taskfile: ./scripts/Taskfile.yml
@@ -103,49 +95,75 @@ tasks:
       CURRENT_BRANCH:
         sh: git rev-parse --abbrev-ref HEAD
     cmds:
-      - '[[ "{{.CURRENT_BRANCH}}" == main ]]'
+      - |2
+        if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
+          echo "You must checkout main first"
+          exit 1
+        fi
 
-
-      #- git fetch origin || true
       #- git checkout main
-      - git pull origin || true
+      #- git pull origin
+
+      #- git fetch origin develop:develop
+      #- 'git merge --no-ff -m "chore: merge develop into main" develop'
+
+      - semantic-release -D tag_commit=true publish
+      #- git push origin
+
+      #- git checkout develop
+      #- 'git merge --no-ff -m "chore: update develop from main" main'
+      #- git push --set-upstream origin develop
+
+      #- |2
+      #  if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
+      #    git checkout $CURR_BRANCH
+      #  fi
+
+
+  release_prod_OLD:
+    desc: Bump code stable version, generate changelog, create a tag
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
+    cmds:
+
+      - git checkout main
+      - git pull origin
 
       - git fetch origin develop:develop
       - 'git merge --no-ff -m "chore: merge develop into main" develop'
 
       - semantic-release -D tag_commit=true publish
-      - git push origin || true
+      - git push origin
 
       - git checkout develop
       - 'git merge --no-ff -m "chore: update develop from main" main'
-      - git push --set-upstream origin develop || true
+      - git push --set-upstream origin develop
 
-      - git checkout $CURR_BRANCH || true
+      - |2
+        if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
+          git checkout $CURR_BRANCH
+        fi
 
   # Should go in DEV
   release_beta:
     desc: Bump code stable version, generate changelog, create a tag
-    #deps:
-    #  - build
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
     cmds:
-      - git fetch origin || true
       - git checkout develop
-      - git pull origin || true
+      - git pull origin
       - >
         semantic-release
         -D tag_commit=true
         -D branch=develop
-        publish  --prerelease
+        publish --prerelease
         -v DEBUG
-      - git push origin || true
+      - git push origin
 
       # V1 WORKING
       #- ./scripts/release.sh {{.CLI_ARGS}}
-
-
-#      - echo -e "# What's new ?\n\n## List of changes\n" > dist/RELEASE.md
-#      - semantic-release changelog --unreleased >> dist/RELEASE.md
-#      - semantic-release publish -D remove_dist=False
 
       #- bash scripts/release.sh {{.CLI_ARGS}}
       # GH
@@ -159,8 +177,6 @@ tasks:
   build_changelog:
     cmds:
       - semantic-release changelog --unreleased > VERSION_NOTES.md
-      - semantic-release changelog --unreleased
-      - semantic-release changelog --released
 
   build:
     desc: Create a python package
@@ -168,15 +184,18 @@ tasks:
       - clean
     cmds:
       - poetry build
-      - cp VERSION_NOTES.md dist/VERSION_NOTES.md
+      - cp CHANGELOG.md dist/CHANGELOG.md
+      - cp VERSION_NOTES.md dist/RELEASE.md
 
-  #publish:
-  #  desc: Create a python package
-  #  interactive: true
-  #  deps:
-  #    - pkg_build
-  #  cmds:
-  #    - poetry publish
+  publish_gh:
+    desc: Create a python package
+    interactive: true
+    deps:
+      - build_changelog
+      - build
+    cmds:
+      - ls -ahl dist/
+      - cat VERSION_NOTES.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
 
   update:
     desc: Synchronize git

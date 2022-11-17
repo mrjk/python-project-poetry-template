@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-project-poetry-template"
-version = "0.10.8"
+version = "0.10.9-beta.14"
 description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
@@ -46,7 +46,7 @@ commit_message = "semantic-release new version: version {version}" # NEVER CHANG
 # pipeline hooks
 pre_commit_command = "task build_changelog"
 # pre_commit_command =
-include_additional_files = 'VERSION_NOTES.md,CHANGELOG.md'
+include_additional_files = 'VERSION_NOTES.md'
 
 tag_commit = false # By default, we don not tag, unless explicitely set
 tag_format = "v{version}" # NEVER CHANGE THIS ONCE SET
@@ -61,12 +61,13 @@ changelog_file = "CHANGELOG.md"
 #build_command = 'poetry build'
 build_command = 'task build'
 dist_path = 'dist/'
-#remove_dist = false
-upload_to_release = true
+remove_dist = false
+#upload_to_release = true
+upload_to_release = false
 
 # Publish to github
 # Require: export GH_TOKEN=
-upload_to_repository = true
+upload_to_repository = false # Disable wheel upload
 
 # Publish to Pypi
 # Require: PYPI_TOKEN REPOSITORY_USERNAME PYPI_USERNAME PYPI_PASSWORD

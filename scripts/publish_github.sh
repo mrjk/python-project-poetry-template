@@ -56,9 +56,9 @@ fi
 
 #[ -n "$2" ] || (usage; exit 1);
 
-#REPO="$1"
-#shift
-REPO="$(git config --get remote.origin.url)"
+REPO="$1"
+shift
+#REPO="$(git config --get remote.origin.url)"
 
 #TAG="$1"
 #shift
@@ -83,31 +83,39 @@ if [ "$1" = "--" -a "$#" -ge "2" ]; then
   ASSETS="$@"
 fi
 
+set -x
+
+# https://docs.github.com/en/rest/releases/releases#create-a-release
 payload=$(
   jq --null-input \
-     --arg tag "$TAG" \
-     --arg name "$NAME" \
-     --arg body "$BODY" \
-     '{ tag_name: $tag, name: $name, body: $body, draft: true }'
+     --arg tag "$TAG"  \
+     --arg name "$TAG NEW" \
+     --arg body "$NAME$BODY" \
+     --arg latest "true" \
+     --arg target "$TAG" \
+     '{ tag_name: $tag, name: $name, body: $body, draft: true, make_latest: $latest }'
+     #'{ tag_name: $tag, name: $name, body: $body, draft: true, make_latest: $latest, target_commitish: $target }'
 )
 
-echo "WIP"
-exit 1
-
+       #--silent \
+       #--location \
 response=$(
   curl --fail \
        --netrc \
-       --silent \
-       --location \
+       -H "Accept: application/vnd.github+json" \
+       -H "Authorization: Bearer $GH_TOKEN" \
        --data "$payload" \
        "https://api.github.com/repos/${REPO}/releases"
 )
 
+# See: https://docs.github.com/en/rest/releases/assets#upload-a-release-asset
 upload_url="$(echo "$response" | jq -r .upload_url | sed -e "s/{?name,label}//")"
 
 for file in $ASSETS; do
   curl --netrc \
-       --header "Content-Type:application/gzip" \
+       -X POST \
+       -H "Accept: application/vnd.github+json" \
+       -H "Authorization: Bearer $GH_TOKEN" \
        --data-binary "@$file" \
        "$upload_url?name=$(basename "$file")"
 done

@@ -1,0 +1,46 @@
+version: '3'
+
+
+tasks:
+
+  merge_master_into_develop:
+    cmds:
+      - git checkout develop
+      - git pull origin
+      - git fetch origin main:main
+      - 'git merge --no-ff -m "chore: update develop from main" main'
+
+  merge_develop_into_master:
+    cmds:
+      - git checkout main
+      - git pull origin
+      - git fetch origin develop:develop
+      - 'git merge --no-ff -m "chore: merge develop into main" develop'
+
+  release_prod:
+    desc: Bump code stable version, generate changelog, create a tag
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
+    cmds:
+      - task: merge_develop_into_master
+      - task release_prod
+      - task: merge_master_into_develop
+
+ #     - git checkout main
+ #     - git pull origin
+
+ #     - git fetch origin develop:develop
+ #     - 'git merge --no-ff -m "chore: merge develop into main" develop'
+
+ #     - semantic-release -D tag_commit=true publish
+ #     - git push origin
+
+ #     - git checkout develop
+ #     - 'git merge --no-ff -m "chore: update develop from main" main'
+ #     - git push --set-upstream origin develop
+
+ #     - |2
+ #       if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
+ #         git checkout $CURR_BRANCH
+ #       fi
