@@ -4,8 +4,7 @@ FROM python:3.8
 
 RUN mkdir /app
 #COPY . /app
-COPY cafram/cafram /app
-COPY paasify/ /app
+COPY myprj/ /app
 COPY pyproject.toml /app
 WORKDIR /app
 ENV PYTHONPATH=${PYTHONPATH}:${PWD}

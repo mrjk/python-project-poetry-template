@@ -1,4 +1,4 @@
-# Paasify Maintainers
+# Myprj Maintainers
 
 We aim to make sure this project has longevity, and to that end we want to make
 adding new maintainers a simple process.

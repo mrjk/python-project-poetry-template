@@ -1,4 +1,4 @@
-name: Install Paasify
+name: Install Project
 
 on:
   workflow_call:

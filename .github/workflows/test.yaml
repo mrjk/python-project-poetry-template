@@ -3,16 +3,20 @@ name: Test workflow
 on:
   workflow_dispatch:
   push:
-    # branches-ignore:
-    #   - "*-alpha"
-    #   - "*-beta"
-    #   - "*-rc"
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - develop
+    branches:
+      - main
+      - develop
+    branches-ignore:
+      - "*-alpha"
+      - "*-beta"
+      - "*-rc"
+  pull_request:
+    branches:
+      - main
+      - develop
 
 env:
+  # Is it still required ?
   VIRTUAL_ENV: .venv
 
 jobs:
@@ -79,30 +83,3 @@ jobs:
           poetry run myprj
           echo PATH=$PATH
           # myprj
-
-#      # Run tests
-#      # ---------------------
-#      - name: Run black
-#        run: |
-#          source ~/.venv/bin/activate
-#          black --check --verbose paasify
-#
-#      - name: Run unit tests
-#        run: |
-#          set -x
-#          source ~/.venv/bin/activate
-#          env | sort
-#          cd $GITHUB_WORKSPACE
-#          ls -ahl ~/.venv/bin/
-#          python -m site
-#          python -m pytest
-#
-#          pytest tests
-#
-      # echo "PWD = ${PWD//\//#}"
-      # ls -ahl "$HOME"
-      # ls -ahl /home/runner/work/paasify/paasify || true
-      # env | sort
-
-      # echo ===============
-      # cd /home/runner/work/paasify/paasify
