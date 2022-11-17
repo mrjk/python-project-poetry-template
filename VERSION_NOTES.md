@@ -1,3 +1,3 @@
 ### Fix
-* Disable github release ([`f842c22`](https://github.com/mrjk/python-project-poetry-template/commit/f842c22fd8032418c959680761aeac7c27968309))
-* Disable github release ([`3686e8f`](https://github.com/mrjk/python-project-poetry-template/commit/3686e8f2ad24143e7a418a8d6c53b4e135325e38))
+* Simple bugfix 145sad ([`bb8c1a8`](https://github.com/mrjk/python-project-poetry-template/commit/bb8c1a87aab4831fae719534a6954b181c3ca37b))
+* Simple bugfix 145sad ([`8887184`](https://github.com/mrjk/python-project-poetry-template/commit/88871848974523563a9b77768429aa2b2e4be2e9))
