@@ -1,2 +1,2 @@
 ### Fix
-* Ci ([`95cd6f3`](https://github.com/mrjk/python-project-poetry-template/commit/95cd6f33928eaea6d6d3be375a72194afcfdf118))
+* Ci ([`e847ce2`](https://github.com/mrjk/python-project-poetry-template/commit/e847ce2860797fc1fe8d4a38d60eb03760f0c061))
