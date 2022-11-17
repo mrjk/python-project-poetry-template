@@ -1,14 +1,9 @@
 version: '3'
 
+# Thoses tasks allow to run GithubActions
+
 
 tasks:
-
-  merge_master_into_develop:
-    cmds:
-      - git checkout develop
-      - git pull origin
-      - git fetch origin main:main
-      - 'git merge --no-ff -m "chore: update develop from main" main'
 
   merge_develop_into_master:
     cmds:
@@ -16,16 +11,35 @@ tasks:
       - git pull origin
       - git fetch origin develop:develop
       - 'git merge --no-ff -m "chore: merge develop into main" develop'
+      - git push --set-upstream origin main
 
-  release_prod:
-    desc: Bump code stable version, generate changelog, create a tag
+  merge_master_into_develop:
+    cmds:
+      - git checkout develop
+      - git pull origin
+      - git fetch origin main:main
+      - 'git merge --no-ff -m "chore: update develop from main" main'
+      - git push --set-upstream origin develop
+
+  release_stable:
+    desc: Pipeline to run to apply
     vars:
       CURRENT_BRANCH:
         sh: git rev-parse --abbrev-ref HEAD
     cmds:
       - task: merge_develop_into_master
-      - task release_prod
+      - task release_stable
       - task: merge_master_into_develop
+
+
+  release_beta:
+    desc: Pipeline to run to apply
+    vars:
+      CURRENT_BRANCH:
+        sh: git rev-parse --abbrev-ref HEAD
+    cmds:
+      - task release_beta
+
 
  #     - git checkout main
  #     - git pull origin
