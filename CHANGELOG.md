@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.0 (2022-11-17)
+
+
 ## v0.11.0-beta.1 (2022-11-17)
 ### Feature
 * Add direnv support with secrets ([`846cd1c`](https://github.com/mrjk/python-project-poetry-template/commit/846cd1c63cf6526dd6fd1352adbb2a5ddae33991))
