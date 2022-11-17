@@ -96,7 +96,7 @@ tasks:
     # PYPI_TOKEN set will release a version on pypi
     cmds:
       - |2
-        if [[ "{{.CURRENT_BRANCH}}" != main ]]; then
+        if [[ "$(git rev-parse --abbrev-ref HEAD)" != main ]]; then
           echo "You must checkout main first"
           exit 1
         fi
@@ -107,7 +107,7 @@ tasks:
     desc: Bump code stable version, generate changelog, create a tag
     cmds:
       - |2
-        if [[ "{{.CURRENT_BRANCH}}" != develop ]]; then
+        if [[ "$(git rev-parse --abbrev-ref HEAD)" != develop ]]; then
           echo "You must checkout develop first"
           exit 1
         fi
