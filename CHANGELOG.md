@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.10 (2022-11-17)
+### Fix
+* Update ci scripts ([`a0ae9be`](https://github.com/mrjk/python-project-poetry-template/commit/a0ae9be000bffa376121cad68fedc6ebc655f1b1))
+
 ## v0.11.9 (2022-11-17)
 ### Fix
 * Update ci scripts ([`7fb2207`](https://github.com/mrjk/python-project-poetry-template/commit/7fb2207cb72b44978f41a37afa859d63beca8b1c))
