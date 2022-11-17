@@ -46,7 +46,7 @@ commit_message = "semantic-release new version: version {version}" # NEVER CHANG
 # pipeline hooks
 pre_commit_command = "task build_changelog"
 # pre_commit_command =
-include_additional_files = 'VERSION_NOTES.md,CHANGELOG.md'
+include_additional_files = 'VERSION_NOTES.md'
 
 tag_commit = false # By default, we don not tag, unless explicitely set
 tag_format = "v{version}" # NEVER CHANGE THIS ONCE SET
