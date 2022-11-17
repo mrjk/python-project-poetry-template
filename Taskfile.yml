@@ -149,15 +149,19 @@ tasks:
     cmds:
       - poetry publish
 
-  #publish_gh:
-  #  desc: Create a python package
-  #  interactive: true
-  #  deps:
-  #    - build_changelog
-  #    - build
-  #  cmds:
-  #    - ls -ahl dist/
-  #    - cat VERSION_NOTES.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
+  publish_gh:
+    desc: Publish python packge on a github release
+    env:
+      INPUT_PRERELEASE: false
+      INPUT_ALLOW_OVERRIDE: true
+      INPUT_TOKEN: "$GH_TOKEN"
+    deps:
+      - build_changelog
+      - build
+    cmds:
+      - ls -ahl dist/
+      - INPUT_BODY=$(cat VERSION_NOTES.md) bash    scripts/publish_github2.sh
+      #- cat VERSION_NOTES.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
 
 
 

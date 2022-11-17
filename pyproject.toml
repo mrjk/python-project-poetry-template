@@ -75,7 +75,7 @@ upload_to_release = true
 
 # Publish to github
 # Require: export GH_TOKEN=
-upload_to_repository = true # Disable wheel upload
+qupload_to_repository = true # Disable wheel upload
 
 # Publish to Pypi
 # Require: PYPI_TOKEN REPOSITORY_USERNAME PYPI_USERNAME PYPI_PASSWORD
