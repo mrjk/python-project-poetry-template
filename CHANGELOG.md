@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.13.1 (2022-11-17)
+### Fix
+* Mike bugs ([`41ecf29`](https://github.com/mrjk/python-project-poetry-template/commit/41ecf2913f8344424b24f8029cc00a61c009d736))
+* Mike bugs ([`f30c3ac`](https://github.com/mrjk/python-project-poetry-template/commit/f30c3ac71b0d2ebede4009b65a97046efbdd887c))
+
 ## v0.13.0 (2022-11-17)
 ### Feature
 * New feature3 ([`5a0de20`](https://github.com/mrjk/python-project-poetry-template/commit/5a0de20e0dde7f735c707908d088992fbe658f73))
