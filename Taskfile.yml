@@ -109,19 +109,21 @@ tasks:
     # GH_TOKEN set will create a release in github
     # PYPI_TOKEN set will release a version on pypi
     preconditions:
-      - sh: '[[ "$(git rev-parse --abbrev-ref HEAD)" != main ]]'
-        msg: You must checkout 'branch' branch first
-      - sh: ! git status -s | grep -E '^[AM]* '
+      - sh: >
+          [[ "$(git rev-parse --abbrev-ref HEAD)" == main ]]
+        msg: You must checkout 'main' branch first
+      - sh: >
+          ! git status -s | grep -E '^[AM]* '
         msg: You must clean your working dir first
     cmds:
-      - |2
-        if [[ "$(git rev-parse --abbrev-ref HEAD)" != main ]]; then
-          echo "You must checkout main first"
-          exit 1
-        fi
-        ! git status -s | grep -E '^[AM]* '
-        # FIXME: Currently semantic-release take care of the gh upload and pypi
-        # publishing, but ultimately, we would have a better control on them.
+#      - |2
+#        if [[ "$(git rev-parse --abbrev-ref HEAD)" != main ]]; then
+#          echo "You must checkout main first"
+#          exit 1
+#        fi
+#        ! git status -s | grep -E '^[AM]* '
+#        # FIXME: Currently semantic-release take care of the gh upload and pypi
+#        # publishing, but ultimately, we would have a better control on them.
       - SKIP=end-of-file-fixer  poetry run semantic-release -D tag_commit=true publish -v DEBUG
       - task: publish_gh
       - task: publish_pypi
@@ -131,7 +133,7 @@ tasks:
       - release
     desc: Bump code stable version, generate changelog, create a tag
     preconditions:
-      - sh: '[[ "$(git rev-parse --abbrev-ref HEAD)" != develop ]]'
+      - sh: '[[ "$(git rev-parse --abbrev-ref HEAD)" == develop ]]'
         msg: You must checkout 'develop' branch first
       - sh: ! git status -s | grep -E '^[AM]* '
         msg: You must clean your working dir first
