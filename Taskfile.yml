@@ -117,7 +117,7 @@ tasks:
           ! git status -s | grep -E '^[AM]* '
         msg: You must clean your working dir first
     cmds:
-      - SKIP=end-of-file-fixer poetry run semantic-release -D tag_commit=true publish
+      - SKIP=end-of-file-fixer poetry run semantic-release -D tag_commit=true publish -v DEBUG
       - task: publish_gh
       - task: publish_pypi
 
@@ -135,7 +135,7 @@ tasks:
         SKIP=end-of-file-fixer poetry run semantic-release
         -D tag_commit=true
         -D branch=develop
-        publish --prerelease
+        publish --prerelease -v DEBUG
       - task: publish_gh
       - task: publish_pypi
 
