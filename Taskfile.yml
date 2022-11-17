@@ -115,6 +115,8 @@ tasks:
         # FIXME: Currently semantic-release take care of the gh upload and pypi
         # publishing, but ultimately, we would have a better control on them.
       - SKIP=end-of-file-fixer  poetry run semantic-release -D tag_commit=true publish -v DEBUG
+      - task: publish_pypi
+      #- task: publish_gh
 
   release_beta:
     aliases:
@@ -132,12 +134,20 @@ tasks:
         -D tag_commit=true
         -D branch=develop
         publish --prerelease
+      - task: publish_pypi
 
 
 
   # Publish workflow
   # -----------------
 
+  publish_pypi:
+    desc: Publish python package on pypi.org
+    deps:
+      - build
+      - build_changelog
+    cmds:
+      - poetry publish
 
   #publish_gh:
   #  desc: Create a python package

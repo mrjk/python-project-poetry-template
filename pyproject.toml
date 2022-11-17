@@ -79,7 +79,7 @@ upload_to_repository = true # Disable wheel upload
 
 # Publish to Pypi
 # Require: PYPI_TOKEN REPOSITORY_USERNAME PYPI_USERNAME PYPI_PASSWORD
-upload_to_pypi = true
+upload_to_pypi = false
 
 # See: https://python-semantic-release.readthedocs.io/en/latest/automatic-releases/github-actions.html
 
