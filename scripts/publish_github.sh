@@ -56,9 +56,9 @@ fi
 
 #[ -n "$2" ] || (usage; exit 1);
 
-#REPO="$1"
-#shift
-REPO="$(git config --get remote.origin.url)"
+REPO="$1"
+shift
+#REPO="$(git config --get remote.origin.url)"
 
 #TAG="$1"
 #shift
@@ -83,6 +83,8 @@ if [ "$1" = "--" -a "$#" -ge "2" ]; then
   ASSETS="$@"
 fi
 
+set -x
+
 payload=$(
   jq --null-input \
      --arg tag "$TAG" \
@@ -91,14 +93,14 @@ payload=$(
      '{ tag_name: $tag, name: $name, body: $body, draft: true }'
 )
 
-echo "WIP"
-exit 1
-
+       #--silent \
+       #--location \
 response=$(
   curl --fail \
        --netrc \
-       --silent \
-       --location \
+       -X POST \
+       -H "Accept: application/vnd.github+json" \
+       -H "Authorization: Bearer $GH_TOKEN" \
        --data "$payload" \
        "https://api.github.com/repos/${REPO}/releases"
 )

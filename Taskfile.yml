@@ -84,6 +84,8 @@ tasks:
       - 'git commit --allow-empty  -m "feat: new feat"'
       - 'git commit --allow-empty  -m "feat: new feat"'
 
+
+
   release_prod:
     desc: Bump code stable version, generate changelog, create a tag
     vars:
@@ -123,6 +125,7 @@ tasks:
         -D tag_commit=true
         -D branch=develop
         publish --prerelease
+        -v DEBUG
       - git push origin
 
       # V1 WORKING
@@ -150,13 +153,14 @@ tasks:
       - cp CHANGELOG.md dist/CHANGELOG.md
       - cp VERSION_NOTES.md dist/RELEASE.md
 
-  #publish:
-  #  desc: Create a python package
-  #  interactive: true
-  #  deps:
-  #    - pkg_build
-  #  cmds:
-  #    - poetry publish
+  publish_gh:
+    desc: Create a python package
+    interactive: true
+    deps:
+      - build
+    cmds:
+      - ls -ahl dist/
+      - echo ./scripts/publish_github.sh
 
   update:
     desc: Synchronize git
