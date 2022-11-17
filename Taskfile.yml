@@ -2,16 +2,18 @@ version: '3'
 
 # See guidelines: https://github.com/dxw/scripts-to-rule-them-all
 
+# Vars: Example
+#   GIT_TAG:
+#     sh: git describe --tags 2>/dev/null || echo devel
+#   GIT_BRANCH:
+#     sh: git rev-parse --abbrev-ref HEAD
+#   PRJ_VERSION:
+#     sh: poetry version -s
+
+
 vars:
   SRC_DIR: myprj
   TEST_DIR: tests/
-
-  # GIT_TAG:
-  #   sh: git describe --tags 2>/dev/null || echo devel
-  # GIT_BRANCH:
-  #   sh: git rev-parse --abbrev-ref HEAD
-  # PRJ_VERSION:
-  #   sh: poetry version -s
 
 
 includes:
@@ -19,18 +21,16 @@ includes:
   #  taskfile: ./docs/Taskfile.yml
   #  dir: ./docs
 
-  gh:
-    taskfile: ./.github/Taskfile.yml
-    dir: .
+  #gh:
+  #  taskfile: ./.github/Taskfile.yml
+  #  dir: .
     #internal: true
 
   dev:
     taskfile: ./scripts/Taskfile.yml
-    #dir: .
+    dir: .
   docker:
     taskfile: ./docker/Taskfile.yml
-
-# See: https://github.blog/2015-06-30-scripts-to-rule-them-all/
 
 
 tasks:
@@ -42,12 +42,6 @@ tasks:
     desc: Show all commands
     cmds:
       - task --list-all
-
-  #bootstrap:
-  #  desc: Bootstrap all
-  #  cmds:
-  #    - for c in $(task -l | grep -Eo '[^ ]+_bootstrap'); do task $c ; done
-
 
   # Project helpers
   # -----------------
@@ -65,121 +59,24 @@ tasks:
     cmds:
       - poetry install -vv --no-interaction --only-root
 
-  bump_minor:
-    desc: when you want to work on new features
+  update:
+    desc: Synchronize git
     cmds:
-      - semantic-release -D tag_commit=false version --prerelease
-
-  dev_changlog:
-    desc: Show currently modified things
-    cmds:
-      - semantic-release changelog --noop --unreleased
-
-  fake_fix:
-    desc: Generate fake patch commits
-    cmds:
-      - 'git commit --allow-empty  -m "fix: simple bug"'
-      - 'git commit --allow-empty  -m "fix: simple bug"'
-      - 'git commit --allow-empty  -m "fix: simple bug"'
-
-  fake_feat:
-    desc: Generate fake feature commits
-    cmds:
-      - 'git commit --allow-empty  -m "feat: new feat"'
-      - 'git commit --allow-empty  -m "feat: new feat"'
-      - 'git commit --allow-empty  -m "feat: new feat"'
-
-  release_prod:
-    desc: Bump code stable version, generate changelog, create a tag
-    vars:
-      CURRENT_BRANCH:
-        sh: git rev-parse --abbrev-ref HEAD
-    cmds:
-      - |2
-        if [[ "{{.CURRENT_BRANCH}}" != main ]]; then
-          echo "You must checkout main first"
-          exit 1
-        fi
-
-      #- git checkout main
-      #- git pull origin
-
-      #- git fetch origin develop:develop
-      #- 'git merge --no-ff -m "chore: merge develop into main" develop'
-
-      - semantic-release -D tag_commit=true publish
-      #- git push origin
-
-      #- git checkout develop
-      #- 'git merge --no-ff -m "chore: update develop from main" main'
-      #- git push --set-upstream origin develop
-
-      #- |2
-      #  if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
-      #    git checkout $CURR_BRANCH
-      #  fi
+      - git fetch -a && git pull
 
 
-  release_prod_OLD:
-    desc: Bump code stable version, generate changelog, create a tag
-    vars:
-      CURRENT_BRANCH:
-        sh: git rev-parse --abbrev-ref HEAD
-    cmds:
-
-      - git checkout main
-      - git pull origin
-
-      - git fetch origin develop:develop
-      - 'git merge --no-ff -m "chore: merge develop into main" develop'
-
-      - semantic-release -D tag_commit=true publish
-      - git push origin
-
-      - git checkout develop
-      - 'git merge --no-ff -m "chore: update develop from main" main'
-      - git push --set-upstream origin develop
-
-      - |2
-        if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
-          git checkout $CURR_BRANCH
-        fi
-
-  # Should go in DEV
-  release_beta:
-    desc: Bump code stable version, generate changelog, create a tag
-    vars:
-      CURRENT_BRANCH:
-        sh: git rev-parse --abbrev-ref HEAD
-    cmds:
-      - git checkout develop
-      - git pull origin
-      - >
-        semantic-release
-        -D tag_commit=true
-        -D branch=develop
-        publish --prerelease
-        -v DEBUG
-      - git push origin
-
-      # V1 WORKING
-      #- ./scripts/release.sh {{.CLI_ARGS}}
-
-      #- bash scripts/release.sh {{.CLI_ARGS}}
-      # GH
-      #   - create release
-      #   - upload file
-      # Pypi
-      #   - upload file
-      # Docker
-      #   - upload docker image
+  # Build workflow
+  # -----------------
 
   build_changelog:
+    desc: "Used by semantic-release during publish process, as pre-commit command"
+    internal: true
     cmds:
-      - semantic-release changelog --unreleased > VERSION_NOTES.md
+      - poetry run semantic-release changelog --unreleased > VERSION_NOTES.md
 
   build:
     desc: Create a python package
+    # Used by semantic-release during publish process, as pre-commit command
     deps:
       - clean
     cmds:
@@ -187,27 +84,71 @@ tasks:
       - cp CHANGELOG.md dist/CHANGELOG.md
       - cp VERSION_NOTES.md dist/RELEASE.md
 
-  publish_gh:
-    desc: Create a python package
-    interactive: true
-    deps:
-      - build_changelog
-      - build
-    cmds:
-      - ls -ahl dist/
-      - cat VERSION_NOTES.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
-
-  update:
-    desc: Synchronize git
-    cmds:
-      - git fetch -a && git pull
-
   clean:
     desc: Clean generated packages
     cmds:
       - rm -rf dist/ && mkdir -p dist
     status:
       - test ! -d dist/
+
+
+  # Release workflow
+  # -----------------
+
+  release_version:
+    desc: Show release status
+    cmds:
+      - poetry run ./scripts/versions.sh
+
+  release_stable:
+    desc: Bump code stable version, generate changelog, create a tag
+    # Note having :
+    # GH_TOKEN set will create a release in github
+    # PYPI_TOKEN set will release a version on pypi
+    cmds:
+      - |2
+        if [[ "$(git rev-parse --abbrev-ref HEAD)" != main ]]; then
+          echo "You must checkout main first"
+          exit 1
+        fi
+        ! git status -s | grep -E '^[AM]* '
+        # FIXME: Currently semantic-release take care of the gh upload and pypi
+        # publishing, but ultimately, we would have a better control on them.
+      - poetry run semantic-release -D tag_commit=true publish
+
+  release_beta:
+    aliases:
+      - release
+    desc: Bump code stable version, generate changelog, create a tag
+    cmds:
+      - |2
+        if [[ "$(git rev-parse --abbrev-ref HEAD)" != develop ]]; then
+          echo "You must checkout develop first"
+          exit 1
+        fi
+        ! git status -s | grep -E '^[AM]* '
+      - >
+        poetry run semantic-release
+        -D tag_commit=true
+        -D branch=develop
+        publish --prerelease
+
+
+
+  # Publish workflow
+  # -----------------
+
+
+  #publish_gh:
+  #  desc: Create a python package
+  #  interactive: true
+  #  deps:
+  #    - build_changelog
+  #    - build
+  #  cmds:
+  #    - ls -ahl dist/
+  #    - cat VERSION_NOTES.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
+
 
 
 
