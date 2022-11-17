@@ -4,7 +4,7 @@ services:
 
   mkdocs:
     #image: ghcr.io/peaceiris/mkdocs-material:latest
-    image: paasify-doc:latest
+    image: myprj-doc:latest
     ports:
       - "8042:8042"
 
@@ -21,7 +21,7 @@ services:
       - $PWD:/docs/
 
   jupyter:
-    image: paasify-doc:latest
+    image: myprj-doc:latest
     ports:
       - "8043:8043"
     command:

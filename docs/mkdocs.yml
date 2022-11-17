@@ -1,6 +1,6 @@
 docs_dir: src/
 site_dir: build/site/
-site_name: "Paasify Documentation"
+site_name: "Myprj Documentation"
 
 watch:
   - src
@@ -9,7 +9,6 @@ watch:
 #extra_css:
 #  - css/mkdocstrings.css
 
-# site_url: https://paasify.org/
 #nav:
 #    - Documentation:
 #      - Introduction: index.md

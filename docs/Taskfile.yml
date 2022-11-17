@@ -24,15 +24,15 @@ tasks:
     cmds:
       - task --list-all
 
-  bootstrap:
-    desc: Bootstrap all
-    cmds:
-      - for c in $(task -l | grep -Eo '[^ ]+_bootstrap'); do task $c ; done
+  #bootstrap:
+  #  desc: Bootstrap all
+  #  cmds:
+  #    - for c in $(task -l | grep -Eo '[^ ]+_bootstrap'); do task $c ; done
 
-  build:
-    desc: Bootstrap all
-    cmds:
-      - for c in $(task -l | grep -Eo '[^ ]+_build'); do task $c ; done
+  #build:
+  #  desc: Bootstrap all
+  #  cmds:
+  #    - for c in $(task -l | grep -Eo '[^ ]+_build'); do task $c ; done
 
 
   # via git on branch gh_page
@@ -53,7 +53,7 @@ tasks:
 
   doc_build:
     desc: Generate API doc
-    deps: [install]
+    #deps: [install]
     run: once
     cmds:
       - ./gen_apidoc.sh
@@ -64,7 +64,7 @@ tasks:
     aliases:
       - serve
     desc: Run mkdocs website
-    deps: [build_doc]
+    # deps: [doc_build]
     interactive: true
     cmds:
       - >
@@ -95,7 +95,7 @@ tasks:
       - vscode
       - edit
     desc: Run documentation IDE
-    deps: [build_doc]
+    deps: [doc_build]
     cmds:
       - docker-compose up -d
       - |
