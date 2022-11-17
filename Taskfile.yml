@@ -6,26 +6,13 @@ vars:
   SRC_DIR: myprj
   TEST_DIR: tests/
 
-#  RELEASE:
-#    sh: ./build_target.sh release
-#  GIT_VERSION:
-#    sh: ./build_target.sh git
-#  DOCKER_VERSION:
-#    sh: ./build_target.sh docker
-#  PKG_VERSION:
-#    sh: ./build_target.sh pkg
-#    #sh: python -m {{.SRC_DIR}}.version
-#
-
   # GIT_TAG:
   #   sh: git describe --tags 2>/dev/null || echo devel
   # GIT_BRANCH:
   #   sh: git rev-parse --abbrev-ref HEAD
-  # PAASIFY_VERSION:
+  # PRJ_VERSION:
   #   sh: poetry version -s
 
-  # #PAASIFY_RELEASE=$(poetry version -s)
-  # PAASIFY_RELEASE: latest
 
 includes:
   #doc:
@@ -141,11 +128,6 @@ tasks:
       # V1 WORKING
       #- ./scripts/release.sh {{.CLI_ARGS}}
 
-
-#      - echo -e "# What's new ?\n\n## List of changes\n" > dist/RELEASE.md
-#      - semantic-release changelog --unreleased >> dist/RELEASE.md
-#      - semantic-release publish -D remove_dist=False
-
       #- bash scripts/release.sh {{.CLI_ARGS}}
       # GH
       #   - create release
@@ -158,8 +140,6 @@ tasks:
   build_changelog:
     cmds:
       - semantic-release changelog --unreleased > VERSION_NOTES.md
-      - semantic-release changelog --unreleased
-      - semantic-release changelog --released
 
   build:
     desc: Create a python package
@@ -167,6 +147,7 @@ tasks:
       - clean
     cmds:
       - poetry build
+      - cp CHANGELOG.md.md dist/CHANGELOG.md.md
       - cp VERSION_NOTES.md dist/VERSION_NOTES.md
 
   #publish:
