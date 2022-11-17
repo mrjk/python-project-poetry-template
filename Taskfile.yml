@@ -96,7 +96,7 @@ tasks:
         sh: git rev-parse --abbrev-ref HEAD
     cmds:
       - |2
-        if [[ "{{.CURRENT_BRANCH}}" == main ]]; then
+        if [[ "{{.CURRENT_BRANCH}}" != main ]]; then
           echo "You must checkout main first"
           exit 1
         fi
