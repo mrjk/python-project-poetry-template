@@ -5,6 +5,24 @@ description = "Python Project Poetry Template"
 authors = ["mrjk"]
 license = "GPLv3"
 
+readme = "README.md"
+homepage = "https://mrjk.github.io/python-project-poetry-template/"
+repository = "https://github.com/mrjk/python-project-poetry-template"
+keywords = ["test", "lab", "template", "poetry"]
+classifiers = [
+    "Environment :: Console",
+    "Framework :: Flake8",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+]
+include = [
+    "README.md",
+    "CHANGELOG.md",
+]
+
+
 packages = [
     { include = "myprj"}
 ]
