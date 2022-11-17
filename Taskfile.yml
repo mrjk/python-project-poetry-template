@@ -156,14 +156,24 @@ tasks:
     env:
       INPUT_PRERELEASE: false
       INPUT_ALLOW_OVERRIDE: true
-      INPUT_TOKEN: "$GH_TOKEN"
+
     vars:
+      INPUT_TOKEN:
+        sh: echo "$GH_TOKEN"
+      BODY_HEADER: |
+        ## What's new in this version ?
+
+        This release has been published: $(date --utc)
+
+        ## List of changes:
+
+        $(cat VERSION_NOTES.md)
 
     deps:
       - build
     cmds:
       - ls -ahl dist/
-      - INPUT_BODY=$(cat VERSION_NOTES.md) bash scripts/publish_github2.sh
+      - INPUT_BODY="{{.BODY_HEADER}}" INPUT_TOKEN={{.INPUT_TOKEN}} bash scripts/publish_github.sh
 
 
 
