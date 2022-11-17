@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.0-beta.1 (2022-11-17)
+### Feature
+* Add direnv support with secrets ([`846cd1c`](https://github.com/mrjk/python-project-poetry-template/commit/846cd1c63cf6526dd6fd1352adbb2a5ddae33991))
+
 ## v0.10.9 (2022-11-17)
 ### Fix
 * Gh upload script ([`18abc1e`](https://github.com/mrjk/python-project-poetry-template/commit/18abc1e6cc59a6e805ff7238649c065c8071ca0f))
