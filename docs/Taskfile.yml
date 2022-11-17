@@ -53,9 +53,11 @@ tasks:
         sh: git describe --tags --abbrev=0 | sed -E  's/(v?[0-9]+\.([0-9]+)).*/\1/'
     cmds:
       - mike list
-      - mike deploy --update-aliases {{.APP_MINOR}} latest
+      - |
+        MSG="Deployed {{.APP_VERSION}} - {{.GIT_REF}} from {{.GIT_BRANCH}}"
+        mike deploy --push -m "$MSG" --update-aliases {{.APP_MINOR}} latest
       - mike list
-      - git push origin gh-pages:gh-pages
+      #- git push origin gh-pages:gh-pages
 #      - mkdocs gh-deploy --message 'Deployed {{.APP_VERSION}} - {{.GIT_REF}} from {{.GIT_BRANCH}}'
 
 
