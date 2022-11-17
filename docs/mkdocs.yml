@@ -6,6 +6,10 @@ watch:
   - src
   # - ../paasify
 
+extra:
+  version:
+    provider: mike
+
 #extra_css:
 #  - css/mkdocstrings.css
 
