@@ -54,7 +54,7 @@ commit_subject = "bump: version v{version}"   # NEVER CHANGE THIS ONCE SET
 commit_message = "semantic-release new version: version {version}" # NEVER CHANGE THIS ONCE SET
 
 # Pipeline hooks
-pre_commit_command = "task build_changelog"
+pre_commit_command = "task release_changelog"
 include_additional_files = 'VERSION_NOTES.md'
 
 # Tag management

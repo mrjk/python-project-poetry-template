@@ -26,6 +26,9 @@ includes:
   #  dir: .
     #internal: true
 
+  ci:
+    taskfile: ./scripts/Taskfile-ci.yml
+    dir: .
   dev:
     taskfile: ./scripts/Taskfile.yml
     dir: .
@@ -68,32 +71,32 @@ tasks:
   # Build workflow
   # -----------------
 
-  build_changelog:
-    desc: "Used by semantic-release during publish process, as pre-commit command"
-    internal: true
-    cmds:
-      - poetry run semantic-release changelog --unreleased > VERSION_NOTES.md
-
   build:
     desc: Create a python package
     # Used by semantic-release during publish process, as pre-commit command
-    deps:
-      - clean
+    #sources:
+    #  - pyproject.toml
     cmds:
+      - task: clean
       - poetry build
       - cp CHANGELOG.md dist/CHANGELOG.md
       - cp VERSION_NOTES.md dist/RELEASE.md
 
   clean:
     desc: Clean generated packages
-    cmds:
-      - rm -rf dist/ && mkdir -p dist
     status:
       - test ! -d dist/
+    cmds:
+      - rm -rf dist/ && mkdir -p dist
 
 
   # Release workflow
   # -----------------
+
+  release_changelog:
+    desc: "Used by semantic-release during publish process, as pre-commit command"
+    cmds:
+      - poetry run semantic-release changelog --unreleased > VERSION_NOTES.md
 
   release_version:
     desc: Show release status
@@ -105,6 +108,11 @@ tasks:
     # Note having :
     # GH_TOKEN set will create a release in github
     # PYPI_TOKEN set will release a version on pypi
+    preconditions:
+      - sh: '[[ "$(git rev-parse --abbrev-ref HEAD)" != main ]]'
+        msg: You must checkout 'branch' branch first
+      - sh: ! git status -s | grep -E '^[AM]* '
+        msg: You must clean your working dir first
     cmds:
       - |2
         if [[ "$(git rev-parse --abbrev-ref HEAD)" != main ]]; then
@@ -115,25 +123,25 @@ tasks:
         # FIXME: Currently semantic-release take care of the gh upload and pypi
         # publishing, but ultimately, we would have a better control on them.
       - SKIP=end-of-file-fixer  poetry run semantic-release -D tag_commit=true publish -v DEBUG
+      - task: publish_gh
       - task: publish_pypi
-      #- task: publish_gh
 
   release_beta:
     aliases:
       - release
     desc: Bump code stable version, generate changelog, create a tag
+    preconditions:
+      - sh: '[[ "$(git rev-parse --abbrev-ref HEAD)" != develop ]]'
+        msg: You must checkout 'develop' branch first
+      - sh: ! git status -s | grep -E '^[AM]* '
+        msg: You must clean your working dir first
     cmds:
-      - |2
-        if [[ "$(git rev-parse --abbrev-ref HEAD)" != develop ]]; then
-          echo "You must checkout develop first"
-          exit 1
-        fi
-        ! git status -s | grep -E '^[AM]* '
       - >
         SKIP=end-of-file-fixer poetry run semantic-release
         -D tag_commit=true
         -D branch=develop
         publish --prerelease
+      - task: publish_gh
       - task: publish_pypi
 
 
@@ -155,13 +163,14 @@ tasks:
       INPUT_PRERELEASE: false
       INPUT_ALLOW_OVERRIDE: true
       INPUT_TOKEN: "$GH_TOKEN"
+    vars:
+
     deps:
       - build_changelog
       - build
     cmds:
       - ls -ahl dist/
-      - INPUT_BODY=$(cat VERSION_NOTES.md) bash    scripts/publish_github2.sh
-      #- cat VERSION_NOTES.md  | ./scripts/publish_github.sh mrjk/python-project-poetry-template  -- dist/*
+      - INPUT_BODY=$(cat VERSION_NOTES.md) bash scripts/publish_github2.sh
 
 
 
