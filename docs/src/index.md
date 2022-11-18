@@ -10,3 +10,4 @@ Manual versio history:
 Hello CLI 2! : 0.13.3
 Hello CLI 2! : 0.13.3
 Hello CLI 2! : 0.13.3
+Hello CLI 2! : 0.13.4
