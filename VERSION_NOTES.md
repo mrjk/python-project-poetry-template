@@ -1,4 +1,8 @@
 ### Fix
-* Task bugs ([`4f69f87`](https://github.com/mrjk/python-project-poetry-template/commit/4f69f870f404b0f36aad38bdf97a110f6c9e5992))
-* Mike bugs ([`3860633`](https://github.com/mrjk/python-project-poetry-template/commit/3860633eb7fa60d340c76738a365e7b84563d759))
-* Workflow bug ([`dd12de1`](https://github.com/mrjk/python-project-poetry-template/commit/dd12de1a1efae21e144abb4385f32602925964c3))
+* Simple bugfix3 ([`e57b1db`](https://github.com/mrjk/python-project-poetry-template/commit/e57b1db095f165177396a53477355cee261709ff))
+* Simple bugfix2 ([`14b37a9`](https://github.com/mrjk/python-project-poetry-template/commit/14b37a9dacfdb3c3c62fd4d8920249244f8eeeeb))
+* Simple bugfix1 ([`8d1b057`](https://github.com/mrjk/python-project-poetry-template/commit/8d1b057f3f35aa34c28dd12d390a5f0825138a6e))
+
+### Documentation
+* Allow mention about old doc on website ([`33118f3`](https://github.com/mrjk/python-project-poetry-template/commit/33118f30aa4e8d9c2163cde0aebdcbb2f7ba4b81))
+* Change version ([`4a80def`](https://github.com/mrjk/python-project-poetry-template/commit/4a80def40304a5bdb2ce9e8919d91e47acfb8553))
