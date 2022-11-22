@@ -5,7 +5,7 @@ dist/*
 tmp/*
 
 # Other tools
+.envrc.*
+.direnv/*
 .venv/*
 .task/*
-.direnv/*
-.SECRETS
