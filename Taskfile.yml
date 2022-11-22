@@ -47,11 +47,16 @@ tasks:
     sources:
       - poetry.lock
     cmds:
+      - poetry --version 2>&/dev/null || pip install poetry
       - poetry config --list
       - poetry install -vv --no-interaction --no-root
 
   setup:
     desc: Setup project
+    deps:
+      - bootstrap
+    sources:
+      - myprj/*
     cmds:
       - poetry install -vv --no-interaction --only-root
 
@@ -59,6 +64,7 @@ tasks:
     desc: Synchronize git
     cmds:
       - git fetch -a && git pull
+      - task: setup
 
 
   # Build workflow
